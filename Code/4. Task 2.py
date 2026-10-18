@@ -58,7 +58,7 @@ def pq(name: str) -> str:
 
 from Code.config import config as C
 from Code.config.utils import (PAL, TIER_COLORS, assign_tier, auc, ensure_dirs, get_con, save_fig, save_json,
-                               set_style, two_prop_ztest, wilson_ci)
+                               set_style, tint_rgba, two_prop_ztest, wilson_ci)
 
 # %% [markdown]
 # ## Define the score components
@@ -366,6 +366,36 @@ def q4_early_warning(con, pop) -> dict:
             "auc_app_sessions": auc(a.bad, -a.app), "n_cross": len(a), "n_temporal": len(b)}
 
 
+def q6_rfm_profile(pop) -> dict:
+    """Share of customers by recency, frequency and product breadth at the snapshot (score inputs, descriptive)."""
+    recency = pd.cut(pop.days_since_last_activity.fillna(1e9), [-1, 30, 90, 180, 365, 1e10],
+                     labels=["≤30", "31–90", "91–180", "181–365", ">365"])
+    frequency = pop.active_months_12m.clip(upper=6).astype(int).astype(str).replace({"6": "6+"})
+    breadth = pop.product_families_24m.clip(upper=4).astype(int).astype(str).replace({"4": "4+"})
+    share = lambda s, order: s.value_counts(normalize=True).reindex(order, fill_value=0).rename_axis("band").reset_index(name="share")
+    return {"recency": share(recency.astype(str), ["≤30", "31–90", "91–180", "181–365", ">365"]),
+            "frequency": share(frequency, ["0", "1", "2", "3", "4", "5", "6+"]),
+            "breadth": share(breadth, ["0", "1", "2", "3", "4+"])}
+
+
+def q7_call_lead_outcomes(con) -> dict:
+    """Call-leg outcomes by direction (before the snapshot) and final lead outcome by source (leads since 2022-12)."""
+    calls = con.execute(f"""
+      SELECT CASE WHEN is_outbound THEN 'Outbound' ELSE 'Inbound' END AS direction, count(*) AS n,
+             avg(is_connected::INT) AS answered,
+             avg((disposition_group = 'SALES_REFUSAL')::INT) AS refused,
+             avg((disposition_group IN ('SALES_INTEREST', 'SALES_CONVERSION'))::INT) AS positive
+      FROM {pq('call_clean')} WHERE call_start < TIMESTAMP '{C.SNAPSHOT_DATE}' AND (is_outbound OR is_inbound)
+      GROUP BY 1 ORDER BY 1 DESC""").df()
+    leads = con.execute(f"""
+      SELECT LEAD_SOURCE, count(*) AS n, avg(is_deal::INT) AS deal,
+             avg((is_not_interest OR fin_reason = 'Rejected')::INT) AS not_interested,
+             avg(is_expired::INT) AS expired
+      FROM {pq('leads_clean')} WHERE lead_time >= TIMESTAMP '2022-12-01' GROUP BY 1""").df()
+    leads["other"] = 1 - leads[["deal", "not_interested", "expired"]].sum(axis=1)
+    return {"calls": calls, "leads": leads[leads.n >= MIN_SOURCE_LEADS].sort_values("deal").reset_index(drop=True)}
+
+
 def q5_engagement_reducers(con, pop) -> pd.DataFrame:
     """Factors observed before the snapshot -> share of outbound calls the customer answers AFTER the snapshot.
     Later pickup is not a score input, so the comparison is not circular. Associations only."""
@@ -541,6 +571,75 @@ def chart_early_warning(q4):
     axes[1].tick_params(axis="x", labelrotation=15)
     axes[1].grid(axis="x", visible=False)
     save_fig(fig, TASK_FIGURES / "04_engagement_dropoff_vs_delinquency.png", None)
+
+
+# %% [markdown]
+# ## Recency, frequency and product breadth
+#
+# Distribution of the behaviours behind E2, E3 and E5 at the snapshot.
+
+# %%
+def chart_rfm_profile(q6: dict):
+    fig, axes = plt.subplots(1, 3, figsize=(13.33, 5.5))
+    panels = [("recency", "Days since last self-initiated activity", "91–180"),
+              ("frequency", "Active months in the last 12 months", "1"),
+              ("breadth", "Product families touched in 24 months", "1")]
+    for ax, (key, xlabel, focus) in zip(axes, panels):
+        d = q6[key]
+        ax.bar(d.band, d.share * 100, color=[PAL["orange"] if b == focus else PAL["grey"] for b in d.band], width=0.65)
+        for i, v in enumerate(d.share):
+            ax.text(i, v * 100 + 1.2, f"{v:.1%}", ha="center", fontsize=9)
+        ax.set_ylim(0, d.share.max() * 100 * 1.15)
+        ax.set_xlabel(xlabel)
+        ax.grid(axis="x", visible=False)
+    axes[0].set_ylabel("Share of customers (%)")
+    save_fig(fig, TASK_FIGURES / "07_rfm_profile.png", None, bottom=0.14, wspace=0.25)
+
+
+# %% [markdown]
+# ## Call and lead outcomes
+#
+# Left: outcome of call legs by direction. Right: final outcome of leads by source (sorted by deal rate).
+
+# %%
+def chart_call_lead_outcomes(q7: dict):
+    fig, axes = plt.subplots(1, 2, figsize=(13.33, 6.5), gridspec_kw={"width_ratios": [1, 1.6]})
+    calls = q7["calls"]
+    # colour weight follows importance: blue = positive outcome, mid grey = negative, light = neutral context
+    *rgb, _ = tint_rgba(PAL["grey"], 1)
+    negative = tuple(0.6 * c + 0.4 for c in rgb)   # solid mid grey (60% grey on white), so gridlines stay hidden
+    measures = [("answered", "Answered", negative), ("positive", "Interested / converted", PAL["orange"]),
+                ("refused", "Refused offer", PAL["amber"])]
+    x = np.arange(len(calls))
+    for j, (col, label, color) in enumerate(measures):
+        axes[0].bar(x + (j - 1) * 0.26, calls[col] * 100, width=0.26, color=color, label=label)
+        for i, v in enumerate(calls[col]):
+            axes[0].text(i + (j - 1) * 0.26, v * 100 + 0.4, f"{v:.1%}", ha="center", fontsize=9)
+    axes[0].set_xticks(x, [f"{d}\n({n:,} calls)" for d, n in zip(calls.direction, calls.n)])
+    axes[0].set_ylabel("Share of call legs (%)")
+    axes[0].legend(loc="upper left", fontsize=9, frameon=False)
+    axes[0].grid(axis="x", visible=False)
+
+    leads = q7["leads"]
+    parts = [("deal", "Deal", PAL["orange"]), ("not_interested", "Not interested / rejected", negative),
+             ("expired", "Expired", PAL["amber"]), ("other", "Other / system", PAL["light"])]
+    left = np.zeros(len(leads))
+    for col, label, color in parts:
+        values = leads[col].values * 100
+        axes[1].barh(range(len(leads)), values, left=left, color=color, height=0.6, label=label)
+        for i, v in enumerate(values):
+            if v >= 8:
+                axes[1].text(left[i] + v / 2, i, f"{v:.0f}%", ha="center", va="center", fontsize=9,
+                             color="white" if col == "deal" else PAL["ink"])
+        left += values
+    n_label = lambda n: f"{n / 1e3:,.0f}K" if n >= 1000 else f"{n:,}"
+    axes[1].set_yticks(range(len(leads)), [f"{s} · {n_label(n)}" for s, n in zip(leads.LEAD_SOURCE, leads.n)])
+    axes[1].set_xlim(0, 100)
+    axes[1].set_axisbelow(True)
+    axes[1].set_xlabel("Share of leads (%)")
+    axes[1].legend(loc="upper center", bbox_to_anchor=(0.5, -0.1), ncol=4, fontsize=9, frameon=False)
+    axes[1].grid(axis="y", visible=False)
+    save_fig(fig, TASK_FIGURES / "08_call_and_lead_outcomes.png", None, bottom=0.2, left=0.06, wspace=0.35)
 
 
 # %% [markdown]
@@ -785,6 +884,23 @@ if __name__ == "__main__":
 # **Interpretation.** Non-response persists: customers who ignored repeated dials keep ignoring later calls. Digital inactivity and lead expiry do not lower phone reachability.
 
 # %% [markdown]
+# ## 6. Profile recency, frequency and product breadth
+#
+# Describe the behaviour behind the score, then compare call and lead outcomes.
+
+# %%
+if __name__ == "__main__":
+    q6 = q6_rfm_profile(population)
+    chart_rfm_profile(q6)
+    display_saved_figure(TASK_FIGURES / "07_rfm_profile.png")
+    q7 = q7_call_lead_outcomes(con)
+    chart_call_lead_outcomes(q7)
+    display_saved_figure(TASK_FIGURES / "08_call_and_lead_outcomes.png")
+
+# %% [markdown]
+# **Interpretation.** Most customers were last active in the Dec-2024–Jan-2025 application window and touched one product family; customer-initiated calls end positively about three times as often as outbound calls.
+
+# %% [markdown]
 # ## Save evidence and the stage report
 #
 # Store aggregate question tables in JSON, customer score components in Parquet, and the business interpretation in one Markdown report.
@@ -813,6 +929,8 @@ if __name__ == "__main__":
         "q4": {key: value.astype({column: str for column in value.columns if value[column].dtype.name == "category"}).to_dict("records")
                if isinstance(value, pd.DataFrame) else value for key, value in q4.items()},
         "q5": q5.to_dict("records"),
+        "q6": {key: value.to_dict("records") for key, value in q6.items()},
+        "q7": {key: value.to_dict("records") for key, value in q7.items()},
     }
     save_json(metrics, DATA_CLEAN / "metrics_phase3.json")
     TASK_REPORT.parent.mkdir(parents=True, exist_ok=True)

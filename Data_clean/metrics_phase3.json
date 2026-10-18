@@ -616,5 +616,157 @@
       "diff_pp": 5.542909224609488,
       "n_population": 346109
     }
-  ]
+  ],
+  "q6": {
+    "recency": [
+      {
+        "band": "≤30",
+        "share": 0.1117220108
+      },
+      {
+        "band": "31–90",
+        "share": 0.1215168391
+      },
+      {
+        "band": "91–180",
+        "share": 0.7239287656
+      },
+      {
+        "band": "181–365",
+        "share": 0.0428323845
+      },
+      {
+        "band": ">365",
+        "share": 0.0
+      }
+    ],
+    "frequency": [
+      {
+        "band": "0",
+        "share": 0.0
+      },
+      {
+        "band": "1",
+        "share": 0.5680520685
+      },
+      {
+        "band": "2",
+        "share": 0.2098651912
+      },
+      {
+        "band": "3",
+        "share": 0.0957654358
+      },
+      {
+        "band": "4",
+        "share": 0.050513329
+      },
+      {
+        "band": "5",
+        "share": 0.0292605504
+      },
+      {
+        "band": "6+",
+        "share": 0.0465434251
+      }
+    ],
+    "breadth": [
+      {
+        "band": "0",
+        "share": 0.0
+      },
+      {
+        "band": "1",
+        "share": 0.4975163114
+      },
+      {
+        "band": "2",
+        "share": 0.1557277757
+      },
+      {
+        "band": "3",
+        "share": 0.1470003838
+      },
+      {
+        "band": "4+",
+        "share": 0.1997555291
+      }
+    ]
+  },
+  "q7": {
+    "calls": [
+      {
+        "direction": "Outbound",
+        "n": 990312,
+        "answered": 0.1295413371,
+        "refused": 0.0441537616,
+        "positive": 0.0072532697
+      },
+      {
+        "direction": "Inbound",
+        "n": 31899,
+        "answered": 0.2231396357,
+        "refused": 0.0458008088,
+        "positive": 0.0230728236
+      }
+    ],
+    "leads": [
+      {
+        "LEAD_SOURCE": "RA",
+        "n": 849638,
+        "deal": 0.0007980401,
+        "not_interested": 0.5697062026,
+        "expired": 0.2548981379,
+        "other": 0.1745976194
+      },
+      {
+        "LEAD_SOURCE": "SA",
+        "n": 669274,
+        "deal": 0.0149888845,
+        "not_interested": 0.6304120845,
+        "expired": 0.1836505837,
+        "other": 0.1709484474
+      },
+      {
+        "LEAD_SOURCE": "GMA",
+        "n": 25456,
+        "deal": 0.1106682097,
+        "not_interested": 0.6156187047,
+        "expired": 0.2172645836,
+        "other": 0.056448502
+      },
+      {
+        "LEAD_SOURCE": "LANDING PAGE",
+        "n": 445,
+        "deal": 0.231292517,
+        "not_interested": 0.5124716553,
+        "expired": 0.1360544218,
+        "other": 0.1201814059
+      },
+      {
+        "LEAD_SOURCE": "TLS",
+        "n": 31571,
+        "deal": 0.3236059126,
+        "not_interested": 0.3012116983,
+        "expired": 0.2247351393,
+        "other": 0.1504472499
+      },
+      {
+        "LEAD_SOURCE": "SOB",
+        "n": 38282,
+        "deal": 0.4043281671,
+        "not_interested": 0.3487363111,
+        "expired": 0.1486369933,
+        "other": 0.0982985285
+      },
+      {
+        "LEAD_SOURCE": "RTDM",
+        "n": 41,
+        "deal": 0.4390243902,
+        "not_interested": 0.2682926829,
+        "expired": 0.1707317073,
+        "other": 0.1219512195
+      }
+    ]
+  }
 }
