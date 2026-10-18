@@ -71,6 +71,7 @@ from Code.config.utils import (PAL, TIER_COLORS, assign_tier, auc, ensure_dirs, 
 ENG_WEIGHTS = {"E1_digital": 0.20, "E2_recency": 0.20, "E3_frequency": 0.25, "E4_responsiveness": 0.20,
                "E5_breadth": 0.15}
 CUSTOMER_LEAD_SOURCES = ("GMA", "LANDING PAGE")
+MIN_SOURCE_LEADS = 30    # rates on fewer leads are too noisy to chart (hidden, or n/a for follow-up measures)
 
 
 # =================================================================================================
@@ -330,7 +331,10 @@ def q3_lead_source(con, pop) -> pd.DataFrame:
     m = src.merge(pop[["SKP_CLIENT", "Engagement_Score", "days_since_last_activity"]], on="SKP_CLIENT")
     g = m.groupby("last_source").agg(mean_engagement_score=("Engagement_Score", "mean"),
                                      still_active_6m=("days_since_last_activity", lambda s: (s <= 182).mean()))
-    return df.merge(g, left_on="LEAD_SOURCE", right_index=True, how="left")
+    deal = con.execute(f"""
+      SELECT LEAD_SOURCE, count(*) n_leads_deal, avg(is_deal::INT) deal_rate_all
+      FROM {pq('leads_clean')} WHERE lead_time >= TIMESTAMP '2022-12-01' GROUP BY 1""").df()
+    return deal.merge(df, on="LEAD_SOURCE", how="left").merge(g, left_on="LEAD_SOURCE", right_index=True, how="left")
 
 
 def q4_early_warning(con, pop) -> dict:
@@ -362,6 +366,44 @@ def q4_early_warning(con, pop) -> dict:
             "auc_app_sessions": auc(a.bad, -a.app), "n_cross": len(a), "n_temporal": len(b)}
 
 
+def q5_engagement_reducers(con, pop) -> pd.DataFrame:
+    """Factors observed before the snapshot -> share of outbound calls the customer answers AFTER the snapshot.
+    Later pickup is not a score input, so the comparison is not circular. Associations only."""
+    snap = f"TIMESTAMP '{C.SNAPSHOT_DATE}'"
+    pre = con.execute(f"""
+      SELECT SKP_CLIENT,
+        count(*) FILTER (WHERE is_outbound) AS att, count(*) FILTER (WHERE is_outbound AND is_connected) AS conn,
+        count(*) FILTER (WHERE disposition_group = 'COLLECTION') AS coll,
+        count(*) FILTER (WHERE disposition_group = 'SALES_REFUSAL') AS refus,
+        count(*) FILTER (WHERE disposition_group = 'OPT_OUT') AS optout
+      FROM {pq('call_clean')} WHERE call_start >= TIMESTAMP '2025-01-01' AND call_start < {snap} GROUP BY 1""").df()
+    post = con.execute(f"""
+      SELECT SKP_CLIENT, count(*) AS p_att, count(*) FILTER (WHERE is_connected) AS p_conn
+      FROM {pq('call_clean')} WHERE is_outbound AND call_start >= {snap} GROUP BY 1""").df()
+    leads = con.execute(f"""
+      SELECT SKP_CLIENT, count(*) AS n_leads, sum((is_expired OR is_not_interest)::INT) AS dead
+      FROM {pq('leads_clean')} WHERE lead_time < {snap} AND lead_time >= {snap} - INTERVAL 730 DAY GROUP BY 1""").df()
+    d = (pop[["SKP_CLIENT", "app_sessions_wk", "days_since_last_activity"]].merge(post, on="SKP_CLIENT")
+         .merge(pre, on="SKP_CLIENT", how="left").merge(leads, on="SKP_CLIENT", how="left")
+         .fillna({"att": 0, "conn": 0, "coll": 0, "refus": 0, "optout": 0, "n_leads": 0, "dead": 0}))
+    d["answer_rate"] = d.p_conn / d.p_att
+    factors = {
+        "Ignored 5+ calls": (d.att >= 5) & (d.conn == 0),
+        "Collection calls": d.coll > 0,
+        "Opted out": d.optout > 0,
+        "No app": d.app_sessions_wk.fillna(0) == 0,
+        "Dormant 180d+": d.days_since_last_activity.isna() | (d.days_since_last_activity > 180),
+        "All leads lost": (d.n_leads > 0) & (d.dead == d.n_leads),
+        "Refused offer": d.refus > 0,
+    }
+    rows = [{"factor": name, "n_with": int(f.sum()), "answer_with": d.answer_rate[f].mean(),
+             "answer_without": d.answer_rate[~f].mean()} for name, f in factors.items()]
+    out = pd.DataFrame(rows)
+    out["diff_pp"] = (out.answer_with - out.answer_without) * 100
+    out["n_population"] = len(d)
+    return out
+
+
 # =================================================================================================
 # Charts
 # =================================================================================================
@@ -371,7 +413,7 @@ def q4_early_warning(con, pop) -> dict:
 # Compare conversion among customers with a sales outcome and lead deal rates by source. Call conversion is conditional on sales-call outcome; these comparisons are descriptive and do not establish an effect of app use. Confidence intervals show uncertainty in the call comparison.
 
 # %%
-def chart_active_passive(q1):
+def chart_active_passive(q1, q3: pd.DataFrame):
     fig, axes = plt.subplots(1, 2, figsize=(13.33, 7.5), gridspec_kw={"width_ratios": [1.1, 1]})
     bands = q1["by_app_band"]
     colors = [PAL["grey"], PAL["grey"], PAL["orange"], PAL["orange"]]
@@ -383,12 +425,14 @@ def chart_active_passive(q1):
     axes[0].set_xlabel("App sessions / week")
     axes[0].grid(axis="x", visible=False)
 
-    leads = q1["lead_source_deal"].sort_values("deal_rate")
+    leads = q3[q3.n_leads_deal >= MIN_SOURCE_LEADS].sort_values("deal_rate_all")
     # barh draws bottom-up, so the last three rows are the top three deal rates
     colors = [PAL["orange"] if i >= len(leads) - 3 else PAL["grey"] for i in range(len(leads))]
-    axes[1].barh(leads.LEAD_SOURCE, leads.deal_rate * 100, color=colors, height=0.6)
-    for i, (rate, count) in enumerate(zip(leads.deal_rate, leads.n)):
-        axes[1].text(rate * 100 + 0.6, i, f"{rate:.1%} · n={count / 1e3:,.0f}K", va="center", fontsize=9)
+    axes[1].barh(leads.LEAD_SOURCE, leads.deal_rate_all * 100, color=colors, height=0.6)
+    for i, (rate, count) in enumerate(zip(leads.deal_rate_all, leads.n_leads_deal)):
+        n_label = f"{count / 1e3:,.0f}K" if count >= 1000 else f"{count:,}"
+        axes[1].text(rate * 100 + 0.6, i, f"{rate:.1%} · n={n_label}", va="center", fontsize=9)
+    axes[1].set_xlim(0, leads.deal_rate_all.max() * 100 * 1.35)
     axes[1].set_xlabel("Lead deal rate (%)")
     axes[1].set_ylabel("Lead source")
     axes[1].grid(axis="y", visible=False)
@@ -434,23 +478,42 @@ def chart_call_dynamics(q2):
 # Show deal rate, signing of the offered product within 90 days, and later activity. Sources with small samples remain visible with their counts.
 
 # %%
+LEAD_SOURCE_FIGURES = {
+    "deal_rate_all": "03a_lead_source_deal_rate.png",
+    "signed_within_90d": "03b_lead_source_signed_within_90d.png",
+    "active_180d_after": "03c_lead_source_active_after_180d.png",
+}
+
+
 def chart_lead_source(q3: pd.DataFrame):
-    data = q3.sort_values("signed_within_90d").reset_index(drop=True)
-    fig, axes = plt.subplots(1, 3, figsize=(13.33, 7.5), sharey=True)
+    # one figure per measure; all three share the same source order so they can sit side by side on a slide
+    data = q3[q3.n_leads_deal >= MIN_SOURCE_LEADS].copy()
+    too_new = data.n_leads.fillna(0) < MIN_SOURCE_LEADS   # e.g. RTDM, relaunched Mar-2025: no lead has 90/180 days of follow-up yet
+    data.loc[too_new, ["signed_within_90d", "active_180d_after"]] = np.nan
+    data = data.sort_values("signed_within_90d", na_position="first").reset_index(drop=True)
     measures = [
-        ("deal_rate", "Deal rate (%)", PAL["navy"]),
-        ("signed_within_90d", "Offered product signed within 90 days (%)", PAL["orange"]),
-        ("active_180d_after", "Active after 180 days (%)", PAL["grey"]),
+        ("deal_rate_all", "Deal rate (%)",
+         [PAL["orange"] if source in ("SOB", "RTDM", "TLS") else PAL["grey"] for source in data.LEAD_SOURCE]),
+        # sources that actually sign the offered product
+        ("signed_within_90d", "Offered product signed within 90 days (%)",
+         [PAL["orange"] if source in ("SOB", "TLS") else PAL["grey"] for source in data.LEAD_SOURCE]),
+        # sources that sign less but keep customers active
+        ("active_180d_after", "Active after 180 days (%)",
+         [PAL["orange"] if source in ("GMA", "LANDING PAGE") else PAL["grey"] for source in data.LEAD_SOURCE]),
     ]
-    for ax, (column, label, color) in zip(axes, measures):
-        ax.barh(data.LEAD_SOURCE, data[column] * 100, color=color, height=0.6)
-        for i, value in enumerate(data[column]):
-            ax.text(value * 100 + 0.8, i, f"{value:.1%}", va="center", fontsize=9)
+    for column, label, colors in measures:
+        fig, ax = plt.subplots(figsize=(6.67, 7.5))
+        ax.barh(data.LEAD_SOURCE, data[column].fillna(0) * 100, color=colors, height=0.6)
+        for i, (value, n) in enumerate(zip(data[column], data.n_leads_deal)):
+            text = "n/a (too recent)" if pd.isna(value) else f"{value:.1%}"
+            if column == "deal_rate_all":
+                text += f" · n={n / 1e3:,.0f}K" if n >= 1000 else f" · n={n:,}"
+            ax.text((0 if pd.isna(value) else value * 100) + 0.8, i, text, va="center", fontsize=9)
         ax.set_xlabel(label)
-        ax.set_xlim(0, max(data[column].max() * 100 * 1.35, 5))
+        ax.set_ylabel("Lead source")
+        ax.set_xlim(0, max(data[column].max() * 100 * 1.25, 5))
         ax.grid(axis="y", visible=False)
-    axes[0].set_ylabel("Lead source")
-    save_fig(fig, TASK_FIGURES / "03_lead_source_engagement_comparison.png", None, left=0.12, wspace=0.25)
+        save_fig(fig, TASK_FIGURES / LEAD_SOURCE_FIGURES[column], None, left=0.25)
 
 
 # %% [markdown]
@@ -462,7 +525,7 @@ def chart_lead_source(q3: pd.DataFrame):
 def chart_early_warning(q4):
     fig, axes = plt.subplots(1, 2, figsize=(13.33, 7.5))
     cross = q4["cross_sectional"]
-    axes[0].bar(cross.band.astype(str), cross.bad_rate * 100, color=PAL["navy"], width=0.6)
+    axes[0].bar(cross.band.astype(str), cross.bad_rate * 100, color=PAL["grey"], width=0.6)
     for i, row in cross.iterrows():
         axes[0].text(i, row.bad_rate * 100 + 0.05, f"{row.bad_rate:.2%}\nn={row.n / 1e3:,.0f}K", ha="center", fontsize=9)
     axes[0].set_ylabel("Delinquency (%)")
@@ -470,8 +533,7 @@ def chart_early_warning(q4):
     axes[0].grid(axis="x", visible=False)
 
     temporal = q4["temporal"]
-    colors = [PAL["orange"] if trend == "Declining" else PAL["navy"] for trend in temporal.trend]
-    axes[1].bar(temporal.trend, temporal.bad_rate * 100, color=colors, width=0.6)
+    axes[1].bar(temporal.trend, temporal.bad_rate * 100, color=PAL["grey"], width=0.6)
     for i, row in temporal.iterrows():
         axes[1].text(i, row.bad_rate * 100 + 0.05, f"{row.bad_rate:.2%}\nn={row.n / 1e3:,.0f}K", ha="center", fontsize=9)
     axes[1].set_ylabel("Delinquency on later loan (%)")
@@ -479,6 +541,28 @@ def chart_early_warning(q4):
     axes[1].tick_params(axis="x", labelrotation=15)
     axes[1].grid(axis="x", visible=False)
     save_fig(fig, TASK_FIGURES / "04_engagement_dropoff_vs_delinquency.png", None)
+
+
+# %% [markdown]
+# ## What reduces engagement
+#
+# Compare later call pickup for customers with and without each pre-snapshot factor.
+
+# %%
+def chart_engagement_reducers(q5: pd.DataFrame):
+    data = q5.sort_values("diff_pp", ascending=False).reset_index(drop=True)   # most negative ends up on top
+    fig, ax = plt.subplots(figsize=(10.5, 7.5))
+    reducers = ("Ignored 5+ calls", "Opted out", "Collection calls")
+    colors = [PAL["orange"] if factor in reducers else PAL["grey"] for factor in data.factor]
+    ax.barh(data.factor, data.diff_pp, color=colors, height=0.6)
+    ax.axvline(0, color=PAL["navy"], lw=1)
+    for i, row in data.iterrows():
+        ax.text(row.diff_pp + (0.4 if row.diff_pp >= 0 else -0.4), i, f"{row.diff_pp:+.1f} pp", va="center",
+                ha="left" if row.diff_pp >= 0 else "right", fontsize=10)
+    ax.set_xlim(data.diff_pp.min() * 1.25, max(data.diff_pp.max(), 0) + 4)
+    ax.set_xlabel("Change in later call-answer rate (pp)")
+    ax.grid(axis="y", visible=False)
+    save_fig(fig, TASK_FIGURES / "06_engagement_reducers.png", None, left=0.18)
 
 
 # %% [markdown]
@@ -507,6 +591,7 @@ def chart_score(pop, val, fwd):
     axes[0].set_ylabel("Customers · log scale")
 
     def tier_bars(ax, table, column, ylabel):
+        table = table.reindex(["Low", "Medium", "High"])   # same left-to-right order as the histogram
         ax.bar(table.index, table[column] * 100, color=[TIER_COLORS[tier] for tier in table.index], width=0.6)
         top = table[column].max() * 100
         for i, (value, n) in enumerate(zip(table[column], table.n)):
@@ -635,7 +720,8 @@ if __name__ == "__main__":
 # %%
 if __name__ == "__main__":
     q1 = q1_active_vs_passive(con, population)
-    chart_active_passive(q1)
+    q3 = q3_lead_source(con, population)
+    chart_active_passive(q1, q3)
     display_saved_figure(TASK_FIGURES / "01_app_users_vs_telesales_conversion.png")
 
 # %% [markdown]
@@ -662,9 +748,9 @@ if __name__ == "__main__":
 
 # %%
 if __name__ == "__main__":
-    q3 = q3_lead_source(con, population)
     chart_lead_source(q3)
-    display_saved_figure(TASK_FIGURES / "03_lead_source_engagement_comparison.png")
+    for name in LEAD_SOURCE_FIGURES.values():
+        display_saved_figure(TASK_FIGURES / name)
 
 # %% [markdown]
 # **Interpretation.** A high deal rate alone does not establish durable engagement. Compare signing and later activity with sample size before recommending channel investment.
@@ -682,6 +768,20 @@ if __name__ == "__main__":
 
 # %% [markdown]
 # **Interpretation.** Treat activity changes as a monitoring prompt. Task 3 combines this engagement signal with financial-health evidence before suggesting a next action.
+
+# %% [markdown]
+# ## 5. Find what reduces engagement
+#
+# Factors are measured before the snapshot; the outcome is the share of later outbound calls the customer answers.
+
+# %%
+if __name__ == "__main__":
+    q5 = q5_engagement_reducers(con, population)
+    chart_engagement_reducers(q5)
+    display_saved_figure(TASK_FIGURES / "06_engagement_reducers.png")
+
+# %% [markdown]
+# **Interpretation.** Non-response persists: customers who ignored repeated dials keep ignoring later calls. Digital inactivity and lead expiry do not lower phone reachability.
 
 # %% [markdown]
 # ## Save evidence and the stage report
@@ -711,6 +811,7 @@ if __name__ == "__main__":
         "q3": q3.to_dict("records"),
         "q4": {key: value.astype({column: str for column in value.columns if value[column].dtype.name == "category"}).to_dict("records")
                if isinstance(value, pd.DataFrame) else value for key, value in q4.items()},
+        "q5": q5.to_dict("records"),
     }
     save_json(metrics, DATA_CLEAN / "metrics_phase3.json")
     TASK_REPORT.parent.mkdir(parents=True, exist_ok=True)
