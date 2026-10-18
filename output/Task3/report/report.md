@@ -44,6 +44,43 @@ Task 1 ranks observed repayment evidence; Task 2 estimates recent engagement and
 | Share repayment-support options and offer a service contact; suppress new-credit promotion.            | 8,589       |
 | Offer a repayment-support review and suppress new-credit promotion.                                    | 1,615       |
 
+## Model comparison
+
+K-means was fit on the two score axes after standardization using the 50,000-customer training sample. K was selected from 2–10 by silhouette on a 3,000-row training subsample, then checked on a separate random 10,000-customer sample. Validation silhouette uses 3,000 held-out rows. Seed: 42; means and scales came from training only.
+
+| method               |   segments |   holdout_silhouette |
+|:---------------------|-----------:|---------------------:|
+| 3 × 3 score matrix   |          9 |                0.37  |
+| K-means selected k=3 |          3 |                0.506 |
+| K-means matched k=9  |          9 |                0.413 |
+
+K-means selected k=3. Its silhouette row is not directly comparable with the 9-cell matrix when the number of segments differs. At the matched count of 9 segments, K-means has the higher silhouette.
+
+### Training silhouette by K
+
+|   k |   train_silhouette |
+|----:|-------------------:|
+|   2 |           0.408649 |
+|   3 |           0.491632 |
+|   4 |           0.41868  |
+|   5 |           0.424389 |
+|   6 |           0.440088 |
+|   7 |           0.441545 |
+|   8 |           0.402394 |
+|   9 |           0.423394 |
+|  10 |           0.424067 |
+
+For selected k=3, the dominant 3 × 3 matrix cell covers 56.6% of the held-out comparison sample. Cluster profiles below apply the fitted model to all 1,000,528 customers.
+
+|   cluster |   customers |   population_pct |   mean_financial_health |   mean_engagement |   thin_file_pct | dominant_matrix_segment           |   dominant_matrix_share_pct |
+|----------:|------------:|-----------------:|------------------------:|------------------:|----------------:|:----------------------------------|----------------------------:|
+|         1 |      258839 |            25.87 |                    41.6 |              28.4 |           67.86 | Low health × Low engagement       |                       75.75 |
+|         2 |      223802 |            22.37 |                    74.4 |              69.5 |            3.02 | Medium health × Medium engagement |                       42.02 |
+|         3 |      517887 |            51.76 |                    77.8 |              29.5 |            0    | Medium health × Low engagement    |                       56.56 |
+
+Silhouette measures geometric separation, not repayment, applications, customer response, or action success. Task 3 has no observed post-action outcome label for supervised model selection. Task 1's holdout Gini (0.302) and Task 2's application AUC (0.649) validate score ordering, not the success of Task 3 actions. Keep the 3 × 3 matrix as the operational segmentation: it maps those score tiers to actions and preserves the thin-file safeguard. Use K-means only for exploratory profiles; it does not replace the action rules.
+
+
 ## Quality checks
 
 | check                                                 | status   | detail                                                  |

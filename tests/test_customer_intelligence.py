@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import ast
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 import numpy as np
@@ -108,6 +109,128 @@ class CustomerIntelligenceTests(unittest.TestCase):
 
         self.assertIn("1 of these 2", report)
         self.assertIn("established loan history", report)
+
+
+    def test_kmeans_comparison_reports_holdout_metrics_and_preserves_input(self):
+        compare = load_task3_function("compare_segmentations")
+        rng = np.random.default_rng(42)
+        groups = [
+            (88, 86, False, "High health × High engagement"),
+            (76, 28, False, "Medium health × Low engagement"),
+            (42, 23, True, "Low health × Low engagement"),
+        ]
+        frames = []
+        for financial_mean, engagement_mean, thin_file, segment in groups:
+            frames.append(
+                pd.DataFrame(
+                    {
+                        "Financial_Health_Score": np.clip(rng.normal(financial_mean, 2, 100), 0, 100),
+                        "Engagement_Score": np.clip(rng.normal(engagement_mean, 3, 100), 0, 100),
+                        "fh_thin_file": thin_file,
+                        "Matrix_Segment": segment,
+                    }
+                )
+            )
+        output = pd.concat(frames, ignore_index=True)
+        original_columns = output.columns.tolist()
+
+        comparison = compare(output, seed=42)
+
+        self.assertEqual(comparison["status"], "ok")
+        self.assertEqual(comparison["population_n"], len(output))
+        self.assertGreaterEqual(comparison["selected_k"], 2)
+        self.assertTrue(np.isfinite(comparison["validation"]["kmeans_silhouette"]))
+        self.assertTrue(np.isfinite(comparison["validation"]["matrix_silhouette"]))
+        self.assertEqual(comparison["validation"]["equal_segments_k"], output["Matrix_Segment"].nunique())
+        self.assertTrue(np.isfinite(comparison["validation"]["equal_segments_kmeans_silhouette"]))
+        self.assertEqual(sum(cluster["customers"] for cluster in comparison["clusters"]), len(output))
+        self.assertEqual(output.columns.tolist(), original_columns)
+
+
+    def test_report_handles_tied_cluster_metrics_without_claiming_a_winner(self):
+        write_report = load_task3_function("write_report")
+        output = load_builder()(self.financial, self.engagement)
+        comparison = {
+            "status": "ok",
+            "selected_k": 3,
+            "population_n": 2,
+            "train_n": 100,
+            "validation_n": 20,
+            "validation_metric_n": 20,
+            "seed": 42,
+            "validation": {
+                "kmeans_silhouette": 0.5,
+                "matrix_silhouette": 0.5,
+                "equal_segments_k": 9,
+                "equal_segments_kmeans_silhouette": 0.5,
+                "kmeans_to_matrix_dominant_cell_pct": 66.0,
+            },
+            "k_selection": [{"k": 3, "train_silhouette": 0.4}],
+            "clusters": [{"cluster": 1, "customers": 2, "thin_file_pct": 50.0}],
+        }
+
+        report = write_report(output, [], comparison)
+
+        self.assertIn("Model comparison", report)
+        self.assertIn("similar", report)
+        self.assertNotIn("has the higher", report)
+        comparison_section = report.split("## Model comparison", 1)[1].split("## Quality checks", 1)[0]
+        self.assertNotIn("| nan", comparison_section.lower())
+        self.assertIn("no observed post-action outcome label", report)
+        self.assertIn("thin-file safeguard", report)
+
+        comparison["validation"]["equal_segments_kmeans_silhouette"] = np.nan
+        unavailable_report = write_report(output, [], comparison)
+        self.assertIn("No valid equal-count K-means result", unavailable_report)
+        self.assertNotIn("score matrix has the higher", unavailable_report)
+
+    def test_comparison_marks_an_undersized_population_unavailable(self):
+        compare = load_task3_function("compare_segmentations")
+        output = pd.DataFrame(
+            {
+                "Financial_Health_Score": [50.0] * 12,
+                "Engagement_Score": [50.0] * 12,
+                "fh_thin_file": [False] * 12,
+                "Matrix_Segment": ["Cell A"] * 6 + ["Cell B"] * 6,
+            }
+        )
+
+        comparison = compare(output, seed=42)
+
+        self.assertEqual(comparison["status"], "unavailable")
+        self.assertIn("20 customers", comparison["reason"])
+
+
+    def test_comparison_handles_degenerate_score_space(self):
+        compare = load_task3_function("compare_segmentations")
+        output = pd.DataFrame(
+            {
+                "Financial_Health_Score": [50.0] * 100,
+                "Engagement_Score": [50.0] * 100,
+                "fh_thin_file": [False] * 100,
+                "Matrix_Segment": ["Cell A"] * 50 + ["Cell B"] * 50,
+            }
+        )
+
+        comparison = compare(output, seed=42)
+
+        self.assertEqual(comparison["status"], "unavailable")
+        self.assertIn("distinct score pairs", comparison["reason"])
+
+
+
+
+    def test_comparison_reports_scipy_cluster_failure_as_unavailable(self):
+        from scipy.cluster.vq import ClusterError
+
+        compare = load_task3_function("compare_segmentations")
+        base = load_builder()(self.financial, self.engagement)
+        output = pd.concat([base] * 50, ignore_index=True)
+        with patch("scipy.cluster.vq.kmeans2", side_effect=ClusterError("empty cluster")):
+            comparison = compare(output, seed=42)
+
+        self.assertEqual(comparison["status"], "unavailable")
+        self.assertIn("valid clusters", comparison["reason"])
 
 
 if __name__ == "__main__":

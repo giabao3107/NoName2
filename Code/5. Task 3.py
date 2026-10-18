@@ -211,7 +211,198 @@ def qa_checks(output: pd.DataFrame, expected_customers: int) -> list[dict]:
     return checks
 
 
-def write_report(output: pd.DataFrame, checks: list[dict]) -> str:
+def compare_segmentations(output: pd.DataFrame, seed: int = 42) -> dict:
+    from scipy.cluster.vq import ClusterError, kmeans2, vq
+    from scipy.spatial.distance import cdist
+
+    def unavailable(reason: str) -> dict:
+        return {"status": "unavailable", "population_n": int(len(output)), "reason": reason}
+
+    feature_columns = ["Financial_Health_Score", "Engagement_Score"]
+    required = {*feature_columns, "Matrix_Segment", "fh_thin_file"}
+    missing = required - set(output.columns)
+    if missing:
+        raise ValueError(f"Missing segmentation comparison fields: {sorted(missing)}")
+    if output["Matrix_Segment"].isna().any() or output["fh_thin_file"].isna().any():
+        raise ValueError("Matrix segments and thin-file flags must be complete")
+    if len(output) < 20:
+        return unavailable("At least 20 customers are required for the comparison.")
+
+    matrix_segments = output["Matrix_Segment"].astype(str)
+    matrix_cell_count = int(matrix_segments.nunique())
+    if matrix_cell_count < 2:
+        return unavailable("At least two matrix cells are required for the comparison.")
+
+    features = output[feature_columns].to_numpy(dtype=float)
+    if not np.isfinite(features).all():
+        raise ValueError("Segmentation comparison scores must be finite")
+    rng = np.random.default_rng(seed)
+    order = rng.permutation(len(output))
+    train_n = min(50_000, int(len(output) * 0.8))
+    validation_n = min(10_000, len(output) - train_n)
+    train_indices = order[:train_n]
+    validation_indices = order[train_n : train_n + validation_n]
+    validation_matrix = matrix_segments.iloc[validation_indices]
+    matrix_counts = validation_matrix.value_counts()
+    if len(matrix_counts) != matrix_cell_count or matrix_counts.min() < 2:
+        return unavailable("The validation sample needs at least two customers in every populated matrix cell.")
+
+    means = features[train_indices].mean(axis=0)
+    scales = features[train_indices].std(axis=0)
+    scales[scales == 0] = 1
+    train = (features[train_indices] - means) / scales
+    validation = (features[validation_indices] - means) / scales
+
+    def silhouette(points: np.ndarray, labels: np.ndarray) -> float:
+        _, group_index, counts = np.unique(labels, return_inverse=True, return_counts=True)
+        if len(counts) < 2:
+            return float("nan")
+        distances = cdist(points, points)
+        mean_distances = np.column_stack(
+            [distances[:, group_index == group].mean(axis=1) for group in range(len(counts))]
+        )
+        rows = np.arange(len(points))
+        own_counts = counts[group_index]
+        own = np.zeros(len(points), dtype=float)
+        nonsingleton = own_counts > 1
+        own[nonsingleton] = (
+            mean_distances[rows[nonsingleton], group_index[nonsingleton]]
+            * own_counts[nonsingleton]
+            / (own_counts[nonsingleton] - 1)
+        )
+        mean_distances[rows, group_index] = np.inf
+        nearest_other = mean_distances.min(axis=1)
+        denominator = np.maximum(own, nearest_other)
+        values = np.zeros_like(denominator)
+        valid = nonsingleton & (denominator > 0)
+        values[valid] = (nearest_other[valid] - own[valid]) / denominator[valid]
+        return float(values.mean())
+
+    train_sample = rng.choice(train_n, size=min(3_000, train_n), replace=False)
+    candidates = []
+    unique_score_pairs = len(np.unique(train, axis=0))
+    max_k = min(10, train_n - 1, unique_score_pairs)
+    if max_k < 2:
+        return unavailable("Fewer than two distinct score pairs occur in the training sample.")
+    for k in range(2, max_k + 1):
+        best_centers = None
+        best_inertia = float("inf")
+        for restart in range(3):
+            try:
+                centers, _ = kmeans2(
+                    train,
+                    k,
+                    iter=50,
+                    minit="++",
+                    missing="raise",
+                    rng=np.random.default_rng(seed + k * 100 + restart),
+                )
+            except (ValueError, ClusterError):
+                continue
+            labels, _ = vq(train, centers)
+            inertia = float(np.square(train - centers[labels]).sum())
+            if inertia < best_inertia:
+                best_centers, best_inertia = centers, inertia
+        if best_centers is None:
+            continue
+        labels, _ = vq(train[train_sample], best_centers)
+        if len(np.unique(labels)) != k:
+            continue
+        train_silhouette = silhouette(train[train_sample], labels)
+        if np.isfinite(train_silhouette):
+            candidates.append(
+                {"k": k, "train_silhouette": train_silhouette, "centers": best_centers}
+            )
+    if not candidates:
+        return unavailable("No K-means candidate produced valid clusters.")
+
+    selected = max(candidates, key=lambda candidate: (candidate["train_silhouette"], -candidate["k"]))
+    centers = selected["centers"]
+    centers = centers[np.lexsort((centers[:, 1], centers[:, 0]))]
+    validation_sample = rng.choice(validation_n, size=min(3_000, validation_n), replace=False)
+    validation_points = validation[validation_sample]
+    matrix_labels = validation_matrix.iloc[validation_sample].astype(str).to_numpy()
+    sample_cell_counts = pd.Series(matrix_labels).value_counts()
+    if len(sample_cell_counts) != matrix_cell_count or sample_cell_counts.min() < 2:
+        return unavailable("The silhouette sample needs at least two customers in every populated matrix cell.")
+    kmeans_labels, _ = vq(validation_points, centers)
+    if len(np.unique(kmeans_labels)) != selected["k"]:
+        return unavailable("The validation sample did not receive customers in every selected K-means cluster.")
+    kmeans_silhouette = silhouette(validation_points, kmeans_labels)
+    matrix_silhouette = silhouette(validation_points, matrix_labels)
+    if not np.isfinite(kmeans_silhouette) or not np.isfinite(matrix_silhouette):
+        return unavailable("A finite validation silhouette could not be calculated.")
+
+    equal_candidate = next(
+        (candidate for candidate in candidates if candidate["k"] == matrix_cell_count),
+        None,
+    )
+    equal_k_silhouette = None
+    if equal_candidate is not None:
+        equal_centers = equal_candidate["centers"]
+        equal_centers = equal_centers[np.lexsort((equal_centers[:, 1], equal_centers[:, 0]))]
+        equal_labels, _ = vq(validation_points, equal_centers)
+        if len(np.unique(equal_labels)) == matrix_cell_count:
+            equal_k_silhouette = silhouette(validation_points, equal_labels)
+            if not np.isfinite(equal_k_silhouette):
+                equal_k_silhouette = None
+
+    cell_table = pd.crosstab(pd.Series(kmeans_labels), pd.Series(matrix_labels))
+    grid_cell_share = float(cell_table.max(axis=1).sum() / len(matrix_labels))
+    all_scaled = (features - means) / scales
+    all_clusters, _ = vq(all_scaled, centers)
+    profile = output[[*feature_columns, "Matrix_Segment", "fh_thin_file"]].copy()
+    profile["cluster"] = all_clusters
+    cluster_profiles = []
+    for cluster, group in profile.groupby("cluster", sort=True):
+        dominant_cell = group["Matrix_Segment"].value_counts()
+        cluster_profiles.append(
+            {
+                "cluster": int(cluster + 1),
+                "customers": int(len(group)),
+                "population_pct": round(100 * len(group) / len(output), 2),
+                "mean_financial_health": round(float(group["Financial_Health_Score"].mean()), 1),
+                "mean_engagement": round(float(group["Engagement_Score"].mean()), 1),
+                "thin_file_pct": round(100 * float(group["fh_thin_file"].mean()), 2),
+                "dominant_matrix_segment": str(dominant_cell.index[0]),
+                "dominant_matrix_share_pct": round(100 * float(dominant_cell.iloc[0]) / len(group), 2),
+            }
+        )
+
+    return {
+        "status": "ok",
+        "population_n": int(len(output)),
+        "train_n": int(train_n),
+        "validation_n": int(validation_n),
+        "validation_metric_n": int(len(validation_sample)),
+        "features": feature_columns,
+        "seed": int(seed),
+        "selected_k": int(selected["k"]),
+        "training_silhouette": float(selected["train_silhouette"]),
+        "equal_segments_k": matrix_cell_count,
+        "equal_segments_kmeans_silhouette": equal_k_silhouette,
+        "k_selection": [
+            {"k": int(candidate["k"]), "train_silhouette": float(candidate["train_silhouette"])}
+            for candidate in candidates
+        ],
+        "validation": {
+            "kmeans_silhouette": kmeans_silhouette,
+            "matrix_silhouette": matrix_silhouette,
+            "equal_segments_k": matrix_cell_count,
+            "equal_segments_kmeans_silhouette": equal_k_silhouette,
+            "kmeans_to_matrix_dominant_cell_pct": round(100 * grid_cell_share, 2),
+        },
+        "clusters": cluster_profiles,
+    }
+
+
+
+
+def write_report(
+    output: pd.DataFrame,
+    checks: list[dict],
+    segmentation_comparison: dict | None = None,
+) -> str:
     total = len(output)
     segments = output.groupby("Matrix_Segment", observed=True).size().sort_values(ascending=False)
     actions = output.groupby("Next_Best_Action", observed=True).size().sort_values(ascending=False)
@@ -234,6 +425,85 @@ def write_report(output: pd.DataFrame, checks: list[dict]) -> str:
         ~low_health.fh_thin_file.fillna(False)
         & (low_health.Engagement_Tier != "Low / Dormant Engagement")
     ]
+    comparison_section = ""
+    if segmentation_comparison is not None:
+        if segmentation_comparison.get("status") != "ok":
+            comparison_section = "\n".join(
+                [
+                    "## Model comparison",
+                    "",
+                    f"Unsupervised K-means comparison unavailable: {segmentation_comparison['reason']}",
+                    "The 3 × 3 score matrix remains the operational segmentation; no customer actions were changed.",
+                    "",
+                ]
+            )
+        else:
+            validation = segmentation_comparison["validation"]
+            matrix_silhouette = validation["matrix_silhouette"]
+            selected_silhouette = validation["kmeans_silhouette"]
+            equal_k = validation["equal_segments_k"]
+            equal_silhouette = validation["equal_segments_kmeans_silhouette"]
+
+            def format_silhouette(value: float | None) -> str:
+                return f"{value:.3f}" if value is not None and np.isfinite(value) else "n/a"
+
+            method_rows = [
+                {
+                    "method": "3 × 3 score matrix",
+                    "segments": equal_k,
+                    "holdout_silhouette": format_silhouette(matrix_silhouette),
+                },
+                {
+                    "method": f"K-means selected k={segmentation_comparison['selected_k']}",
+                    "segments": segmentation_comparison["selected_k"],
+                    "holdout_silhouette": format_silhouette(selected_silhouette),
+                },
+            ]
+            if segmentation_comparison["selected_k"] != equal_k:
+                method_rows.append(
+                    {
+                        "method": f"K-means matched k={equal_k}",
+                        "segments": equal_k,
+                        "holdout_silhouette": format_silhouette(equal_silhouette),
+                    }
+                )
+            method_table = pd.DataFrame(method_rows).to_markdown(index=False)
+            selection_table = pd.DataFrame(segmentation_comparison["k_selection"]).to_markdown(index=False)
+            cluster_table = pd.DataFrame(segmentation_comparison["clusters"]).to_markdown(index=False)
+            if (
+                equal_silhouette is None
+                or not np.isfinite(equal_silhouette)
+                or not np.isfinite(matrix_silhouette)
+            ):
+                equal_k_note = f"No valid equal-count K-means result at k={equal_k} was available; the selected-k silhouette is not directly comparable."
+            elif np.isclose(equal_silhouette, matrix_silhouette, atol=0.01):
+                equal_k_note = f"At the matched count of {equal_k} segments, the two silhouettes are similar."
+            elif equal_silhouette > matrix_silhouette:
+                equal_k_note = f"At the matched count of {equal_k} segments, K-means has the higher silhouette."
+            else:
+                equal_k_note = f"At the matched count of {equal_k} segments, the score matrix has the higher silhouette."
+            comparison_section = "\n".join(
+                [
+                    "## Model comparison",
+                    "",
+                    f"K-means was fit on the two score axes after standardization using the {segmentation_comparison['train_n']:,}-customer training sample. K was selected from 2–10 by silhouette on a 3,000-row training subsample, then checked on a separate random {segmentation_comparison['validation_n']:,}-customer sample. Validation silhouette uses {segmentation_comparison['validation_metric_n']:,} held-out rows. Seed: {segmentation_comparison['seed']}; means and scales came from training only.",
+                    "",
+                    method_table,
+                    "",
+                    f"K-means selected k={segmentation_comparison['selected_k']}. Its silhouette row is not directly comparable with the {equal_k}-cell matrix when the number of segments differs. {equal_k_note}",
+                    "",
+                    "### Training silhouette by K",
+                    "",
+                    selection_table,
+                    "",
+                    f"For selected k={segmentation_comparison['selected_k']}, the dominant 3 × 3 matrix cell covers {validation['kmeans_to_matrix_dominant_cell_pct']:.1f}% of the held-out comparison sample. Cluster profiles below apply the fitted model to all {segmentation_comparison['population_n']:,} customers.",
+                    "",
+                    cluster_table,
+                    "",
+                    "Silhouette measures geometric separation, not repayment, applications, customer response, or action success. Task 3 has no observed post-action outcome label for supervised model selection. Task 1's holdout Gini (0.302) and Task 2's application AUC (0.649) validate score ordering, not the success of Task 3 actions. Keep the 3 × 3 matrix as the operational segmentation: it maps those score tiers to actions and preserves the thin-file safeguard. Use K-means only for exploratory profiles; it does not replace the action rules.",
+                    "",
+                ]
+            )
     return "\n".join(
         [
             "# Task 3 — Match the action to the need",
@@ -261,6 +531,8 @@ def write_report(output: pd.DataFrame, checks: list[dict]) -> str:
             "## Proposed actions and workload",
             "",
             action_table,
+            "",
+            comparison_section,
             "",
             "## Quality checks",
             "",
@@ -308,7 +580,17 @@ def run() -> dict:
         "output_columns": customer_intelligence.columns.tolist(),
     }
     save_json(summary, DATA_CLEAN / "metrics_phase4.json")
-    TASK3_REPORT.write_text(write_report(customer_intelligence, checks), encoding="utf-8")
+    try:
+        segmentation_comparison = compare_segmentations(customer_intelligence)
+    except Exception as error:
+        segmentation_comparison = {
+            "status": "unavailable",
+            "reason": f"K-means comparison failed ({type(error).__name__}); the rule-based output was preserved.",
+        }
+    TASK3_REPORT.write_text(
+        write_report(customer_intelligence, checks, segmentation_comparison),
+        encoding="utf-8",
+    )
     globals()["CUSTOMER_INTELLIGENCE"] = customer_intelligence
     globals()["TASK3_SUMMARY"] = summary
     return summary
