@@ -11,6 +11,8 @@
 !/Data_clean/*_clean.parquet
 /output/**/scores/*.csv
 /output/**/scores/*.parquet
+!/output/Task1/scores/fh_scores.parquet
+!/output/Task2/scores/eng_scores.parquet
 /output/**/tables/*.csv
 
 # Python tooling caches.
