@@ -1,0 +1,1265 @@
+{
+  "findings": {
+    "contract_dup_rows_removed": 1953716,
+    "contract_rows_raw": 6234093,
+    "contract_rows_clean": 4280377,
+    "income_cap_p999": 90000000.0,
+    "car_owner_unusable_pct": 100.0,
+    "customers": 1000528,
+    "household_income_nonzero_pct": 0.9406180810708964,
+    "income_main_available_pct": 99.74065368541135,
+    "app_users_pct": 7.0439807781491375,
+    "leads_exact_dups": 39249,
+    "leads_sentinel_3000_pct": 27.499783811213497,
+    "call_window": [
+      "2025-01-01 03:47:11",
+      "2026-08-31 23:11:28"
+    ],
+    "contract_window": [
+      "2009-04-21 10:39:50",
+      "2025-06-04 22:29:47"
+    ],
+    "behavior_window": [
+      "2022-12-01 00:05:29",
+      "2025-06-03 22:30:14"
+    ],
+    "leads_window": [
+      "2019-10-09 11:16:52",
+      "2025-06-04 20:56:56"
+    ],
+    "call_duration_mismatch_pct": 0.0982,
+    "call_unconnected_pct": 86.76515297772383,
+    "paid_off_due_rate": 0.8219006788138621,
+    "written_off_due_rate": 0.5350550964187328,
+    "finished_due_rate": 0.013504412016146418,
+    "tet_peak_share": 0.26169172285275855,
+    "revolving_no_annuity_pct": 100.0
+  },
+  "key_integrity": [
+    {
+      "dataset": "contract",
+      "rows": 6234093,
+      "distinct_SKP_CLIENT": 1000528,
+      "orphan_clients_not_in_CUSTOMER": 0,
+      "pct_of_customers_covered": 100.0,
+      "exact_duplicate_rows": 310,
+      "secondary_key_note": "1,953,716 rows share an SKP_CREDIT_CASE with another row"
+    },
+    {
+      "dataset": "customer",
+      "rows": 1000528,
+      "distinct_SKP_CLIENT": 1000528,
+      "orphan_clients_not_in_CUSTOMER": 0,
+      "pct_of_customers_covered": 100.0,
+      "exact_duplicate_rows": 0,
+      "secondary_key_note": "SKP_CLIENT is unique (1 row per customer)"
+    },
+    {
+      "dataset": "leads",
+      "rows": 2143891,
+      "distinct_SKP_CLIENT": 645344,
+      "orphan_clients_not_in_CUSTOMER": 0,
+      "pct_of_customers_covered": 64.5,
+      "exact_duplicate_rows": 39249,
+      "secondary_key_note": ""
+    },
+    {
+      "dataset": "past_behavior",
+      "rows": 4412610,
+      "distinct_SKP_CLIENT": 473086,
+      "orphan_clients_not_in_CUSTOMER": 0,
+      "pct_of_customers_covered": 47.28,
+      "exact_duplicate_rows": 0,
+      "secondary_key_note": ""
+    },
+    {
+      "dataset": "call",
+      "rows": 4000000,
+      "distinct_SKP_CLIENT": 360661,
+      "orphan_clients_not_in_CUSTOMER": 0,
+      "pct_of_customers_covered": 36.05,
+      "exact_duplicate_rows": 0,
+      "secondary_key_note": "12,527 rows re-use a CALL_ID (different timestamps -> kept)"
+    }
+  ],
+  "schema_validation": [
+    {
+      "dataset": "contract",
+      "column": "SKP_CREDIT_CASE",
+      "expected_dtype": "int64",
+      "observed_type": "BIGINT",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "SKP_CLIENT",
+      "expected_dtype": "int64",
+      "observed_type": "BIGINT",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "NAME_EDUCATION_TYPE",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "CNT_CHILDREN",
+      "expected_dtype": "int64",
+      "observed_type": "BIGINT",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "AMT_INCOME_MAIN",
+      "expected_dtype": "float64",
+      "observed_type": "DOUBLE",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "AMT_INCOME_HOUSEHOLD",
+      "expected_dtype": "int64",
+      "observed_type": "BIGINT",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "NAME_INCOME_TYPE",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "CODE_PROFESSION",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "NAME_CREDIT_STATUS",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "PRODUCT",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "AMT_CREDIT",
+      "expected_dtype": "float64",
+      "observed_type": "DOUBLE",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "PAYMENT_NUM",
+      "expected_dtype": "float64",
+      "observed_type": "DOUBLE",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "INIT_PAY",
+      "expected_dtype": "float64",
+      "observed_type": "DOUBLE",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "ANNUITY",
+      "expected_dtype": "float64",
+      "observed_type": "DOUBLE",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "APPLY_CONTRACT_TIME",
+      "expected_dtype": "object",
+      "observed_type": "TIMESTAMP",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "APPROVE_CONTRACT_TIME",
+      "expected_dtype": "object",
+      "observed_type": "TIMESTAMP",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "SIGN_CONTRACT_TIME",
+      "expected_dtype": "object",
+      "observed_type": "TIMESTAMP",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "TRANSAC",
+      "expected_dtype": "object",
+      "observed_type": "TIMESTAMP",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "FIRST_DUE",
+      "expected_dtype": "int64",
+      "observed_type": "BIGINT",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "SECOND_DUE",
+      "expected_dtype": "int64",
+      "observed_type": "BIGINT",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "THIRD_DUE",
+      "expected_dtype": "int64",
+      "observed_type": "BIGINT",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "FOURTH_DUE",
+      "expected_dtype": "int64",
+      "observed_type": "BIGINT",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "AMT_BILLING",
+      "expected_dtype": "float64",
+      "observed_type": "DOUBLE",
+      "status": "OK"
+    },
+    {
+      "dataset": "contract",
+      "column": "FLAG_INS",
+      "expected_dtype": "int64",
+      "observed_type": "BIGINT",
+      "status": "OK"
+    },
+    {
+      "dataset": "customer",
+      "column": "SKP_CLIENT",
+      "expected_dtype": "int64",
+      "observed_type": "BIGINT",
+      "status": "OK"
+    },
+    {
+      "dataset": "customer",
+      "column": "NAME_GENDER",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "customer",
+      "column": "NAME_EDUCATION_TYPE",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "customer",
+      "column": "DATE_BIRTH",
+      "expected_dtype": "object",
+      "observed_type": "TIMESTAMP",
+      "status": "OK"
+    },
+    {
+      "dataset": "customer",
+      "column": "CNT_CHILDREN",
+      "expected_dtype": "float64",
+      "observed_type": "BIGINT",
+      "status": "OK"
+    },
+    {
+      "dataset": "customer",
+      "column": "FLAG_CAR_OWNER",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "customer",
+      "column": "NAME_SALARY_FREQUENCY",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "customer",
+      "column": "CNT_PERSON_DEPENDENT",
+      "expected_dtype": "float64",
+      "observed_type": "BIGINT",
+      "status": "OK"
+    },
+    {
+      "dataset": "customer",
+      "column": "ADDRESS",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "customer",
+      "column": "AVG_SESSION_PER_WEEK_2025",
+      "expected_dtype": "float64",
+      "observed_type": "DOUBLE",
+      "status": "OK"
+    },
+    {
+      "dataset": "leads",
+      "column": "DTIME_CREATED",
+      "expected_dtype": "object",
+      "observed_type": "TIMESTAMP",
+      "status": "OK"
+    },
+    {
+      "dataset": "leads",
+      "column": "DATE_ACCEPTED",
+      "expected_dtype": "object",
+      "observed_type": "TIMESTAMP",
+      "status": "OK"
+    },
+    {
+      "dataset": "leads",
+      "column": "DESC_FIN_REASON",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "leads",
+      "column": "CODE_PRODUCT_TYPE",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "leads",
+      "column": "FLAG_ASSIGNED",
+      "expected_dtype": "int64",
+      "observed_type": "BIGINT",
+      "status": "OK"
+    },
+    {
+      "dataset": "leads",
+      "column": "SKP_CLIENT",
+      "expected_dtype": "int64",
+      "observed_type": "BIGINT",
+      "status": "OK"
+    },
+    {
+      "dataset": "leads",
+      "column": "MAX_OFFER",
+      "expected_dtype": "float64",
+      "observed_type": "DOUBLE",
+      "status": "OK"
+    },
+    {
+      "dataset": "leads",
+      "column": "LEAD_SOURCE",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "past_behavior",
+      "column": "DTIME_EVENT",
+      "expected_dtype": "object",
+      "observed_type": "TIMESTAMP",
+      "status": "OK"
+    },
+    {
+      "dataset": "past_behavior",
+      "column": "SKP_CLIENT",
+      "expected_dtype": "int64",
+      "observed_type": "BIGINT",
+      "status": "OK"
+    },
+    {
+      "dataset": "past_behavior",
+      "column": "ACTION",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "past_behavior",
+      "column": "PRODUCT_CODE",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "call",
+      "column": "SKP_CLIENT",
+      "expected_dtype": "int64",
+      "observed_type": "BIGINT",
+      "status": "OK"
+    },
+    {
+      "dataset": "call",
+      "column": "CALL_ID",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "call",
+      "column": "CALL_TYPE",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "call",
+      "column": "TIME_OF_CALL_START",
+      "expected_dtype": "object",
+      "observed_type": "TIMESTAMP",
+      "status": "OK"
+    },
+    {
+      "dataset": "call",
+      "column": "TIME_OF_CALL_END",
+      "expected_dtype": "object",
+      "observed_type": "TIMESTAMP",
+      "status": "OK"
+    },
+    {
+      "dataset": "call",
+      "column": "DURATIONS",
+      "expected_dtype": "int64",
+      "observed_type": "BIGINT",
+      "status": "OK"
+    },
+    {
+      "dataset": "call",
+      "column": "PRODUCT_TYPE",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "call",
+      "column": "CALL_SOURCE",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "call",
+      "column": "OFF_BY",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "call",
+      "column": "OFFER_TYPE",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "call",
+      "column": "RESPONSE_RESULT_2",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "call",
+      "column": "CODE_DISPOSITION",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    },
+    {
+      "dataset": "call",
+      "column": "CALL_RESULT_SYSTEM",
+      "expected_dtype": "object",
+      "observed_type": "VARCHAR",
+      "status": "OK"
+    }
+  ],
+  "missingness": [
+    {
+      "dataset": "contract",
+      "column": "SKP_CREDIT_CASE",
+      "type": "BIGINT",
+      "rows": 6234093,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 0.0
+    },
+    {
+      "dataset": "contract",
+      "column": "SKP_CLIENT",
+      "type": "BIGINT",
+      "rows": 6234093,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 0.0
+    },
+    {
+      "dataset": "contract",
+      "column": "NAME_EDUCATION_TYPE",
+      "type": "VARCHAR",
+      "rows": 6234093,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 48.87,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "contract",
+      "column": "CNT_CHILDREN",
+      "type": "BIGINT",
+      "rows": 6234093,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 72.88
+    },
+    {
+      "dataset": "contract",
+      "column": "AMT_INCOME_MAIN",
+      "type": "DOUBLE",
+      "rows": 6234093,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 31.51
+    },
+    {
+      "dataset": "contract",
+      "column": "AMT_INCOME_HOUSEHOLD",
+      "type": "BIGINT",
+      "rows": 6234093,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 99.35
+    },
+    {
+      "dataset": "contract",
+      "column": "NAME_INCOME_TYPE",
+      "type": "VARCHAR",
+      "rows": 6234093,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 46.38,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "contract",
+      "column": "CODE_PROFESSION",
+      "type": "VARCHAR",
+      "rows": 6234093,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 46.64,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "contract",
+      "column": "NAME_CREDIT_STATUS",
+      "type": "VARCHAR",
+      "rows": 6234093,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "contract",
+      "column": "PRODUCT",
+      "type": "VARCHAR",
+      "rows": 6234093,
+      "null_pct": 0.45,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "contract",
+      "column": "AMT_CREDIT",
+      "type": "DOUBLE",
+      "rows": 6234093,
+      "null_pct": 0.31,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 6.89
+    },
+    {
+      "dataset": "contract",
+      "column": "PAYMENT_NUM",
+      "type": "DOUBLE",
+      "rows": 6234093,
+      "null_pct": 10.56,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 0.0
+    },
+    {
+      "dataset": "contract",
+      "column": "INIT_PAY",
+      "type": "DOUBLE",
+      "rows": 6234093,
+      "null_pct": 0.45,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 29.69
+    },
+    {
+      "dataset": "contract",
+      "column": "ANNUITY",
+      "type": "DOUBLE",
+      "rows": 6234093,
+      "null_pct": 10.65,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 0.0
+    },
+    {
+      "dataset": "contract",
+      "column": "APPLY_CONTRACT_TIME",
+      "type": "TIMESTAMP",
+      "rows": 6234093,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "contract",
+      "column": "APPROVE_CONTRACT_TIME",
+      "type": "TIMESTAMP",
+      "rows": 6234093,
+      "null_pct": 23.01,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "contract",
+      "column": "SIGN_CONTRACT_TIME",
+      "type": "TIMESTAMP",
+      "rows": 6234093,
+      "null_pct": 32.2,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "contract",
+      "column": "TRANSAC",
+      "type": "TIMESTAMP",
+      "rows": 6234093,
+      "null_pct": 93.52,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "contract",
+      "column": "FIRST_DUE",
+      "type": "BIGINT",
+      "rows": 6234093,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 99.64
+    },
+    {
+      "dataset": "contract",
+      "column": "SECOND_DUE",
+      "type": "BIGINT",
+      "rows": 6234093,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 99.45
+    },
+    {
+      "dataset": "contract",
+      "column": "THIRD_DUE",
+      "type": "BIGINT",
+      "rows": 6234093,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 99.26
+    },
+    {
+      "dataset": "contract",
+      "column": "FOURTH_DUE",
+      "type": "BIGINT",
+      "rows": 6234093,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 99.09
+    },
+    {
+      "dataset": "contract",
+      "column": "AMT_BILLING",
+      "type": "DOUBLE",
+      "rows": 6234093,
+      "null_pct": 93.52,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 0.0
+    },
+    {
+      "dataset": "contract",
+      "column": "FLAG_INS",
+      "type": "BIGINT",
+      "rows": 6234093,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 67.17
+    },
+    {
+      "dataset": "customer",
+      "column": "SKP_CLIENT",
+      "type": "BIGINT",
+      "rows": 1000528,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 0.0
+    },
+    {
+      "dataset": "customer",
+      "column": "NAME_GENDER",
+      "type": "VARCHAR",
+      "rows": 1000528,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "customer",
+      "column": "NAME_EDUCATION_TYPE",
+      "type": "VARCHAR",
+      "rows": 1000528,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 16.34,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "customer",
+      "column": "DATE_BIRTH",
+      "type": "TIMESTAMP",
+      "rows": 1000528,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "customer",
+      "column": "CNT_CHILDREN",
+      "type": "BIGINT",
+      "rows": 1000528,
+      "null_pct": 12.6,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 32.04
+    },
+    {
+      "dataset": "customer",
+      "column": "FLAG_CAR_OWNER",
+      "type": "VARCHAR",
+      "rows": 1000528,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "customer",
+      "column": "NAME_SALARY_FREQUENCY",
+      "type": "VARCHAR",
+      "rows": 1000528,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 99.09,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "customer",
+      "column": "CNT_PERSON_DEPENDENT",
+      "type": "BIGINT",
+      "rows": 1000528,
+      "null_pct": 98.51,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 0.03
+    },
+    {
+      "dataset": "customer",
+      "column": "ADDRESS",
+      "type": "VARCHAR",
+      "rows": 1000528,
+      "null_pct": 14.92,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "customer",
+      "column": "AVG_SESSION_PER_WEEK_2025",
+      "type": "DOUBLE",
+      "rows": 1000528,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 92.96
+    },
+    {
+      "dataset": "leads",
+      "column": "DTIME_CREATED",
+      "type": "TIMESTAMP",
+      "rows": 2143891,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "leads",
+      "column": "DATE_ACCEPTED",
+      "type": "TIMESTAMP",
+      "rows": 2143891,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "leads",
+      "column": "DESC_FIN_REASON",
+      "type": "VARCHAR",
+      "rows": 2143891,
+      "null_pct": 1.71,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "leads",
+      "column": "CODE_PRODUCT_TYPE",
+      "type": "VARCHAR",
+      "rows": 2143891,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "leads",
+      "column": "FLAG_ASSIGNED",
+      "type": "BIGINT",
+      "rows": 2143891,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 15.29
+    },
+    {
+      "dataset": "leads",
+      "column": "SKP_CLIENT",
+      "type": "BIGINT",
+      "rows": 2143891,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 0.0
+    },
+    {
+      "dataset": "leads",
+      "column": "MAX_OFFER",
+      "type": "DOUBLE",
+      "rows": 2143891,
+      "null_pct": 0.58,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 0.0
+    },
+    {
+      "dataset": "leads",
+      "column": "LEAD_SOURCE",
+      "type": "VARCHAR",
+      "rows": 2143891,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "past_behavior",
+      "column": "DTIME_EVENT",
+      "type": "TIMESTAMP",
+      "rows": 4412610,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "past_behavior",
+      "column": "SKP_CLIENT",
+      "type": "BIGINT",
+      "rows": 4412610,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 0.0
+    },
+    {
+      "dataset": "past_behavior",
+      "column": "ACTION",
+      "type": "VARCHAR",
+      "rows": 4412610,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "past_behavior",
+      "column": "PRODUCT_CODE",
+      "type": "VARCHAR",
+      "rows": 4412610,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "call",
+      "column": "SKP_CLIENT",
+      "type": "BIGINT",
+      "rows": 4000000,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 0.0
+    },
+    {
+      "dataset": "call",
+      "column": "CALL_ID",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "call",
+      "column": "CALL_TYPE",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "call",
+      "column": "TIME_OF_CALL_START",
+      "type": "TIMESTAMP",
+      "rows": 4000000,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "call",
+      "column": "TIME_OF_CALL_END",
+      "type": "TIMESTAMP",
+      "rows": 4000000,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "call",
+      "column": "DURATIONS",
+      "type": "BIGINT",
+      "rows": 4000000,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 86.4
+    },
+    {
+      "dataset": "call",
+      "column": "PRODUCT_TYPE",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_pct": 27.53,
+      "placeholder_pct (XNA/none/blank)": 1.51,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "call",
+      "column": "CALL_SOURCE",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "call",
+      "column": "OFF_BY",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "call",
+      "column": "OFFER_TYPE",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "call",
+      "column": "RESPONSE_RESULT_2",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 85.42,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "call",
+      "column": "CODE_DISPOSITION",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_pct": 0.0,
+      "placeholder_pct (XNA/none/blank)": 85.3,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "call",
+      "column": "CALL_RESULT_SYSTEM",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_pct": 5.85,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    }
+  ],
+  "outliers": [
+    {
+      "dataset": "contract",
+      "column": "AMT_INCOME_MAIN",
+      "filter": "AMT_INCOME_MAIN > 0",
+      "n": 4269276,
+      "min": 1.0,
+      "p01": 3500000.0,
+      "q1": 8000000.0,
+      "median": 10000000.0,
+      "q3": 15000000.0,
+      "p99": 39500000.0,
+      "p99_9": 90000000.0,
+      "max": 9000000000.0,
+      "mean": 11800539.250897575,
+      "extreme_outliers_(>Q3+3IQR)": 44174,
+      "pct_extreme": 1.03,
+      "capped_at_p99.9": 3865
+    },
+    {
+      "dataset": "contract",
+      "column": "AMT_INCOME_HOUSEHOLD",
+      "filter": "AMT_INCOME_HOUSEHOLD > 0",
+      "n": 40262,
+      "min": 20000.0,
+      "p01": 4000000.0,
+      "q1": 10000000.0,
+      "median": 12000000.0,
+      "q3": 17000000.0,
+      "p99": 40000000.0,
+      "p99_9": 85912000.00001118,
+      "max": 15000000000.0,
+      "mean": 14754192.389846506,
+      "extreme_outliers_(>Q3+3IQR)": 669,
+      "pct_extreme": 1.66,
+      "capped_at_p99.9": 41
+    },
+    {
+      "dataset": "contract",
+      "column": "AMT_CREDIT",
+      "filter": "AMT_CREDIT > 0",
+      "n": 4039375,
+      "min": 1.0,
+      "p01": 1764000.0,
+      "q1": 4333000.0,
+      "median": 7080000.0,
+      "q3": 13440000.0,
+      "p99": 80000000.0,
+      "p99_9": 147000000.0,
+      "max": 250000000.0,
+      "mean": 12078102.831737584,
+      "extreme_outliers_(>Q3+3IQR)": 167500,
+      "pct_extreme": 4.15,
+      "capped_at_p99.9": 4023
+    },
+    {
+      "dataset": "contract",
+      "column": "ANNUITY",
+      "filter": "ANNUITY IS NOT NULL",
+      "n": 3898515,
+      "min": 54000.0,
+      "p01": 329000.0,
+      "q1": 825000.0,
+      "median": 1178000.0,
+      "q3": 1752000.0,
+      "p99": 5083000.0,
+      "p99_9": 7472486.0000000335,
+      "max": 16364000.0,
+      "mean": 1438710.027774935,
+      "extreme_outliers_(>Q3+3IQR)": 61168,
+      "pct_extreme": 1.57,
+      "capped_at_p99.9": 3899
+    },
+    {
+      "dataset": "contract",
+      "column": "INIT_PAY",
+      "filter": "INIT_PAY IS NOT NULL",
+      "n": 4252029,
+      "min": 0.0,
+      "p01": 0.0,
+      "q1": 0.0,
+      "median": 1459000.0,
+      "q3": 3196000.0,
+      "p99": 20000000.0,
+      "p99_9": 42438880.00000268,
+      "max": 252000000.0,
+      "mean": 2748971.8667041077,
+      "extreme_outliers_(>Q3+3IQR)": 160695,
+      "pct_extreme": 3.78,
+      "capped_at_p99.9": 4253
+    },
+    {
+      "dataset": "contract",
+      "column": "PAYMENT_NUM",
+      "filter": "PAYMENT_NUM IS NOT NULL",
+      "n": 3902370,
+      "min": 1.0,
+      "p01": 4.0,
+      "q1": 6.0,
+      "median": 6.0,
+      "q3": 9.0,
+      "p99": 36.0,
+      "p99_9": 51.0,
+      "max": 60.0,
+      "mean": 8.6785453455208,
+      "extreme_outliers_(>Q3+3IQR)": 288894,
+      "pct_extreme": 7.4,
+      "capped_at_p99.9": 3146
+    },
+    {
+      "dataset": "call",
+      "column": "DURATIONS",
+      "filter": "DURATIONS > 0",
+      "n": 543947,
+      "min": 1.0,
+      "p01": 1.0,
+      "q1": 12.0,
+      "median": 21.0,
+      "q3": 38.0,
+      "p99": 438.0,
+      "p99_9": 1070.0,
+      "max": 3085.0,
+      "mean": 44.59378027638722,
+      "extreme_outliers_(>Q3+3IQR)": 43274,
+      "pct_extreme": 7.96,
+      "capped_at_p99.9": 542
+    },
+    {
+      "dataset": "leads",
+      "column": "MAX_OFFER",
+      "filter": "MAX_OFFER > 0",
+      "n": 2131507,
+      "min": 1.0,
+      "p01": 1000000.0,
+      "q1": 5000000.0,
+      "median": 11108000.0,
+      "q3": 32980000.0,
+      "p99": 175787000.0,
+      "p99_9": 200000000.0,
+      "max": 300000000.0,
+      "mean": 27195429.380266637,
+      "extreme_outliers_(>Q3+3IQR)": 79832,
+      "pct_extreme": 3.75,
+      "capped_at_p99.9": 1105
+    },
+    {
+      "dataset": "customer",
+      "column": "AVG_SESSION_PER_WEEK_2025",
+      "filter": "AVG_SESSION_PER_WEEK_2025 > 0",
+      "n": 70477,
+      "min": 0.05,
+      "p01": 0.05,
+      "q1": 0.14,
+      "median": 0.41,
+      "q3": 1.14,
+      "p99": 5.95,
+      "p99_9": 11.706200000000244,
+      "max": 37.73,
+      "mean": 0.8626297941172063,
+      "extreme_outliers_(>Q3+3IQR)": 1855,
+      "pct_extreme": 2.63,
+      "capped_at_p99.9": 71
+    },
+    {
+      "dataset": "customer",
+      "column": "CNT_CHILDREN",
+      "filter": "CNT_CHILDREN IS NOT NULL",
+      "n": 874457,
+      "min": 0.0,
+      "p01": 0.0,
+      "q1": 0.0,
+      "median": 1.0,
+      "q3": 2.0,
+      "p99": 4.0,
+      "p99_9": 6.0,
+      "max": 99.0,
+      "mean": 1.183278308710434,
+      "extreme_outliers_(>Q3+3IQR)": 395,
+      "pct_extreme": 0.05,
+      "capped_at_p99.9": 574
+    }
+  ],
+  "call_disposition_taxonomy": [
+    {
+      "disposition_group": "NO_CONTACT",
+      "n": 3562124,
+      "n_codes": 10,
+      "codes": "Wrong Phone | none | No_Answer | Drop_call_I | CallDisconnected | No response | DE_DROP | Client busy | Wrong_phone_C | ICre_Drop"
+    },
+    {
+      "disposition_group": "COLLECTION",
+      "n": 178806,
+      "n_codes": 65,
+      "codes": "OWNUnidentifiedPersonNonRPC | OWNNotAvailableRPC | OWNMessageLeftRPC | OWNNotReachManual | Chuyen_Collection_I | OWNCallDisconnectedRPC | OWNReconfirmExemptionSMS | CallBacknonRPC | ResultAskNonRPCRecallRestrict | OWNAnswerMachineNonRPC | OWNExemptionPTP | OWNSkiptracing | Collection_C | OWNNoMistakeNonRPC | OWNAlreadyPaidNonRPC | OWNClientHungUp | OWNWrongContactSTRPC | OWNRefuseToLeaveMsg | OWNPTPBroken | OWNRefuseToPay | OWNVoluntaryPaymentBA | OWNWrongContactNonRPC | OWNWrongContactSTNonRPC | OWNOthers | OWNAgreePaymentSupport | OWNNewRPCContactFoundRPC | OWNCollectionSupport | OWNWrongCon"
+    },
+    {
+      "disposition_group": "SALES_REFUSAL",
+      "n": 177058,
+      "n_codes": 13,
+      "codes": "Refuse | Termination Non Eligible Offer | Low credit limit | Disagree termination | No need of using card | No longer in need | Not eligible | Not eligible for termination | Termination | No answer Retention | Dropped_OTP | Wrong product | Sign refuse"
+    },
+    {
+      "disposition_group": "SERVICE",
+      "n": 41233,
+      "n_codes": 128,
+      "codes": "Survey_MKT | Chuyen_Credit_Card_I | DE_Cancel application | ICre_Thanh toan | Insurance_Retention_I | ICre_Transfer to Inbound | Ho_tro_thanh_toan | BNPL_ICre_Thong tin giao dich | Thanh_ly_hoi_thong_tin_I | CA_Survey | BNPL_ICre_San pham/khuyen mai | ICre_HAPP_Khac | CA_MDM_Confirmation_Phone | Other 2 | BNPL_ICre_Thanh ly hop dong | Khong_nhan_duoc_tien_C | HAPP_Thong_tin_khac_I | Pro_CD_I | Non-resolve | MRC | ICre_Tra soat giao dich | BNPL_Ho tro thanh toan | Huy_Hop_dong_I | OB_Primary Phone | DoesNotCollaborate | ICre_HAPP_Huong dan tinh nang ca nhan | CDAllright_HPLCBack | BNPL_ICre_Kho"
+    },
+    {
+      "disposition_group": "SALES_INTEREST",
+      "n": 25307,
+      "n_codes": 9,
+      "codes": "Pending | Ask fer information | Ask to call back | AskRecall | Client considers | More consultation | ResultAskRecallRpcRestrict | Support after application | CallBack"
+    },
+    {
+      "disposition_group": "THIRD_PARTY",
+      "n": 9199,
+      "n_codes": 4,
+      "codes": "OtherPerson | Relative | ClientFamily | Relatives"
+    },
+    {
+      "disposition_group": "SALES_CONVERSION",
+      "n": 5808,
+      "n_codes": 14,
+      "codes": "Made_App_Successful | Agree retention with voucher | Transfer for sales | Sign Agree | Appointment with SA | Signed already | Send_to_SA | Agree retention | Transfer to Sale | Transfer for signing | Sign successful | Client agrees | Agree retention without voucher | Push Sign"
+    },
+    {
+      "disposition_group": "OPT_OUT",
+      "n": 465,
+      "n_codes": 4,
+      "codes": "Do Not Call | Ngung_nhan_quang_cao_moi_vay_I | Ngung_nhan_quang_cao_moi_vay_C | ICre_Ngung_nhan_quang_cao_moi_vay"
+    }
+  ]
+}

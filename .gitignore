@@ -1,0 +1,19 @@
+# Workspace-local OpenCode tools, memories, and vendor content are not part of this repository.
+/.opencode/
+
+# Raw input data; keep large source extracts local.
+/Data_raw/
+/Data/*
+!/Data/README.md
+
+# Rebuildable intermediate and score files.
+/Data_clean/*.parquet
+/output/**/scores/*.csv
+/output/**/scores/*.parquet
+/output/**/tables/*.csv
+
+# Python tooling caches.
+__pycache__/
+*.py[cod]
+.ruff_cache/
+.ipynb_checkpoints/

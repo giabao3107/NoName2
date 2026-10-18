@@ -1,0 +1,543 @@
+{
+  "weights": {
+    "E1_digital": 0.2,
+    "E2_recency": 0.2,
+    "E3_frequency": 0.25,
+    "E4_responsiveness": 0.2,
+    "E5_breadth": 0.15
+  },
+  "tier_counts": {
+    "High": 50356,
+    "Medium": 187049,
+    "Low": 763123
+  },
+  "tier_share": {
+    "High": 0.05032942606303872,
+    "Medium": 0.18695029024674972,
+    "Low": 0.7627202836902116
+  },
+  "score_mean": 38.1155359969936,
+  "score_median": 30.6,
+  "component_means": {
+    "E1_digital": 22.63912753183827,
+    "E2_recency": 51.57338207397176,
+    "E3_frequency": 31.711589614017125,
+    "E4_responsiveness": 29.03723051710963,
+    "E5_breadth": 61.641320049680424
+  },
+  "e4_coverage": 0.6865345097788368,
+  "never_active": 0.0,
+  "active_last_90d": 0.23323884988725951,
+  "app_users": 0.07043980778149138,
+  "validation": {
+    "asof": "2025-02-01",
+    "n": 1000528,
+    "apply_rate": 0.1623992531943134,
+    "sign_rate": 0.10961312427038523,
+    "auc_apply": 0.6488400286797277,
+    "auc_sign": 0.6382847477898436,
+    "auc_lead_deal": 0.6743376836277204,
+    "n_with_new_lead": 65994,
+    "component_auc_apply": {
+      "E1_digital": 0.5745410661287362,
+      "E2_recency": 0.5028990242201034,
+      "E3_frequency": 0.6607414326434805,
+      "E4_responsiveness": 0.4998975606246823,
+      "E5_breadth": 0.627314037820699
+    },
+    "tier_table": [
+      {
+        "tier": "High",
+        "n": 50841,
+        "apply_rate": 0.36334847859011427,
+        "sign_rate": 0.23378769103676167
+      },
+      {
+        "tier": "Medium",
+        "n": 196769,
+        "apply_rate": 0.2568138273813456,
+        "sign_rate": 0.17331490224578058
+      },
+      {
+        "tier": "Low",
+        "n": 752918,
+        "apply_rate": 0.12415561854013318,
+        "sign_rate": 0.08458025973612
+      }
+    ],
+    "decile_table": [
+      {
+        "decile": 1,
+        "score_min": 23.2,
+        "score_max": 28.8,
+        "apply_rate": 0.09762825702377739,
+        "sign_rate": 0.07358100206890349
+      },
+      {
+        "decile": 2,
+        "score_min": 28.8,
+        "score_max": 31.4,
+        "apply_rate": 0.09833788092311076,
+        "sign_rate": 0.061577363997081545
+      },
+      {
+        "decile": 3,
+        "score_min": 31.4,
+        "score_max": 33.1,
+        "apply_rate": 0.10190598982539255,
+        "sign_rate": 0.06966307856835877
+      },
+      {
+        "decile": 4,
+        "score_min": 33.1,
+        "score_max": 34.9,
+        "apply_rate": 0.09730939911246152,
+        "sign_rate": 0.05890936712909287
+      },
+      {
+        "decile": 5,
+        "score_min": 34.9,
+        "score_max": 36.7,
+        "apply_rate": 0.10989175736859465,
+        "sign_rate": 0.07021278722277192
+      },
+      {
+        "decile": 6,
+        "score_min": 36.7,
+        "score_max": 41.0,
+        "apply_rate": 0.1508600441765864,
+        "sign_rate": 0.10468451720588089
+      },
+      {
+        "decile": 7,
+        "score_min": 41.0,
+        "score_max": 46.4,
+        "apply_rate": 0.17221045056570583,
+        "sign_rate": 0.12184663974733138
+      },
+      {
+        "decile": 8,
+        "score_min": 46.4,
+        "score_max": 54.2,
+        "apply_rate": 0.21005866890548008,
+        "sign_rate": 0.14755179754729994
+      },
+      {
+        "decile": 9,
+        "score_min": 54.2,
+        "score_max": 71.0,
+        "apply_rate": 0.2533657161704297,
+        "sign_rate": 0.16952015431821135
+      },
+      {
+        "decile": 10,
+        "score_min": 71.0,
+        "score_max": 100.0,
+        "apply_rate": 0.33242381537784976,
+        "sign_rate": 0.21858415040028784
+      }
+    ],
+    "auc_apply_equal_weights": 0.6525424687954613
+  },
+  "forward_call_validation": {
+    "n": 115044,
+    "auc_conversion": 0.7053660676071444,
+    "auc_positive": 0.6891963739846726,
+    "auc_conversion_without_call_component": 0.6451850742612483,
+    "conversion_rate": 0.02662459580682174,
+    "tier_table": [
+      {
+        "tier": "High",
+        "n": 6479,
+        "conv": 0.08380922981941658,
+        "pos": 0.3236610588053712
+      },
+      {
+        "tier": "Medium",
+        "n": 31464,
+        "conv": 0.04214340198321892,
+        "pos": 0.16266209000762777
+      },
+      {
+        "tier": "Low",
+        "n": 77101,
+        "conv": 0.015486180464585414,
+        "pos": 0.07049195211475856
+      }
+    ]
+  },
+  "q1": {
+    "conv_app_users": 0.026664498821234044,
+    "conv_non_users": 0.025808998295077563,
+    "conv_active_0.5plus": 0.03387122543537306,
+    "z_active_vs_non": 3.8913763448119525,
+    "p_active_vs_non": 9.967718508607781e-05,
+    "n_called": 131368,
+    "n_app_users_called": 12301,
+    "by_app_band": [
+      {
+        "app_band": "No app use",
+        "n": 119067,
+        "conv": 0.025808998295077563,
+        "pos": 0.06545054465133077,
+        "ci_lo": 0.02492350702223811,
+        "ci_hi": 0.026725087355379866
+      },
+      {
+        "app_band": "<0.5 / wk",
+        "n": 6263,
+        "conv": 0.01947948267603385,
+        "pos": 0.05923678748203736,
+        "ci_lo": 0.016339634685265798,
+        "ci_hi": 0.023208452823440345
+      },
+      {
+        "app_band": "0.5-2 / wk",
+        "n": 4506,
+        "conv": 0.033288948069241014,
+        "pos": 0.07678650687971593,
+        "ci_lo": 0.028435744136307818,
+        "ci_hi": 0.03893726515075895
+      },
+      {
+        "app_band": "2+ / wk",
+        "n": 1532,
+        "conv": 0.03655352480417755,
+        "pos": 0.08420365535248042,
+        "ci_lo": 0.028255842742475,
+        "ci_hi": 0.047169643844162584
+      }
+    ],
+    "lead_source_deal": [
+      {
+        "LEAD_SOURCE": "SOB",
+        "n": 38423,
+        "deal_rate": 0.4039893755533566,
+        "expired_rate": 0.14876829331805635,
+        "not_interest_rate": 0.17467840216655384
+      },
+      {
+        "LEAD_SOURCE": "LANDING PAGE",
+        "n": 9612,
+        "deal_rate": 0.38268625393494227,
+        "expired_rate": 0.11741867785939139,
+        "not_interest_rate": 0.3218258132214061
+      },
+      {
+        "LEAD_SOURCE": "TLS",
+        "n": 42731,
+        "deal_rate": 0.37085627269532623,
+        "expired_rate": 0.2115497247276561,
+        "not_interest_rate": 0.22152981140916012
+      },
+      {
+        "LEAD_SOURCE": "RTDM",
+        "n": 5371,
+        "deal_rate": 0.1485000931619154,
+        "expired_rate": 0.3269983230855226,
+        "not_interest_rate": 0.3618408794484815
+      },
+      {
+        "LEAD_SOURCE": "GMA",
+        "n": 25461,
+        "deal_rate": 0.11073020226259855,
+        "expired_rate": 0.2173037367158039,
+        "not_interest_rate": 0.49665752485430237
+      },
+      {
+        "LEAD_SOURCE": "SA",
+        "n": 858825,
+        "deal_rate": 0.019334628746393454,
+        "expired_rate": 0.19276099629040805,
+        "not_interest_rate": 0.6326467644114703
+      },
+      {
+        "LEAD_SOURCE": "RA",
+        "n": 1124219,
+        "deal_rate": 0.002120782761637477,
+        "expired_rate": 0.257085797121483,
+        "not_interest_rate": 0.5948550101219178
+      }
+    ]
+  },
+  "q2": {
+    "n_customers": 314631,
+    "conv_rate": 0.009801958484701126,
+    "auc_attempts": 0.590857483651404,
+    "auc_connected": 0.8122841690392562,
+    "auc_avg_duration": 0.9224785650390114,
+    "auc_first_call_duration_excl_first_call_conversions": 0.7204716814955825,
+    "n_robustness": 179105,
+    "spearman_attempts": 0.03106025387238229,
+    "spearman_duration": 0.18004276070746777,
+    "by_attempts": [
+      {
+        "att_band": "1",
+        "n": "26600",
+        "conv": "0.005601503759398496"
+      },
+      {
+        "att_band": "2",
+        "n": "22246",
+        "conv": "0.0053043243729209745"
+      },
+      {
+        "att_band": "3",
+        "n": "19817",
+        "conv": "0.008578493212898016"
+      },
+      {
+        "att_band": "4-5",
+        "n": "36336",
+        "conv": "0.010155217965653896"
+      },
+      {
+        "att_band": "6-10",
+        "n": "95455",
+        "conv": "0.008590435283641507"
+      },
+      {
+        "att_band": "11-20",
+        "n": "105983",
+        "conv": "0.010388458526367435"
+      },
+      {
+        "att_band": "21-50",
+        "n": "7772",
+        "conv": "0.04541945445187854"
+      },
+      {
+        "att_band": "50+",
+        "n": "422",
+        "conv": "0.009478672985781991"
+      }
+    ],
+    "by_duration": [
+      {
+        "dur_band": "<10s",
+        "n": "35168",
+        "conv": "0.0016492265696087351"
+      },
+      {
+        "dur_band": "10-30s",
+        "n": "108089",
+        "conv": "0.0023221604418580985"
+      },
+      {
+        "dur_band": "30-60s",
+        "n": "24622",
+        "conv": "0.010437819835919097"
+      },
+      {
+        "dur_band": "1-2m",
+        "n": "6533",
+        "conv": "0.04944129802540946"
+      },
+      {
+        "dur_band": "2-5m",
+        "n": "4147",
+        "conv": "0.25440077164215097"
+      },
+      {
+        "dur_band": "5-10m",
+        "n": "1402",
+        "conv": "0.48359486447931527"
+      },
+      {
+        "dur_band": "10m+",
+        "n": "238",
+        "conv": "0.6176470588235294"
+      }
+    ],
+    "by_first_duration_rob": [
+      {
+        "b": "<10s",
+        "n": "43868",
+        "conv": "0.004604723260691165"
+      },
+      {
+        "b": "10-30s",
+        "n": "99873",
+        "conv": "0.005527019314529452"
+      },
+      {
+        "b": "30-60s",
+        "n": "25314",
+        "conv": "0.013036264517658214"
+      },
+      {
+        "b": "1-2m",
+        "n": "5692",
+        "conv": "0.03478566408995081"
+      },
+      {
+        "b": "2-5m",
+        "n": "3092",
+        "conv": "0.059508408796895215"
+      },
+      {
+        "b": "5m+",
+        "n": "1266",
+        "conv": "0.165086887835703"
+      }
+    ]
+  },
+  "q3": [
+    {
+      "LEAD_SOURCE": "RA",
+      "n_leads": 794053,
+      "n_customers": 410680,
+      "deal_rate": 0.0008238363311822051,
+      "not_interest_rate": 0.5770947593128479,
+      "expired_rate": 0.263270112098736,
+      "handled_rate": 1.0,
+      "median_max_offer": 6000000.0,
+      "signed_within_90d": 0.1494610561259765,
+      "avg_events_180d_after": 1.567048050182526,
+      "active_180d_after": 0.24843524646162127,
+      "mean_engagement_score": 35.58058006910946,
+      "still_active_6m": 0.9707150837021192
+    },
+    {
+      "LEAD_SOURCE": "SA",
+      "n_leads": 633535,
+      "n_customers": 367463,
+      "deal_rate": 0.014828441174118212,
+      "not_interest_rate": 0.6243317603775094,
+      "expired_rate": 0.18673278413180835,
+      "handled_rate": 1.0,
+      "median_max_offer": 30000000.0,
+      "signed_within_90d": 0.1672062316999061,
+      "avg_events_180d_after": 2.4407554999215253,
+      "active_180d_after": 0.336793872090219,
+      "mean_engagement_score": 39.80103611182663,
+      "still_active_6m": 0.9756660327412433
+    },
+    {
+      "LEAD_SOURCE": "SOB",
+      "n_leads": 35535,
+      "n_customers": 29797,
+      "deal_rate": 0.41130938977707726,
+      "not_interest_rate": 0.15708736770997522,
+      "expired_rate": 0.15393492456653907,
+      "handled_rate": 1.0,
+      "median_max_offer": 32000000.0,
+      "signed_within_90d": 0.6729703109610243,
+      "avg_events_180d_after": 6.0213951021129875,
+      "active_180d_after": 0.5964105737777385,
+      "mean_engagement_score": 52.411618180128265,
+      "still_active_6m": 0.9816897481178548
+    },
+    {
+      "LEAD_SOURCE": "TLS",
+      "n_leads": 29029,
+      "n_customers": 22140,
+      "deal_rate": 0.3313340227507756,
+      "not_interest_rate": 0.24277835229231298,
+      "expired_rate": 0.22950706652878317,
+      "handled_rate": 1.0,
+      "median_max_offer": 30000000.0,
+      "signed_within_90d": 0.637879362017293,
+      "avg_events_180d_after": 2.4293778301594195,
+      "active_180d_after": 0.5412195273246077,
+      "mean_engagement_score": 59.57656234018616,
+      "still_active_6m": 0.9854249769868058
+    },
+    {
+      "LEAD_SOURCE": "GMA",
+      "n_leads": 23451,
+      "n_customers": 18488,
+      "deal_rate": 0.11138637001028326,
+      "not_interest_rate": 0.4948116294288118,
+      "expired_rate": 0.20907731139571842,
+      "handled_rate": 1.0,
+      "median_max_offer": 35404000.0,
+      "signed_within_90d": 0.1057950620442625,
+      "avg_events_180d_after": 9.691113816189896,
+      "active_180d_after": 0.8307212416311625,
+      "mean_engagement_score": 64.04685833224926,
+      "still_active_6m": 0.9847144529725511
+    },
+    {
+      "LEAD_SOURCE": "LANDING PAGE",
+      "n_leads": 418,
+      "n_customers": 349,
+      "deal_rate": 0.24401913875598086,
+      "not_interest_rate": 0.22488038277511962,
+      "expired_rate": 0.12679425837320574,
+      "handled_rate": 1.0,
+      "median_max_offer": 19000000.0,
+      "signed_within_90d": 0.06937799043062201,
+      "avg_events_180d_after": 4.971291866028708,
+      "active_180d_after": 0.7535885167464115,
+      "mean_engagement_score": 64.39267669599772,
+      "still_active_6m": 0.9824013624751632
+    },
+    {
+      "LEAD_SOURCE": "RTDM",
+      "n_leads": 3,
+      "n_customers": 3,
+      "deal_rate": 0.3333333333333333,
+      "not_interest_rate": 0.3333333333333333,
+      "expired_rate": 0.0,
+      "handled_rate": 1.0,
+      "median_max_offer": 115000000.0,
+      "signed_within_90d": 0.6666666666666666,
+      "avg_events_180d_after": NaN,
+      "active_180d_after": NaN,
+      "mean_engagement_score": 56.1521897810219,
+      "still_active_6m": 0.9744525547445255
+    }
+  ],
+  "q4": {
+    "cross_sectional": [
+      {
+        "band": "No app use",
+        "n": 616685,
+        "bad_rate": 0.03169689549770142
+      },
+      {
+        "band": "<0.5 / wk",
+        "n": 39594,
+        "bad_rate": 0.030408647774915393
+      },
+      {
+        "band": "0.5-2 / wk",
+        "n": 23043,
+        "bad_rate": 0.023260860131059324
+      },
+      {
+        "band": "2+ / wk",
+        "n": 7838,
+        "bad_rate": 0.027685634090329165
+      }
+    ],
+    "temporal": [
+      {
+        "trend": "Rising",
+        "n": 145180,
+        "bad_rate": 0.02541672406667585
+      },
+      {
+        "trend": "Stable",
+        "n": 21086,
+        "bad_rate": 0.020819501090771127
+      },
+      {
+        "trend": "Declining",
+        "n": 138661,
+        "bad_rate": 0.021188365870720677
+      },
+      {
+        "trend": "No prior activity",
+        "n": 847931,
+        "bad_rate": 0.02258438481433041
+      }
+    ],
+    "z_declining_vs_rising": -7.456617200130155,
+    "p_declining_vs_rising": 8.881784197001252e-14,
+    "auc_app_sessions": 0.5062607034893246,
+    "n_cross": 687160,
+    "n_temporal": 1152858
+  }
+}

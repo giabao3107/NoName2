@@ -1,0 +1,2685 @@
+{
+  "coverage": [
+    {
+      "dataset": "Customers",
+      "rows": 1000528,
+      "distinct_customers": 1000528,
+      "customer_coverage_pct": 100.0,
+      "date_start": NaN,
+      "date_end": NaN
+    },
+    {
+      "dataset": "Contracts",
+      "rows": 4280377,
+      "distinct_customers": 1000528,
+      "customer_coverage_pct": 100.0,
+      "date_start": "2009-04-21 10:39:50",
+      "date_end": "2025-06-04 22:29:47"
+    },
+    {
+      "dataset": "Leads",
+      "rows": 2104642,
+      "distinct_customers": 645344,
+      "customer_coverage_pct": 64.5,
+      "date_start": "2019-10-09 11:16:52",
+      "date_end": "2025-06-04 20:56:56"
+    },
+    {
+      "dataset": "Digital behavior",
+      "rows": 4412610,
+      "distinct_customers": 473086,
+      "customer_coverage_pct": 47.28,
+      "date_start": "2022-12-01 00:05:29",
+      "date_end": "2025-06-03 22:30:14"
+    },
+    {
+      "dataset": "Calls",
+      "rows": 4000000,
+      "distinct_customers": 360661,
+      "customer_coverage_pct": 36.05,
+      "date_start": "2025-01-01 03:47:11",
+      "date_end": "2026-08-31 23:11:28"
+    }
+  ],
+  "clean_variable_profile": [
+    {
+      "dataset": "Customers",
+      "column": "SKP_CLIENT",
+      "type": "BIGINT",
+      "rows": 1000528,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 0.0
+    },
+    {
+      "dataset": "Customers",
+      "column": "NAME_GENDER",
+      "type": "VARCHAR",
+      "rows": 1000528,
+      "null_count": 49,
+      "null_pct": 0.005,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Customers",
+      "column": "NAME_EDUCATION_TYPE",
+      "type": "VARCHAR",
+      "rows": 1000528,
+      "null_count": 163515,
+      "null_pct": 16.343,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Customers",
+      "column": "DATE_BIRTH",
+      "type": "TIMESTAMP",
+      "rows": 1000528,
+      "null_count": 23,
+      "null_pct": 0.002,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Customers",
+      "column": "CNT_CHILDREN",
+      "type": "BIGINT",
+      "rows": 1000528,
+      "null_count": 126331,
+      "null_pct": 12.626,
+      "placeholder_count": NaN,
+      "zero_count": 320538.0
+    },
+    {
+      "dataset": "Customers",
+      "column": "FLAG_CAR_OWNER",
+      "type": "INTEGER",
+      "rows": 1000528,
+      "null_count": 1000528,
+      "null_pct": 100.0,
+      "placeholder_count": NaN,
+      "zero_count": 0.0
+    },
+    {
+      "dataset": "Customers",
+      "column": "NAME_SALARY_FREQUENCY",
+      "type": "VARCHAR",
+      "rows": 1000528,
+      "null_count": 991399,
+      "null_pct": 99.088,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Customers",
+      "column": "CNT_PERSON_DEPENDENT",
+      "type": "BIGINT",
+      "rows": 1000528,
+      "null_count": 985659,
+      "null_pct": 98.514,
+      "placeholder_count": NaN,
+      "zero_count": 260.0
+    },
+    {
+      "dataset": "Customers",
+      "column": "PROVINCE",
+      "type": "VARCHAR",
+      "rows": 1000528,
+      "null_count": 149243,
+      "null_pct": 14.916,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Customers",
+      "column": "app_sessions_wk",
+      "type": "DOUBLE",
+      "rows": 1000528,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 930051.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "SKP_CREDIT_CASE",
+      "type": "BIGINT",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 0.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "SKP_CLIENT",
+      "type": "BIGINT",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 0.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "PRODUCT",
+      "type": "VARCHAR",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Contracts",
+      "column": "NAME_CREDIT_STATUS",
+      "type": "VARCHAR",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Contracts",
+      "column": "NAME_INCOME_TYPE",
+      "type": "VARCHAR",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 938119.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Contracts",
+      "column": "CODE_PROFESSION",
+      "type": "VARCHAR",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 954327.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Contracts",
+      "column": "cdate",
+      "type": "TIMESTAMP",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Contracts",
+      "column": "apply_time",
+      "type": "TIMESTAMP",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Contracts",
+      "column": "is_signed",
+      "type": "BOOLEAN",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Contracts",
+      "column": "is_open",
+      "type": "BOOLEAN",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Contracts",
+      "column": "is_rejected",
+      "type": "BOOLEAN",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Contracts",
+      "column": "income_main",
+      "type": "DOUBLE",
+      "rows": 4280377,
+      "null_count": 11101,
+      "null_pct": 0.259,
+      "placeholder_count": NaN,
+      "zero_count": 0.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "income_capped",
+      "type": "BOOLEAN",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Contracts",
+      "column": "income_household",
+      "type": "DOUBLE",
+      "rows": 4280377,
+      "null_count": 4240115,
+      "null_pct": 99.059,
+      "placeholder_count": NaN,
+      "zero_count": 0.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "amt_credit",
+      "type": "DOUBLE",
+      "rows": 4280377,
+      "null_count": 241002,
+      "null_pct": 5.63,
+      "placeholder_count": NaN,
+      "zero_count": 0.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "tenor",
+      "type": "DOUBLE",
+      "rows": 4280377,
+      "null_count": 378007,
+      "null_pct": 8.831,
+      "placeholder_count": NaN,
+      "zero_count": 0.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "init_pay",
+      "type": "DOUBLE",
+      "rows": 4280377,
+      "null_count": 28348,
+      "null_pct": 0.662,
+      "placeholder_count": NaN,
+      "zero_count": 1182227.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "annuity",
+      "type": "DOUBLE",
+      "rows": 4280377,
+      "null_count": 381862,
+      "null_pct": 8.921,
+      "placeholder_count": NaN,
+      "zero_count": 0.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "amt_billing",
+      "type": "DOUBLE",
+      "rows": 4280377,
+      "null_count": 4058664,
+      "null_pct": 94.82,
+      "placeholder_count": NaN,
+      "zero_count": 0.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "monthly_obligation",
+      "type": "DOUBLE",
+      "rows": 4280377,
+      "null_count": 160149,
+      "null_pct": 3.741,
+      "placeholder_count": NaN,
+      "zero_count": 0.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "flag_ins",
+      "type": "BIGINT",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 3015298.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "FIRST_DUE",
+      "type": "BIGINT",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 4266229.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "SECOND_DUE",
+      "type": "BIGINT",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 4258611.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "THIRD_DUE",
+      "type": "BIGINT",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 4251008.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "FOURTH_DUE",
+      "type": "BIGINT",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 4244740.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "n_due",
+      "type": "BIGINT",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 4223453.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "any_due",
+      "type": "BIGINT",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 4223453.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "is_default",
+      "type": "INTEGER",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 4265470.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "bad",
+      "type": "INTEGER",
+      "rows": 4280377,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 4216503.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "dti_main",
+      "type": "DOUBLE",
+      "rows": 4280377,
+      "null_count": 389121,
+      "null_pct": 9.091,
+      "placeholder_count": NaN,
+      "zero_count": 0.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "dti_household",
+      "type": "DOUBLE",
+      "rows": 4280377,
+      "null_count": 4240115,
+      "null_pct": 99.059,
+      "placeholder_count": NaN,
+      "zero_count": 0.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "dp_ratio",
+      "type": "DOUBLE",
+      "rows": 4280377,
+      "null_count": 1051069,
+      "null_pct": 24.556,
+      "placeholder_count": NaN,
+      "zero_count": 159811.0
+    },
+    {
+      "dataset": "Contracts",
+      "column": "end_date",
+      "type": "TIMESTAMP",
+      "rows": 4280377,
+      "null_count": 378007,
+      "null_pct": 8.831,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Contracts",
+      "column": "gross_yield",
+      "type": "DOUBLE",
+      "rows": 4280377,
+      "null_count": 381862,
+      "null_pct": 8.921,
+      "placeholder_count": NaN,
+      "zero_count": 6.0
+    },
+    {
+      "dataset": "Leads",
+      "column": "SKP_CLIENT",
+      "type": "BIGINT",
+      "rows": 2104642,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 0.0
+    },
+    {
+      "dataset": "Leads",
+      "column": "lead_time",
+      "type": "TIMESTAMP",
+      "rows": 2104642,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Leads",
+      "column": "accepted_time",
+      "type": "TIMESTAMP",
+      "rows": 2104642,
+      "null_count": 578772,
+      "null_pct": 27.5,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Leads",
+      "column": "sob_direct_support",
+      "type": "BOOLEAN",
+      "rows": 2104642,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Leads",
+      "column": "fin_reason",
+      "type": "VARCHAR",
+      "rows": 2104642,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Leads",
+      "column": "is_deal",
+      "type": "BOOLEAN",
+      "rows": 2104642,
+      "null_count": 36578,
+      "null_pct": 1.738,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Leads",
+      "column": "is_not_interest",
+      "type": "BOOLEAN",
+      "rows": 2104642,
+      "null_count": 36578,
+      "null_pct": 1.738,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Leads",
+      "column": "is_expired",
+      "type": "BOOLEAN",
+      "rows": 2104642,
+      "null_count": 36578,
+      "null_pct": 1.738,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Leads",
+      "column": "lead_product",
+      "type": "VARCHAR",
+      "rows": 2104642,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Leads",
+      "column": "FLAG_ASSIGNED",
+      "type": "BIGINT",
+      "rows": 2104642,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 325238.0
+    },
+    {
+      "dataset": "Leads",
+      "column": "max_offer",
+      "type": "DOUBLE",
+      "rows": 2104642,
+      "null_count": 12381,
+      "null_pct": 0.588,
+      "placeholder_count": NaN,
+      "zero_count": 1.0
+    },
+    {
+      "dataset": "Leads",
+      "column": "LEAD_SOURCE",
+      "type": "VARCHAR",
+      "rows": 2104642,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Digital behavior",
+      "column": "SKP_CLIENT",
+      "type": "BIGINT",
+      "rows": 4412610,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 0.0
+    },
+    {
+      "dataset": "Digital behavior",
+      "column": "event_time",
+      "type": "TIMESTAMP",
+      "rows": 4412610,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Digital behavior",
+      "column": "ACTION",
+      "type": "VARCHAR",
+      "rows": 4412610,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Digital behavior",
+      "column": "PRODUCT_CODE",
+      "type": "VARCHAR",
+      "rows": 4412610,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Digital behavior",
+      "column": "channel",
+      "type": "VARCHAR",
+      "rows": 4412610,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Digital behavior",
+      "column": "is_digital_self_serve",
+      "type": "BOOLEAN",
+      "rows": 4412610,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Digital behavior",
+      "column": "product_family",
+      "type": "VARCHAR",
+      "rows": 4412610,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "SKP_CLIENT",
+      "type": "BIGINT",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 0.0
+    },
+    {
+      "dataset": "Calls",
+      "column": "CALL_ID",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "CALL_TYPE",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "call_start",
+      "type": "TIMESTAMP",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "call_end",
+      "type": "TIMESTAMP",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "duration_s",
+      "type": "BIGINT",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": 3456053.0
+    },
+    {
+      "dataset": "Calls",
+      "column": "duration_mismatch",
+      "type": "BOOLEAN",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "PRODUCT_TYPE",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_count": 1101129,
+      "null_pct": 27.528,
+      "placeholder_count": 60565.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "CALL_SOURCE",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "OFF_BY",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "OFFER_TYPE",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "RESPONSE_RESULT_2",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 3416653.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "CODE_DISPOSITION",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 3412027.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "CALL_RESULT_SYSTEM",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_count": 233912,
+      "null_pct": 5.848,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "disposition_group",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": 0.0,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "is_outbound",
+      "type": "BOOLEAN",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "is_inbound",
+      "type": "BOOLEAN",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "is_connected",
+      "type": "BOOLEAN",
+      "rows": 4000000,
+      "null_count": 16773,
+      "null_pct": 0.419,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "is_sales_outcome",
+      "type": "BOOLEAN",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "is_conversion",
+      "type": "BOOLEAN",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    },
+    {
+      "dataset": "Calls",
+      "column": "is_positive_reaction",
+      "type": "BOOLEAN",
+      "rows": 4000000,
+      "null_count": 0,
+      "null_pct": 0.0,
+      "placeholder_count": NaN,
+      "zero_count": NaN
+    }
+  ],
+  "raw_missingness_top_15": [
+    {
+      "dataset": "customer",
+      "column": "CNT_PERSON_DEPENDENT",
+      "type": "BIGINT",
+      "rows": 1000528,
+      "null_pct": 98.51,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 0.03
+    },
+    {
+      "dataset": "contract",
+      "column": "AMT_BILLING",
+      "type": "DOUBLE",
+      "rows": 6234093,
+      "null_pct": 93.52,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 0.0
+    },
+    {
+      "dataset": "contract",
+      "column": "TRANSAC",
+      "type": "TIMESTAMP",
+      "rows": 6234093,
+      "null_pct": 93.52,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "contract",
+      "column": "SIGN_CONTRACT_TIME",
+      "type": "TIMESTAMP",
+      "rows": 6234093,
+      "null_pct": 32.2,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "call",
+      "column": "PRODUCT_TYPE",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_pct": 27.53,
+      "placeholder_pct (XNA/none/blank)": 1.51,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "contract",
+      "column": "APPROVE_CONTRACT_TIME",
+      "type": "TIMESTAMP",
+      "rows": 6234093,
+      "null_pct": 23.01,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "customer",
+      "column": "ADDRESS",
+      "type": "VARCHAR",
+      "rows": 1000528,
+      "null_pct": 14.92,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "customer",
+      "column": "CNT_CHILDREN",
+      "type": "BIGINT",
+      "rows": 1000528,
+      "null_pct": 12.6,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 32.04
+    },
+    {
+      "dataset": "contract",
+      "column": "ANNUITY",
+      "type": "DOUBLE",
+      "rows": 6234093,
+      "null_pct": 10.65,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 0.0
+    },
+    {
+      "dataset": "contract",
+      "column": "PAYMENT_NUM",
+      "type": "DOUBLE",
+      "rows": 6234093,
+      "null_pct": 10.56,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 0.0
+    },
+    {
+      "dataset": "call",
+      "column": "CALL_RESULT_SYSTEM",
+      "type": "VARCHAR",
+      "rows": 4000000,
+      "null_pct": 5.85,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "leads",
+      "column": "DESC_FIN_REASON",
+      "type": "VARCHAR",
+      "rows": 2143891,
+      "null_pct": 1.71,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "leads",
+      "column": "MAX_OFFER",
+      "type": "DOUBLE",
+      "rows": 2143891,
+      "null_pct": 0.58,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 0.0
+    },
+    {
+      "dataset": "contract",
+      "column": "PRODUCT",
+      "type": "VARCHAR",
+      "rows": 6234093,
+      "null_pct": 0.45,
+      "placeholder_pct (XNA/none/blank)": 0.0,
+      "zero_pct": NaN
+    },
+    {
+      "dataset": "contract",
+      "column": "INIT_PAY",
+      "type": "DOUBLE",
+      "rows": 6234093,
+      "null_pct": 0.45,
+      "placeholder_pct (XNA/none/blank)": NaN,
+      "zero_pct": 29.69
+    }
+  ],
+  "mature_product_outcomes": [
+    {
+      "product": "TW",
+      "mature_signed_contracts": 98222,
+      "observed_bad_rate": 0.04968337032436725
+    },
+    {
+      "product": "CW",
+      "mature_signed_contracts": 22043,
+      "observed_bad_rate": 0.047679535453431926
+    },
+    {
+      "product": "CC",
+      "mature_signed_contracts": 90518,
+      "observed_bad_rate": 0.0244702711062993
+    },
+    {
+      "product": "BNPL",
+      "mature_signed_contracts": 162650,
+      "observed_bad_rate": 0.022078081770673226
+    },
+    {
+      "product": "CL",
+      "mature_signed_contracts": 349517,
+      "observed_bad_rate": 0.021947430310972
+    },
+    {
+      "product": "CD",
+      "mature_signed_contracts": 2036089,
+      "observed_bad_rate": 0.021272645743874653
+    },
+    {
+      "product": "IN",
+      "mature_signed_contracts": 1,
+      "observed_bad_rate": 0.0
+    }
+  ],
+  "behavior_channels": [
+    {
+      "channel": "APP",
+      "events": 1630349,
+      "customers": 232674
+    },
+    {
+      "channel": "SA",
+      "events": 867787,
+      "customers": 201283
+    },
+    {
+      "channel": "WEB",
+      "events": 746021,
+      "customers": 169734
+    },
+    {
+      "channel": "TLS",
+      "events": 726233,
+      "customers": 148336
+    },
+    {
+      "channel": "PARTNER",
+      "events": 396829,
+      "customers": 87345
+    },
+    {
+      "channel": "SOB",
+      "events": 44623,
+      "customers": 39516
+    },
+    {
+      "channel": "BRANCH",
+      "events": 761,
+      "customers": 760
+    },
+    {
+      "channel": "MULTI",
+      "events": 7,
+      "customers": 4
+    }
+  ],
+  "monthly_activity": [
+    {
+      "month": "2009-04-01T00:00:00",
+      "source": "Contracts",
+      "events": 3.0
+    },
+    {
+      "month": "2009-05-01T00:00:00",
+      "source": "Contracts",
+      "events": 34.0
+    },
+    {
+      "month": "2009-06-01T00:00:00",
+      "source": "Contracts",
+      "events": 89.0
+    },
+    {
+      "month": "2009-07-01T00:00:00",
+      "source": "Contracts",
+      "events": 106.0
+    },
+    {
+      "month": "2009-08-01T00:00:00",
+      "source": "Contracts",
+      "events": 114.0
+    },
+    {
+      "month": "2009-09-01T00:00:00",
+      "source": "Contracts",
+      "events": 103.0
+    },
+    {
+      "month": "2009-10-01T00:00:00",
+      "source": "Contracts",
+      "events": 115.0
+    },
+    {
+      "month": "2009-11-01T00:00:00",
+      "source": "Contracts",
+      "events": 106.0
+    },
+    {
+      "month": "2009-12-01T00:00:00",
+      "source": "Contracts",
+      "events": 197.0
+    },
+    {
+      "month": "2010-01-01T00:00:00",
+      "source": "Contracts",
+      "events": 209.0
+    },
+    {
+      "month": "2010-02-01T00:00:00",
+      "source": "Contracts",
+      "events": 156.0
+    },
+    {
+      "month": "2010-03-01T00:00:00",
+      "source": "Contracts",
+      "events": 213.0
+    },
+    {
+      "month": "2010-04-01T00:00:00",
+      "source": "Contracts",
+      "events": 210.0
+    },
+    {
+      "month": "2010-05-01T00:00:00",
+      "source": "Contracts",
+      "events": 225.0
+    },
+    {
+      "month": "2010-06-01T00:00:00",
+      "source": "Contracts",
+      "events": 229.0
+    },
+    {
+      "month": "2010-07-01T00:00:00",
+      "source": "Contracts",
+      "events": 288.0
+    },
+    {
+      "month": "2010-08-01T00:00:00",
+      "source": "Contracts",
+      "events": 324.0
+    },
+    {
+      "month": "2010-09-01T00:00:00",
+      "source": "Contracts",
+      "events": 313.0
+    },
+    {
+      "month": "2010-10-01T00:00:00",
+      "source": "Contracts",
+      "events": 342.0
+    },
+    {
+      "month": "2010-11-01T00:00:00",
+      "source": "Contracts",
+      "events": 358.0
+    },
+    {
+      "month": "2010-12-01T00:00:00",
+      "source": "Contracts",
+      "events": 439.0
+    },
+    {
+      "month": "2011-01-01T00:00:00",
+      "source": "Contracts",
+      "events": 614.0
+    },
+    {
+      "month": "2011-02-01T00:00:00",
+      "source": "Contracts",
+      "events": 355.0
+    },
+    {
+      "month": "2011-03-01T00:00:00",
+      "source": "Contracts",
+      "events": 581.0
+    },
+    {
+      "month": "2011-04-01T00:00:00",
+      "source": "Contracts",
+      "events": 529.0
+    },
+    {
+      "month": "2011-05-01T00:00:00",
+      "source": "Contracts",
+      "events": 559.0
+    },
+    {
+      "month": "2011-06-01T00:00:00",
+      "source": "Contracts",
+      "events": 537.0
+    },
+    {
+      "month": "2011-07-01T00:00:00",
+      "source": "Contracts",
+      "events": 636.0
+    },
+    {
+      "month": "2011-08-01T00:00:00",
+      "source": "Contracts",
+      "events": 765.0
+    },
+    {
+      "month": "2011-09-01T00:00:00",
+      "source": "Contracts",
+      "events": 619.0
+    },
+    {
+      "month": "2011-10-01T00:00:00",
+      "source": "Contracts",
+      "events": 470.0
+    },
+    {
+      "month": "2011-11-01T00:00:00",
+      "source": "Contracts",
+      "events": 387.0
+    },
+    {
+      "month": "2011-12-01T00:00:00",
+      "source": "Contracts",
+      "events": 489.0
+    },
+    {
+      "month": "2012-01-01T00:00:00",
+      "source": "Contracts",
+      "events": 536.0
+    },
+    {
+      "month": "2012-02-01T00:00:00",
+      "source": "Contracts",
+      "events": 299.0
+    },
+    {
+      "month": "2012-03-01T00:00:00",
+      "source": "Contracts",
+      "events": 407.0
+    },
+    {
+      "month": "2012-04-01T00:00:00",
+      "source": "Contracts",
+      "events": 359.0
+    },
+    {
+      "month": "2012-05-01T00:00:00",
+      "source": "Contracts",
+      "events": 393.0
+    },
+    {
+      "month": "2012-06-01T00:00:00",
+      "source": "Contracts",
+      "events": 401.0
+    },
+    {
+      "month": "2012-07-01T00:00:00",
+      "source": "Contracts",
+      "events": 453.0
+    },
+    {
+      "month": "2012-08-01T00:00:00",
+      "source": "Contracts",
+      "events": 533.0
+    },
+    {
+      "month": "2012-09-01T00:00:00",
+      "source": "Contracts",
+      "events": 516.0
+    },
+    {
+      "month": "2012-10-01T00:00:00",
+      "source": "Contracts",
+      "events": 598.0
+    },
+    {
+      "month": "2012-11-01T00:00:00",
+      "source": "Contracts",
+      "events": 596.0
+    },
+    {
+      "month": "2012-12-01T00:00:00",
+      "source": "Contracts",
+      "events": 709.0
+    },
+    {
+      "month": "2013-01-01T00:00:00",
+      "source": "Contracts",
+      "events": 1013.0
+    },
+    {
+      "month": "2013-02-01T00:00:00",
+      "source": "Contracts",
+      "events": 713.0
+    },
+    {
+      "month": "2013-03-01T00:00:00",
+      "source": "Contracts",
+      "events": 858.0
+    },
+    {
+      "month": "2013-04-01T00:00:00",
+      "source": "Contracts",
+      "events": 971.0
+    },
+    {
+      "month": "2013-05-01T00:00:00",
+      "source": "Contracts",
+      "events": 1160.0
+    },
+    {
+      "month": "2013-06-01T00:00:00",
+      "source": "Contracts",
+      "events": 1253.0
+    },
+    {
+      "month": "2013-07-01T00:00:00",
+      "source": "Contracts",
+      "events": 1652.0
+    },
+    {
+      "month": "2013-08-01T00:00:00",
+      "source": "Contracts",
+      "events": 2186.0
+    },
+    {
+      "month": "2013-09-01T00:00:00",
+      "source": "Contracts",
+      "events": 2170.0
+    },
+    {
+      "month": "2013-10-01T00:00:00",
+      "source": "Contracts",
+      "events": 2149.0
+    },
+    {
+      "month": "2013-11-01T00:00:00",
+      "source": "Contracts",
+      "events": 2554.0
+    },
+    {
+      "month": "2013-12-01T00:00:00",
+      "source": "Contracts",
+      "events": 3254.0
+    },
+    {
+      "month": "2014-01-01T00:00:00",
+      "source": "Contracts",
+      "events": 5142.0
+    },
+    {
+      "month": "2014-02-01T00:00:00",
+      "source": "Contracts",
+      "events": 2381.0
+    },
+    {
+      "month": "2014-03-01T00:00:00",
+      "source": "Contracts",
+      "events": 3234.0
+    },
+    {
+      "month": "2014-04-01T00:00:00",
+      "source": "Contracts",
+      "events": 3175.0
+    },
+    {
+      "month": "2014-05-01T00:00:00",
+      "source": "Contracts",
+      "events": 3273.0
+    },
+    {
+      "month": "2014-06-01T00:00:00",
+      "source": "Contracts",
+      "events": 3131.0
+    },
+    {
+      "month": "2014-07-01T00:00:00",
+      "source": "Contracts",
+      "events": 3322.0
+    },
+    {
+      "month": "2014-08-01T00:00:00",
+      "source": "Contracts",
+      "events": 3335.0
+    },
+    {
+      "month": "2014-09-01T00:00:00",
+      "source": "Contracts",
+      "events": 3108.0
+    },
+    {
+      "month": "2014-10-01T00:00:00",
+      "source": "Contracts",
+      "events": 3400.0
+    },
+    {
+      "month": "2014-11-01T00:00:00",
+      "source": "Contracts",
+      "events": 3388.0
+    },
+    {
+      "month": "2014-12-01T00:00:00",
+      "source": "Contracts",
+      "events": 4335.0
+    },
+    {
+      "month": "2015-01-01T00:00:00",
+      "source": "Contracts",
+      "events": 4910.0
+    },
+    {
+      "month": "2015-02-01T00:00:00",
+      "source": "Contracts",
+      "events": 3913.0
+    },
+    {
+      "month": "2015-03-01T00:00:00",
+      "source": "Contracts",
+      "events": 2740.0
+    },
+    {
+      "month": "2015-04-01T00:00:00",
+      "source": "Contracts",
+      "events": 3695.0
+    },
+    {
+      "month": "2015-05-01T00:00:00",
+      "source": "Contracts",
+      "events": 3879.0
+    },
+    {
+      "month": "2015-06-01T00:00:00",
+      "source": "Contracts",
+      "events": 3952.0
+    },
+    {
+      "month": "2015-07-01T00:00:00",
+      "source": "Contracts",
+      "events": 4279.0
+    },
+    {
+      "month": "2015-08-01T00:00:00",
+      "source": "Contracts",
+      "events": 5094.0
+    },
+    {
+      "month": "2015-09-01T00:00:00",
+      "source": "Contracts",
+      "events": 6099.0
+    },
+    {
+      "month": "2015-10-01T00:00:00",
+      "source": "Contracts",
+      "events": 5860.0
+    },
+    {
+      "month": "2015-11-01T00:00:00",
+      "source": "Contracts",
+      "events": 6879.0
+    },
+    {
+      "month": "2015-12-01T00:00:00",
+      "source": "Contracts",
+      "events": 7365.0
+    },
+    {
+      "month": "2016-01-01T00:00:00",
+      "source": "Contracts",
+      "events": 9600.0
+    },
+    {
+      "month": "2016-02-01T00:00:00",
+      "source": "Contracts",
+      "events": 7263.0
+    },
+    {
+      "month": "2016-03-01T00:00:00",
+      "source": "Contracts",
+      "events": 6703.0
+    },
+    {
+      "month": "2016-04-01T00:00:00",
+      "source": "Contracts",
+      "events": 7782.0
+    },
+    {
+      "month": "2016-05-01T00:00:00",
+      "source": "Contracts",
+      "events": 7759.0
+    },
+    {
+      "month": "2016-06-01T00:00:00",
+      "source": "Contracts",
+      "events": 8157.0
+    },
+    {
+      "month": "2016-07-01T00:00:00",
+      "source": "Contracts",
+      "events": 9365.0
+    },
+    {
+      "month": "2016-08-01T00:00:00",
+      "source": "Contracts",
+      "events": 10165.0
+    },
+    {
+      "month": "2016-09-01T00:00:00",
+      "source": "Contracts",
+      "events": 10444.0
+    },
+    {
+      "month": "2016-10-01T00:00:00",
+      "source": "Contracts",
+      "events": 12533.0
+    },
+    {
+      "month": "2016-11-01T00:00:00",
+      "source": "Contracts",
+      "events": 12394.0
+    },
+    {
+      "month": "2016-12-01T00:00:00",
+      "source": "Contracts",
+      "events": 12251.0
+    },
+    {
+      "month": "2017-01-01T00:00:00",
+      "source": "Contracts",
+      "events": 18329.0
+    },
+    {
+      "month": "2017-02-01T00:00:00",
+      "source": "Contracts",
+      "events": 10572.0
+    },
+    {
+      "month": "2017-03-01T00:00:00",
+      "source": "Contracts",
+      "events": 11195.0
+    },
+    {
+      "month": "2017-04-01T00:00:00",
+      "source": "Contracts",
+      "events": 12872.0
+    },
+    {
+      "month": "2017-05-01T00:00:00",
+      "source": "Contracts",
+      "events": 13298.0
+    },
+    {
+      "month": "2017-06-01T00:00:00",
+      "source": "Contracts",
+      "events": 12343.0
+    },
+    {
+      "month": "2017-07-01T00:00:00",
+      "source": "Contracts",
+      "events": 13620.0
+    },
+    {
+      "month": "2017-08-01T00:00:00",
+      "source": "Contracts",
+      "events": 13732.0
+    },
+    {
+      "month": "2017-09-01T00:00:00",
+      "source": "Contracts",
+      "events": 13922.0
+    },
+    {
+      "month": "2017-10-01T00:00:00",
+      "source": "Contracts",
+      "events": 14793.0
+    },
+    {
+      "month": "2017-11-01T00:00:00",
+      "source": "Contracts",
+      "events": 14419.0
+    },
+    {
+      "month": "2017-12-01T00:00:00",
+      "source": "Contracts",
+      "events": 16401.0
+    },
+    {
+      "month": "2018-01-01T00:00:00",
+      "source": "Contracts",
+      "events": 18508.0
+    },
+    {
+      "month": "2018-02-01T00:00:00",
+      "source": "Contracts",
+      "events": 18425.0
+    },
+    {
+      "month": "2018-03-01T00:00:00",
+      "source": "Contracts",
+      "events": 13015.0
+    },
+    {
+      "month": "2018-04-01T00:00:00",
+      "source": "Contracts",
+      "events": 15935.0
+    },
+    {
+      "month": "2018-05-01T00:00:00",
+      "source": "Contracts",
+      "events": 15767.0
+    },
+    {
+      "month": "2018-06-01T00:00:00",
+      "source": "Contracts",
+      "events": 15268.0
+    },
+    {
+      "month": "2018-07-01T00:00:00",
+      "source": "Contracts",
+      "events": 15980.0
+    },
+    {
+      "month": "2018-08-01T00:00:00",
+      "source": "Contracts",
+      "events": 17273.0
+    },
+    {
+      "month": "2018-09-01T00:00:00",
+      "source": "Contracts",
+      "events": 17109.0
+    },
+    {
+      "month": "2018-10-01T00:00:00",
+      "source": "Contracts",
+      "events": 16868.0
+    },
+    {
+      "month": "2018-11-01T00:00:00",
+      "source": "Contracts",
+      "events": 16964.0
+    },
+    {
+      "month": "2018-12-01T00:00:00",
+      "source": "Contracts",
+      "events": 20632.0
+    },
+    {
+      "month": "2019-01-01T00:00:00",
+      "source": "Contracts",
+      "events": 24749.0
+    },
+    {
+      "month": "2019-02-01T00:00:00",
+      "source": "Contracts",
+      "events": 16256.0
+    },
+    {
+      "month": "2019-03-01T00:00:00",
+      "source": "Contracts",
+      "events": 19207.0
+    },
+    {
+      "month": "2019-04-01T00:00:00",
+      "source": "Contracts",
+      "events": 22635.0
+    },
+    {
+      "month": "2019-05-01T00:00:00",
+      "source": "Contracts",
+      "events": 21475.0
+    },
+    {
+      "month": "2019-06-01T00:00:00",
+      "source": "Contracts",
+      "events": 21953.0
+    },
+    {
+      "month": "2019-07-01T00:00:00",
+      "source": "Contracts",
+      "events": 22017.0
+    },
+    {
+      "month": "2019-08-01T00:00:00",
+      "source": "Contracts",
+      "events": 22770.0
+    },
+    {
+      "month": "2019-09-01T00:00:00",
+      "source": "Contracts",
+      "events": 23320.0
+    },
+    {
+      "month": "2019-10-01T00:00:00",
+      "source": "Contracts",
+      "events": 24486.0
+    },
+    {
+      "month": "2019-10-01T00:00:00",
+      "source": "Leads",
+      "events": 161.0
+    },
+    {
+      "month": "2019-11-01T00:00:00",
+      "source": "Contracts",
+      "events": 24216.0
+    },
+    {
+      "month": "2019-11-01T00:00:00",
+      "source": "Leads",
+      "events": 308.0
+    },
+    {
+      "month": "2019-12-01T00:00:00",
+      "source": "Contracts",
+      "events": 28007.0
+    },
+    {
+      "month": "2019-12-01T00:00:00",
+      "source": "Leads",
+      "events": 410.0
+    },
+    {
+      "month": "2020-01-01T00:00:00",
+      "source": "Contracts",
+      "events": 35774.0
+    },
+    {
+      "month": "2020-01-01T00:00:00",
+      "source": "Leads",
+      "events": 297.0
+    },
+    {
+      "month": "2020-02-01T00:00:00",
+      "source": "Contracts",
+      "events": 24300.0
+    },
+    {
+      "month": "2020-02-01T00:00:00",
+      "source": "Leads",
+      "events": 355.0
+    },
+    {
+      "month": "2020-03-01T00:00:00",
+      "source": "Contracts",
+      "events": 25629.0
+    },
+    {
+      "month": "2020-03-01T00:00:00",
+      "source": "Leads",
+      "events": 321.0
+    },
+    {
+      "month": "2020-04-01T00:00:00",
+      "source": "Contracts",
+      "events": 21938.0
+    },
+    {
+      "month": "2020-04-01T00:00:00",
+      "source": "Leads",
+      "events": 280.0
+    },
+    {
+      "month": "2020-05-01T00:00:00",
+      "source": "Contracts",
+      "events": 27276.0
+    },
+    {
+      "month": "2020-05-01T00:00:00",
+      "source": "Leads",
+      "events": 4050.0
+    },
+    {
+      "month": "2020-06-01T00:00:00",
+      "source": "Contracts",
+      "events": 21281.0
+    },
+    {
+      "month": "2020-06-01T00:00:00",
+      "source": "Leads",
+      "events": 4209.0
+    },
+    {
+      "month": "2020-07-01T00:00:00",
+      "source": "Contracts",
+      "events": 21678.0
+    },
+    {
+      "month": "2020-07-01T00:00:00",
+      "source": "Leads",
+      "events": 1848.0
+    },
+    {
+      "month": "2020-08-01T00:00:00",
+      "source": "Contracts",
+      "events": 22711.0
+    },
+    {
+      "month": "2020-08-01T00:00:00",
+      "source": "Leads",
+      "events": 9780.0
+    },
+    {
+      "month": "2020-09-01T00:00:00",
+      "source": "Contracts",
+      "events": 24887.0
+    },
+    {
+      "month": "2020-09-01T00:00:00",
+      "source": "Leads",
+      "events": 11938.0
+    },
+    {
+      "month": "2020-10-01T00:00:00",
+      "source": "Contracts",
+      "events": 22178.0
+    },
+    {
+      "month": "2020-10-01T00:00:00",
+      "source": "Leads",
+      "events": 11313.0
+    },
+    {
+      "month": "2020-11-01T00:00:00",
+      "source": "Contracts",
+      "events": 24603.0
+    },
+    {
+      "month": "2020-11-01T00:00:00",
+      "source": "Leads",
+      "events": 13144.0
+    },
+    {
+      "month": "2020-12-01T00:00:00",
+      "source": "Contracts",
+      "events": 22033.0
+    },
+    {
+      "month": "2020-12-01T00:00:00",
+      "source": "Leads",
+      "events": 10053.0
+    },
+    {
+      "month": "2021-01-01T00:00:00",
+      "source": "Contracts",
+      "events": 26925.0
+    },
+    {
+      "month": "2021-01-01T00:00:00",
+      "source": "Leads",
+      "events": 13447.0
+    },
+    {
+      "month": "2021-02-01T00:00:00",
+      "source": "Contracts",
+      "events": 26479.0
+    },
+    {
+      "month": "2021-02-01T00:00:00",
+      "source": "Leads",
+      "events": 15095.0
+    },
+    {
+      "month": "2021-03-01T00:00:00",
+      "source": "Contracts",
+      "events": 24773.0
+    },
+    {
+      "month": "2021-03-01T00:00:00",
+      "source": "Leads",
+      "events": 13082.0
+    },
+    {
+      "month": "2021-04-01T00:00:00",
+      "source": "Contracts",
+      "events": 24881.0
+    },
+    {
+      "month": "2021-04-01T00:00:00",
+      "source": "Leads",
+      "events": 12891.0
+    },
+    {
+      "month": "2021-05-01T00:00:00",
+      "source": "Contracts",
+      "events": 28670.0
+    },
+    {
+      "month": "2021-05-01T00:00:00",
+      "source": "Leads",
+      "events": 14074.0
+    },
+    {
+      "month": "2021-06-01T00:00:00",
+      "source": "Contracts",
+      "events": 23345.0
+    },
+    {
+      "month": "2021-06-01T00:00:00",
+      "source": "Leads",
+      "events": 9812.0
+    },
+    {
+      "month": "2021-07-01T00:00:00",
+      "source": "Contracts",
+      "events": 14089.0
+    },
+    {
+      "month": "2021-07-01T00:00:00",
+      "source": "Leads",
+      "events": 5067.0
+    },
+    {
+      "month": "2021-08-01T00:00:00",
+      "source": "Contracts",
+      "events": 9797.0
+    },
+    {
+      "month": "2021-08-01T00:00:00",
+      "source": "Leads",
+      "events": 4723.0
+    },
+    {
+      "month": "2021-09-01T00:00:00",
+      "source": "Contracts",
+      "events": 15103.0
+    },
+    {
+      "month": "2021-09-01T00:00:00",
+      "source": "Leads",
+      "events": 8556.0
+    },
+    {
+      "month": "2021-10-01T00:00:00",
+      "source": "Contracts",
+      "events": 29542.0
+    },
+    {
+      "month": "2021-10-01T00:00:00",
+      "source": "Leads",
+      "events": 20466.0
+    },
+    {
+      "month": "2021-11-01T00:00:00",
+      "source": "Contracts",
+      "events": 29128.0
+    },
+    {
+      "month": "2021-11-01T00:00:00",
+      "source": "Leads",
+      "events": 22912.0
+    },
+    {
+      "month": "2021-12-01T00:00:00",
+      "source": "Contracts",
+      "events": 31317.0
+    },
+    {
+      "month": "2021-12-01T00:00:00",
+      "source": "Leads",
+      "events": 26077.0
+    },
+    {
+      "month": "2022-01-01T00:00:00",
+      "source": "Contracts",
+      "events": 40712.0
+    },
+    {
+      "month": "2022-01-01T00:00:00",
+      "source": "Leads",
+      "events": 34654.0
+    },
+    {
+      "month": "2022-02-01T00:00:00",
+      "source": "Contracts",
+      "events": 25053.0
+    },
+    {
+      "month": "2022-02-01T00:00:00",
+      "source": "Leads",
+      "events": 22490.0
+    },
+    {
+      "month": "2022-03-01T00:00:00",
+      "source": "Contracts",
+      "events": 29995.0
+    },
+    {
+      "month": "2022-03-01T00:00:00",
+      "source": "Leads",
+      "events": 24302.0
+    },
+    {
+      "month": "2022-04-01T00:00:00",
+      "source": "Contracts",
+      "events": 34559.0
+    },
+    {
+      "month": "2022-04-01T00:00:00",
+      "source": "Leads",
+      "events": 26001.0
+    },
+    {
+      "month": "2022-05-01T00:00:00",
+      "source": "Contracts",
+      "events": 34256.0
+    },
+    {
+      "month": "2022-05-01T00:00:00",
+      "source": "Leads",
+      "events": 26576.0
+    },
+    {
+      "month": "2022-06-01T00:00:00",
+      "source": "Contracts",
+      "events": 35817.0
+    },
+    {
+      "month": "2022-06-01T00:00:00",
+      "source": "Leads",
+      "events": 27740.0
+    },
+    {
+      "month": "2022-07-01T00:00:00",
+      "source": "Contracts",
+      "events": 35283.0
+    },
+    {
+      "month": "2022-07-01T00:00:00",
+      "source": "Leads",
+      "events": 24120.0
+    },
+    {
+      "month": "2022-08-01T00:00:00",
+      "source": "Contracts",
+      "events": 34566.0
+    },
+    {
+      "month": "2022-08-01T00:00:00",
+      "source": "Leads",
+      "events": 23890.0
+    },
+    {
+      "month": "2022-09-01T00:00:00",
+      "source": "Contracts",
+      "events": 34681.0
+    },
+    {
+      "month": "2022-09-01T00:00:00",
+      "source": "Leads",
+      "events": 16822.0
+    },
+    {
+      "month": "2022-10-01T00:00:00",
+      "source": "Contracts",
+      "events": 34489.0
+    },
+    {
+      "month": "2022-10-01T00:00:00",
+      "source": "Leads",
+      "events": 14548.0
+    },
+    {
+      "month": "2022-11-01T00:00:00",
+      "source": "Contracts",
+      "events": 34755.0
+    },
+    {
+      "month": "2022-11-01T00:00:00",
+      "source": "Leads",
+      "events": 14123.0
+    },
+    {
+      "month": "2022-12-01T00:00:00",
+      "source": "Contracts",
+      "events": 28160.0
+    },
+    {
+      "month": "2022-12-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 134330.0
+    },
+    {
+      "month": "2022-12-01T00:00:00",
+      "source": "Leads",
+      "events": 7524.0
+    },
+    {
+      "month": "2023-01-01T00:00:00",
+      "source": "Contracts",
+      "events": 35754.0
+    },
+    {
+      "month": "2023-01-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 77699.0
+    },
+    {
+      "month": "2023-01-01T00:00:00",
+      "source": "Leads",
+      "events": 10888.0
+    },
+    {
+      "month": "2023-02-01T00:00:00",
+      "source": "Contracts",
+      "events": 24743.0
+    },
+    {
+      "month": "2023-02-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 89430.0
+    },
+    {
+      "month": "2023-02-01T00:00:00",
+      "source": "Leads",
+      "events": 7814.0
+    },
+    {
+      "month": "2023-03-01T00:00:00",
+      "source": "Contracts",
+      "events": 26977.0
+    },
+    {
+      "month": "2023-03-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 119001.0
+    },
+    {
+      "month": "2023-03-01T00:00:00",
+      "source": "Leads",
+      "events": 7056.0
+    },
+    {
+      "month": "2023-04-01T00:00:00",
+      "source": "Contracts",
+      "events": 34848.0
+    },
+    {
+      "month": "2023-04-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 92940.0
+    },
+    {
+      "month": "2023-04-01T00:00:00",
+      "source": "Leads",
+      "events": 9878.0
+    },
+    {
+      "month": "2023-05-01T00:00:00",
+      "source": "Contracts",
+      "events": 35038.0
+    },
+    {
+      "month": "2023-05-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 72302.0
+    },
+    {
+      "month": "2023-05-01T00:00:00",
+      "source": "Leads",
+      "events": 10777.0
+    },
+    {
+      "month": "2023-06-01T00:00:00",
+      "source": "Contracts",
+      "events": 32968.0
+    },
+    {
+      "month": "2023-06-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 74173.0
+    },
+    {
+      "month": "2023-06-01T00:00:00",
+      "source": "Leads",
+      "events": 10425.0
+    },
+    {
+      "month": "2023-07-01T00:00:00",
+      "source": "Contracts",
+      "events": 34291.0
+    },
+    {
+      "month": "2023-07-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 79479.0
+    },
+    {
+      "month": "2023-07-01T00:00:00",
+      "source": "Leads",
+      "events": 12319.0
+    },
+    {
+      "month": "2023-08-01T00:00:00",
+      "source": "Contracts",
+      "events": 35609.0
+    },
+    {
+      "month": "2023-08-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 82661.0
+    },
+    {
+      "month": "2023-08-01T00:00:00",
+      "source": "Leads",
+      "events": 11339.0
+    },
+    {
+      "month": "2023-09-01T00:00:00",
+      "source": "Contracts",
+      "events": 35289.0
+    },
+    {
+      "month": "2023-09-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 74086.0
+    },
+    {
+      "month": "2023-09-01T00:00:00",
+      "source": "Leads",
+      "events": 11157.0
+    },
+    {
+      "month": "2023-10-01T00:00:00",
+      "source": "Contracts",
+      "events": 38109.0
+    },
+    {
+      "month": "2023-10-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 77548.0
+    },
+    {
+      "month": "2023-10-01T00:00:00",
+      "source": "Leads",
+      "events": 12895.0
+    },
+    {
+      "month": "2023-11-01T00:00:00",
+      "source": "Contracts",
+      "events": 37693.0
+    },
+    {
+      "month": "2023-11-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 92872.0
+    },
+    {
+      "month": "2023-11-01T00:00:00",
+      "source": "Leads",
+      "events": 25577.0
+    },
+    {
+      "month": "2023-12-01T00:00:00",
+      "source": "Contracts",
+      "events": 42268.0
+    },
+    {
+      "month": "2023-12-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 94084.0
+    },
+    {
+      "month": "2023-12-01T00:00:00",
+      "source": "Leads",
+      "events": 30741.0
+    },
+    {
+      "month": "2024-01-01T00:00:00",
+      "source": "Contracts",
+      "events": 48882.0
+    },
+    {
+      "month": "2024-01-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 94374.0
+    },
+    {
+      "month": "2024-01-01T00:00:00",
+      "source": "Leads",
+      "events": 33862.0
+    },
+    {
+      "month": "2024-02-01T00:00:00",
+      "source": "Contracts",
+      "events": 44888.0
+    },
+    {
+      "month": "2024-02-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 63280.0
+    },
+    {
+      "month": "2024-02-01T00:00:00",
+      "source": "Leads",
+      "events": 35739.0
+    },
+    {
+      "month": "2024-03-01T00:00:00",
+      "source": "Contracts",
+      "events": 43610.0
+    },
+    {
+      "month": "2024-03-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 82253.0
+    },
+    {
+      "month": "2024-03-01T00:00:00",
+      "source": "Leads",
+      "events": 27154.0
+    },
+    {
+      "month": "2024-04-01T00:00:00",
+      "source": "Contracts",
+      "events": 53990.0
+    },
+    {
+      "month": "2024-04-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 82448.0
+    },
+    {
+      "month": "2024-04-01T00:00:00",
+      "source": "Leads",
+      "events": 35376.0
+    },
+    {
+      "month": "2024-05-01T00:00:00",
+      "source": "Contracts",
+      "events": 49854.0
+    },
+    {
+      "month": "2024-05-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 97794.0
+    },
+    {
+      "month": "2024-05-01T00:00:00",
+      "source": "Leads",
+      "events": 30061.0
+    },
+    {
+      "month": "2024-06-01T00:00:00",
+      "source": "Contracts",
+      "events": 52404.0
+    },
+    {
+      "month": "2024-06-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 152784.0
+    },
+    {
+      "month": "2024-06-01T00:00:00",
+      "source": "Leads",
+      "events": 30229.0
+    },
+    {
+      "month": "2024-07-01T00:00:00",
+      "source": "Contracts",
+      "events": 51653.0
+    },
+    {
+      "month": "2024-07-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 132308.0
+    },
+    {
+      "month": "2024-07-01T00:00:00",
+      "source": "Leads",
+      "events": 28757.0
+    },
+    {
+      "month": "2024-08-01T00:00:00",
+      "source": "Contracts",
+      "events": 53571.0
+    },
+    {
+      "month": "2024-08-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 137542.0
+    },
+    {
+      "month": "2024-08-01T00:00:00",
+      "source": "Leads",
+      "events": 34170.0
+    },
+    {
+      "month": "2024-09-01T00:00:00",
+      "source": "Contracts",
+      "events": 48917.0
+    },
+    {
+      "month": "2024-09-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 138549.0
+    },
+    {
+      "month": "2024-09-01T00:00:00",
+      "source": "Leads",
+      "events": 35758.0
+    },
+    {
+      "month": "2024-10-01T00:00:00",
+      "source": "Contracts",
+      "events": 45122.0
+    },
+    {
+      "month": "2024-10-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 166954.0
+    },
+    {
+      "month": "2024-10-01T00:00:00",
+      "source": "Leads",
+      "events": 28912.0
+    },
+    {
+      "month": "2024-11-01T00:00:00",
+      "source": "Contracts",
+      "events": 48849.0
+    },
+    {
+      "month": "2024-11-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 188403.0
+    },
+    {
+      "month": "2024-11-01T00:00:00",
+      "source": "Leads",
+      "events": 30352.0
+    },
+    {
+      "month": "2024-12-01T00:00:00",
+      "source": "Contracts",
+      "events": 565954.0
+    },
+    {
+      "month": "2024-12-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 459213.0
+    },
+    {
+      "month": "2024-12-01T00:00:00",
+      "source": "Leads",
+      "events": 414816.0
+    },
+    {
+      "month": "2025-01-01T00:00:00",
+      "source": "Calls",
+      "events": 202695.0
+    },
+    {
+      "month": "2025-01-01T00:00:00",
+      "source": "Contracts",
+      "events": 661403.0
+    },
+    {
+      "month": "2025-01-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 460179.0
+    },
+    {
+      "month": "2025-01-01T00:00:00",
+      "source": "Leads",
+      "events": 560488.0
+    },
+    {
+      "month": "2025-02-01T00:00:00",
+      "source": "Calls",
+      "events": 189259.0
+    },
+    {
+      "month": "2025-02-01T00:00:00",
+      "source": "Contracts",
+      "events": 42969.0
+    },
+    {
+      "month": "2025-02-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 181471.0
+    },
+    {
+      "month": "2025-02-01T00:00:00",
+      "source": "Leads",
+      "events": 17596.0
+    },
+    {
+      "month": "2025-03-01T00:00:00",
+      "source": "Calls",
+      "events": 202587.0
+    },
+    {
+      "month": "2025-03-01T00:00:00",
+      "source": "Contracts",
+      "events": 53586.0
+    },
+    {
+      "month": "2025-03-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 249733.0
+    },
+    {
+      "month": "2025-03-01T00:00:00",
+      "source": "Leads",
+      "events": 24641.0
+    },
+    {
+      "month": "2025-04-01T00:00:00",
+      "source": "Calls",
+      "events": 198685.0
+    },
+    {
+      "month": "2025-04-01T00:00:00",
+      "source": "Contracts",
+      "events": 61583.0
+    },
+    {
+      "month": "2025-04-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 262083.0
+    },
+    {
+      "month": "2025-04-01T00:00:00",
+      "source": "Leads",
+      "events": 35326.0
+    },
+    {
+      "month": "2025-05-01T00:00:00",
+      "source": "Calls",
+      "events": 202608.0
+    },
+    {
+      "month": "2025-05-01T00:00:00",
+      "source": "Contracts",
+      "events": 61402.0
+    },
+    {
+      "month": "2025-05-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 273284.0
+    },
+    {
+      "month": "2025-05-01T00:00:00",
+      "source": "Leads",
+      "events": 37698.0
+    },
+    {
+      "month": "2025-06-01T00:00:00",
+      "source": "Calls",
+      "events": 198027.0
+    },
+    {
+      "month": "2025-06-01T00:00:00",
+      "source": "Contracts",
+      "events": 8407.0
+    },
+    {
+      "month": "2025-06-01T00:00:00",
+      "source": "Digital behavior",
+      "events": 29353.0
+    },
+    {
+      "month": "2025-06-01T00:00:00",
+      "source": "Leads",
+      "events": 5382.0
+    },
+    {
+      "month": "2025-07-01T00:00:00",
+      "source": "Calls",
+      "events": 202509.0
+    },
+    {
+      "month": "2025-08-01T00:00:00",
+      "source": "Calls",
+      "events": 202464.0
+    },
+    {
+      "month": "2025-09-01T00:00:00",
+      "source": "Calls",
+      "events": 198530.0
+    },
+    {
+      "month": "2025-10-01T00:00:00",
+      "source": "Calls",
+      "events": 202375.0
+    },
+    {
+      "month": "2025-11-01T00:00:00",
+      "source": "Calls",
+      "events": 198374.0
+    },
+    {
+      "month": "2025-12-01T00:00:00",
+      "source": "Calls",
+      "events": 202480.0
+    },
+    {
+      "month": "2026-01-01T00:00:00",
+      "source": "Calls",
+      "events": 202838.0
+    },
+    {
+      "month": "2026-02-01T00:00:00",
+      "source": "Calls",
+      "events": 189443.0
+    },
+    {
+      "month": "2026-03-01T00:00:00",
+      "source": "Calls",
+      "events": 202259.0
+    },
+    {
+      "month": "2026-04-01T00:00:00",
+      "source": "Calls",
+      "events": 198206.0
+    },
+    {
+      "month": "2026-05-01T00:00:00",
+      "source": "Calls",
+      "events": 202850.0
+    },
+    {
+      "month": "2026-06-01T00:00:00",
+      "source": "Calls",
+      "events": 198263.0
+    },
+    {
+      "month": "2026-07-01T00:00:00",
+      "source": "Calls",
+      "events": 202460.0
+    },
+    {
+      "month": "2026-08-01T00:00:00",
+      "source": "Calls",
+      "events": 203088.0
+    }
+  ],
+  "app_sessions": {
+    "n": 1000528,
+    "median": 0.0,
+    "p99": 1.73,
+    "above_p99": 9875
+  }
+}

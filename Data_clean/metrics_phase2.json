@@ -1,0 +1,1456 @@
+{
+  "product_risk": [
+    {
+      "PRODUCT": "TW",
+      "n_contracts": 98222,
+      "n_customers": 89539,
+      "delinquency_rate": 0.0426788295901122,
+      "avg_overdue_count": 0.08326036936735151,
+      "avg_overdue_if_delinquent": 1.9508587786259541,
+      "default_rate": 0.015699130541019325,
+      "bad_rate": 0.04968337032436725,
+      "fpd": 0.009722872676182525,
+      "spd": 0.01754189489116491,
+      "tpd": 0.024648245810510883,
+      "fourth_pd": 0.03134735598949319,
+      "median_credit": 21000000.0,
+      "median_dti": 0.2523
+    },
+    {
+      "PRODUCT": "CW",
+      "n_contracts": 22043,
+      "n_customers": 21919,
+      "delinquency_rate": 0.02771855010660981,
+      "avg_overdue_count": 0.05366783105747856,
+      "avg_overdue_if_delinquent": 1.9361702127659575,
+      "default_rate": 0.031120990790727214,
+      "bad_rate": 0.047679535453431926,
+      "fpd": 0.005761466225105476,
+      "spd": 0.010343419679716918,
+      "tpd": 0.015741958898516536,
+      "fourth_pd": 0.021820986254139637,
+      "median_credit": 20000000.0,
+      "median_dti": 0.166
+    },
+    {
+      "PRODUCT": "CC",
+      "n_contracts": 90518,
+      "n_customers": 80265,
+      "delinquency_rate": 0.022636381714134204,
+      "avg_overdue_count": 0.037296449324996137,
+      "avg_overdue_if_delinquent": 1.64763299170327,
+      "default_rate": 0.0037451114695419697,
+      "bad_rate": 0.0244702711062993,
+      "fpd": 0.007998409156189929,
+      "spd": 0.010682958085684615,
+      "tpd": 0.009611348019178506,
+      "fourth_pd": 0.009003734063943083,
+      "median_credit": 20000000.0,
+      "median_dti": NaN
+    },
+    {
+      "PRODUCT": "BNPL",
+      "n_contracts": 162650,
+      "n_customers": 162110,
+      "delinquency_rate": 0.022047340916077466,
+      "avg_overdue_count": 0.032782047340916075,
+      "avg_overdue_if_delinquent": 1.486893474623536,
+      "default_rate": 0.0009037811251152783,
+      "bad_rate": 0.022078081770673226,
+      "fpd": 0.012923455272056563,
+      "spd": 0.007888103289271442,
+      "tpd": 0.008816477098063326,
+      "fourth_pd": 0.0031540116815247463,
+      "median_credit": NaN,
+      "median_dti": NaN
+    },
+    {
+      "PRODUCT": "CL",
+      "n_contracts": 349517,
+      "n_customers": 162244,
+      "delinquency_rate": 0.013555849930046321,
+      "avg_overdue_count": 0.024631133821816965,
+      "avg_overdue_if_delinquent": 1.8170113972140143,
+      "default_rate": 0.011401448284346685,
+      "bad_rate": 0.021947430310972,
+      "fpd": 0.002589287502467691,
+      "spd": 0.004843827338870499,
+      "tpd": 0.007301504647842594,
+      "fourth_pd": 0.009896514332636181,
+      "median_credit": 20899000.0,
+      "median_dti": 0.16633333333333333
+    },
+    {
+      "PRODUCT": "CD",
+      "n_contracts": 2036089,
+      "n_customers": 746069,
+      "delinquency_rate": 0.019937733566656467,
+      "avg_overdue_count": 0.03562761745680076,
+      "avg_overdue_if_delinquent": 1.7869442049513486,
+      "default_rate": 0.004030766827972648,
+      "bad_rate": 0.021272645743874653,
+      "fpd": 0.0042660217701682,
+      "spd": 0.007470203905624951,
+      "tpd": 0.010490700553855946,
+      "fourth_pd": 0.013400691227151661,
+      "median_credit": 5243000.0,
+      "median_dti": 0.1074
+    }
+  ],
+  "portfolio_bad_rate": 0.022732907098121084,
+  "portfolio_delinq_rate": 0.020213914984922293,
+  "n_signed_obs": 2759040,
+  "tw_vs_cd": {
+    "z": 58.539972024982696,
+    "p": 0.0
+  },
+  "income_resilience": {
+    "n_contracts": 2759040,
+    "coverage_main": 0.9988050191370912,
+    "coverage_household": 0.010556932846207377,
+    "auc_main_low_income": 0.5375761180843502,
+    "auc_household_low_income": 0.4735958899315366,
+    "auc_main_on_household_subset": 0.46476632797215184,
+    "auc_dti_main": 0.533297245319728,
+    "auc_dti_household": 0.5220623028852971,
+    "household_gt_main_share": 0.9500360564541053,
+    "quintiles": [
+      {
+        "income_main_quintile": "(3.999, 7000000.0]",
+        "bad_rate": 0.027962045084193372,
+        "n": 589120
+      },
+      {
+        "income_main_quintile": "(7000000.0, 10000000.0]",
+        "bad_rate": 0.021893779010900866,
+        "n": 1140735
+      },
+      {
+        "income_main_quintile": "(10000000.0, 15000000.0]",
+        "bad_rate": 0.021003224438681432,
+        "n": 709891
+      },
+      {
+        "income_main_quintile": "(15000000.0, 90000000.0]",
+        "bad_rate": 0.019487526780317534,
+        "n": 315997
+      }
+    ]
+  },
+  "mitigation": {
+    "ins_confounding_share_higher": 1.0,
+    "r_ins_bad": 0.02040821014462844,
+    "r_dp_bad": -0.023895971273500415,
+    "r_dp_bad_tw": -0.0771954965669587,
+    "r_dp_bad_cd": -0.025051322497126882,
+    "dp_low_vs_high": {
+      "CD": {
+        "low_dp_<30%": 0.028544593348769087,
+        "high_dp_>=50%": 0.017199782084208887,
+        "ratio": 1.6595904069607874
+      },
+      "TW": {
+        "low_dp_<30%": 0.07135659979847944,
+        "high_dp_>=50%": 0.03262347077480743,
+        "ratio": 2.187277996600613
+      }
+    },
+    "insurance_table": [
+      {
+        "product": "CC",
+        "bad_rate_uninsured": 0.021986264835311374,
+        "bad_rate_insured": 0.02935202777959772,
+        "n_uninsured": 59992.0,
+        "n_insured": 30526.0,
+        "relative_diff": 0.33501656599971685,
+        "z": 6.780976482230943,
+        "p_value": 1.1936673871559833e-11
+      },
+      {
+        "product": "CD",
+        "bad_rate_uninsured": 0.019872383646871102,
+        "bad_rate_insured": 0.023255124136089936,
+        "n_uninsured": 1193264.0,
+        "n_insured": 842825.0,
+        "relative_diff": 0.17022318758179988,
+        "z": 16.47652643754476,
+        "p_value": 0.0
+      },
+      {
+        "product": "CL",
+        "bad_rate_uninsured": 0.014297880867691999,
+        "bad_rate_insured": 0.025004805535977444,
+        "n_uninsured": 99805.0,
+        "n_insured": 249712.0,
+        "relative_diff": 0.7488469632223047,
+        "z": 19.514324049247275,
+        "p_value": 0.0
+      },
+      {
+        "product": "CW",
+        "bad_rate_uninsured": 0.026573198565373327,
+        "bad_rate_insured": 0.05581746181406751,
+        "n_uninsured": 6134.0,
+        "n_insured": 15909.0,
+        "relative_diff": 1.100517243972332,
+        "z": 9.131478372687353,
+        "p_value": 0.0
+      },
+      {
+        "product": "TW",
+        "bad_rate_uninsured": 0.038039974210186976,
+        "bad_rate_insured": 0.0516122141390646,
+        "n_uninsured": 13959.0,
+        "n_insured": 84263.0,
+        "relative_diff": 0.356788883554054,
+        "z": 6.83522893476439,
+        "p_value": 8.18745071740068e-12
+      }
+    ],
+    "downpayment_table": [
+      {
+        "PRODUCT": "CD",
+        "bin": 0,
+        "n": 59600,
+        "bad_rate": 0.014429530201342283,
+        "label": "<10%",
+        "bad": 860.0
+      },
+      {
+        "PRODUCT": "CD",
+        "bin": 1,
+        "n": 459973,
+        "bad_rate": 0.030373521924112936,
+        "label": "10-30%",
+        "bad": 13971.0
+      },
+      {
+        "PRODUCT": "CD",
+        "bin": 2,
+        "n": 1092195,
+        "bad_rate": 0.019397635037699312,
+        "label": "30-50%",
+        "bad": 21186.0
+      },
+      {
+        "PRODUCT": "CD",
+        "bin": 3,
+        "n": 243287,
+        "bad_rate": 0.01945438926042082,
+        "label": "50-80%",
+        "bad": 4733.0
+      },
+      {
+        "PRODUCT": "CD",
+        "bin": 4,
+        "n": 143767,
+        "bad_rate": 0.014933886079559287,
+        "label": "80-120%",
+        "bad": 2147.0
+      },
+      {
+        "PRODUCT": "CD",
+        "bin": 5,
+        "n": 36963,
+        "bad_rate": 0.011173335497659823,
+        "label": "120%+",
+        "bad": 413.0
+      },
+      {
+        "PRODUCT": "TW",
+        "bin": 0,
+        "n": 2493,
+        "bad_rate": 0.06819093461692739,
+        "label": "<10%",
+        "bad": 170.0
+      },
+      {
+        "PRODUCT": "TW",
+        "bin": 1,
+        "n": 19341,
+        "bad_rate": 0.07176464505454734,
+        "label": "10-30%",
+        "bad": 1388.0000000000002
+      },
+      {
+        "PRODUCT": "TW",
+        "bin": 2,
+        "n": 25627,
+        "bad_rate": 0.06500956022944551,
+        "label": "30-50%",
+        "bad": 1666.0000000000002
+      },
+      {
+        "PRODUCT": "TW",
+        "bin": 3,
+        "n": 20789,
+        "bad_rate": 0.04237818076867574,
+        "label": "50-80%",
+        "bad": 881.0
+      },
+      {
+        "PRODUCT": "TW",
+        "bin": 4,
+        "n": 18224,
+        "bad_rate": 0.029850746268656716,
+        "label": "80-120%",
+        "bad": 544.0
+      },
+      {
+        "PRODUCT": "TW",
+        "bin": 5,
+        "n": 11748,
+        "bad_rate": 0.019662921348314606,
+        "label": "120%+",
+        "bad": 231.0
+      }
+    ]
+  },
+  "dti": {
+    "breakpoint": 0.225,
+    "coef": [
+      0.01913258746171184,
+      0.02123010688781926,
+      0.06432947255110483
+    ],
+    "slope_before_per_10pp": 0.0021230106887819263,
+    "slope_after_per_10pp": 0.00855595794389241,
+    "bad_below": 0.021559328060050485,
+    "n_below": 2205078,
+    "bad_above": 0.03084610531029289,
+    "n_above": 294786,
+    "bad_above_40": 0.04601218302875761,
+    "n_above_40": 35295,
+    "dti_ceiling": 0.325,
+    "portfolio_bad_with_dti": 0.02265443240112262,
+    "spearman": 0.9842364532019702,
+    "curve": [
+      {
+        "dti_bin": 0.0,
+        "n": 15650,
+        "bad_rate": 0.015527156549520766,
+        "mid": 0.0125
+      },
+      {
+        "dti_bin": 0.025,
+        "n": 139494,
+        "bad_rate": 0.018796507376661362,
+        "mid": 0.037500000000000006
+      },
+      {
+        "dti_bin": 0.05,
+        "n": 360835,
+        "bad_rate": 0.020535701913617026,
+        "mid": 0.0625
+      },
+      {
+        "dti_bin": 0.07500000000000001,
+        "n": 449027,
+        "bad_rate": 0.021646805203250585,
+        "mid": 0.08750000000000001
+      },
+      {
+        "dti_bin": 0.1,
+        "n": 405997,
+        "bad_rate": 0.021628238632305164,
+        "mid": 0.1125
+      },
+      {
+        "dti_bin": 0.125,
+        "n": 318213,
+        "bad_rate": 0.022158114219092244,
+        "mid": 0.1375
+      },
+      {
+        "dti_bin": 0.15000000000000002,
+        "n": 230623,
+        "bad_rate": 0.021819159407344454,
+        "mid": 0.16250000000000003
+      },
+      {
+        "dti_bin": 0.17500000000000002,
+        "n": 166609,
+        "bad_rate": 0.023186022363737853,
+        "mid": 0.18750000000000003
+      },
+      {
+        "dti_bin": 0.2,
+        "n": 118630,
+        "bad_rate": 0.023754530894377478,
+        "mid": 0.21250000000000002
+      },
+      {
+        "dti_bin": 0.225,
+        "n": 78898,
+        "bad_rate": 0.02534918502370149,
+        "mid": 0.23750000000000002
+      },
+      {
+        "dti_bin": 0.25,
+        "n": 61416,
+        "bad_rate": 0.02647518561938257,
+        "mid": 0.2625
+      },
+      {
+        "dti_bin": 0.275,
+        "n": 40683,
+        "bad_rate": 0.02799695204385124,
+        "mid": 0.28750000000000003
+      },
+      {
+        "dti_bin": 0.30000000000000004,
+        "n": 29273,
+        "bad_rate": 0.031359956273699315,
+        "mid": 0.31250000000000006
+      },
+      {
+        "dti_bin": 0.325,
+        "n": 21690,
+        "bad_rate": 0.03476256339326879,
+        "mid": 0.3375
+      },
+      {
+        "dti_bin": 0.35000000000000003,
+        "n": 15942,
+        "bad_rate": 0.03462551750094091,
+        "mid": 0.36250000000000004
+      },
+      {
+        "dti_bin": 0.375,
+        "n": 11589,
+        "bad_rate": 0.04141858659073259,
+        "mid": 0.3875
+      },
+      {
+        "dti_bin": 0.4,
+        "n": 8611,
+        "bad_rate": 0.040994077342933456,
+        "mid": 0.41250000000000003
+      },
+      {
+        "dti_bin": 0.42500000000000004,
+        "n": 6498,
+        "bad_rate": 0.04139735303170206,
+        "mid": 0.43750000000000006
+      },
+      {
+        "dti_bin": 0.45,
+        "n": 4735,
+        "bad_rate": 0.04139387539598733,
+        "mid": 0.4625
+      },
+      {
+        "dti_bin": 0.47500000000000003,
+        "n": 3516,
+        "bad_rate": 0.03754266211604096,
+        "mid": 0.48750000000000004
+      },
+      {
+        "dti_bin": 0.5,
+        "n": 2891,
+        "bad_rate": 0.05050155655482532,
+        "mid": 0.5125
+      },
+      {
+        "dti_bin": 0.525,
+        "n": 2179,
+        "bad_rate": 0.05323542909591556,
+        "mid": 0.5375
+      },
+      {
+        "dti_bin": 0.55,
+        "n": 1664,
+        "bad_rate": 0.051682692307692304,
+        "mid": 0.5625
+      },
+      {
+        "dti_bin": 0.5750000000000001,
+        "n": 1205,
+        "bad_rate": 0.05228215767634855,
+        "mid": 0.5875
+      },
+      {
+        "dti_bin": 0.6000000000000001,
+        "n": 839,
+        "bad_rate": 0.058402860548271755,
+        "mid": 0.6125
+      },
+      {
+        "dti_bin": 0.625,
+        "n": 684,
+        "bad_rate": 0.07309941520467836,
+        "mid": 0.6375
+      },
+      {
+        "dti_bin": 0.65,
+        "n": 554,
+        "bad_rate": 0.06859205776173286,
+        "mid": 0.6625
+      },
+      {
+        "dti_bin": 0.675,
+        "n": 426,
+        "bad_rate": 0.05868544600938967,
+        "mid": 0.6875
+      },
+      {
+        "dti_bin": 0.7,
+        "n": 1493,
+        "bad_rate": 0.06764902880107167,
+        "mid": 0.725
+      }
+    ]
+  },
+  "scorecard": [
+    {
+      "bucket": "[0, 1)",
+      "lo": 0.0,
+      "hi": 1.0,
+      "n": 215834,
+      "bad": 4389.0,
+      "bad_rate": 0.02033507232410093,
+      "bad_rate_monotone": 0.02033507232410093,
+      "log_odds": -3.8748635066807546,
+      "points": 100.0,
+      "factor": "delinq_sev",
+      "pillar": "Repayment History",
+      "factor_label": "# past delinquent contracts (default = 3+)",
+      "pillar_weight": 0.4
+    },
+    {
+      "bucket": "[1, 2)",
+      "lo": 1.0,
+      "hi": 2.0,
+      "n": 6708,
+      "bad": 487.0,
+      "bad_rate": 0.07259988073941562,
+      "bad_rate_monotone": 0.07259988073941562,
+      "log_odds": -2.54742182143243,
+      "points": 57.2,
+      "factor": "delinq_sev",
+      "pillar": "Repayment History",
+      "factor_label": "# past delinquent contracts (default = 3+)",
+      "pillar_weight": 0.4
+    },
+    {
+      "bucket": "[2, 3)",
+      "lo": 2.0,
+      "hi": 3.0,
+      "n": 421,
+      "bad": 64.0,
+      "bad_rate": 0.15201900237529692,
+      "bad_rate_monotone": 0.15201900237529692,
+      "log_odds": -1.718852698419967,
+      "points": 30.4,
+      "factor": "delinq_sev",
+      "pillar": "Repayment History",
+      "factor_label": "# past delinquent contracts (default = 3+)",
+      "pillar_weight": 0.4
+    },
+    {
+      "bucket": "[3, 99)",
+      "lo": 3.0,
+      "hi": 99.0,
+      "n": 73,
+      "bad": 23.0,
+      "bad_rate": 0.3150684931506849,
+      "bad_rate_monotone": 0.3150684931506849,
+      "log_odds": -0.7765287894989966,
+      "points": 0.0,
+      "factor": "delinq_sev",
+      "pillar": "Repayment History",
+      "factor_label": "# past delinquent contracts (default = 3+)",
+      "pillar_weight": 0.4
+    },
+    {
+      "bucket": "Missing",
+      "lo": NaN,
+      "hi": NaN,
+      "n": 110677,
+      "bad": 5375.0,
+      "bad_rate": 0.048564742448747256,
+      "bad_rate_monotone": 0.048564742448747256,
+      "log_odds": -2.9750738382981585,
+      "points": 71.0,
+      "factor": "delinq_sev",
+      "pillar": "Repayment History",
+      "factor_label": "# past delinquent contracts (default = 3+)",
+      "pillar_weight": 0.4
+    },
+    {
+      "bucket": "[0, 1)",
+      "lo": 0.0,
+      "hi": 1.0,
+      "n": 16945,
+      "bad": 669.0,
+      "bad_rate": 0.03948067276482738,
+      "bad_rate_monotone": 0.03948067276482738,
+      "log_odds": -3.191662848993352,
+      "points": 14.8,
+      "factor": "clean_track",
+      "pillar": "Repayment History",
+      "factor_label": "# loans completed with no overdue",
+      "pillar_weight": 0.4
+    },
+    {
+      "bucket": "[1, 2)",
+      "lo": 1.0,
+      "hi": 2.0,
+      "n": 64452,
+      "bad": 1700.0,
+      "bad_rate": 0.026376217960652888,
+      "bad_rate_monotone": 0.026376217960652888,
+      "log_odds": -3.6085621989517653,
+      "points": 43.4,
+      "factor": "clean_track",
+      "pillar": "Repayment History",
+      "factor_label": "# loans completed with no overdue",
+      "pillar_weight": 0.4
+    },
+    {
+      "bucket": "[2, 3)",
+      "lo": 2.0,
+      "hi": 3.0,
+      "n": 45394,
+      "bad": 1008.0,
+      "bad_rate": 0.02220557782966912,
+      "bad_rate_monotone": 0.02220557782966912,
+      "log_odds": -3.7849559347513604,
+      "points": 55.5,
+      "factor": "clean_track",
+      "pillar": "Repayment History",
+      "factor_label": "# loans completed with no overdue",
+      "pillar_weight": 0.4
+    },
+    {
+      "bucket": "[3, 5)",
+      "lo": 3.0,
+      "hi": 5.0,
+      "n": 54165,
+      "bad": 1001.0,
+      "bad_rate": 0.01848056863288101,
+      "bad_rate_monotone": 0.01848056863288101,
+      "log_odds": -3.972381975226003,
+      "points": 68.3,
+      "factor": "clean_track",
+      "pillar": "Repayment History",
+      "factor_label": "# loans completed with no overdue",
+      "pillar_weight": 0.4
+    },
+    {
+      "bucket": "[5, 8)",
+      "lo": 5.0,
+      "hi": 8.0,
+      "n": 31152,
+      "bad": 457.0,
+      "bad_rate": 0.01467000513610683,
+      "bad_rate_monotone": 0.01467000513610683,
+      "log_odds": -4.207171662967392,
+      "points": 84.4,
+      "factor": "clean_track",
+      "pillar": "Repayment History",
+      "factor_label": "# loans completed with no overdue",
+      "pillar_weight": 0.4
+    },
+    {
+      "bucket": "[8, 10000)",
+      "lo": 8.0,
+      "hi": 10000.0,
+      "n": 10928,
+      "bad": 128.0,
+      "bad_rate": 0.01171303074670571,
+      "bad_rate_monotone": 0.01171303074670571,
+      "log_odds": -4.435271149192694,
+      "points": 100.0,
+      "factor": "clean_track",
+      "pillar": "Repayment History",
+      "factor_label": "# loans completed with no overdue",
+      "pillar_weight": 0.4
+    },
+    {
+      "bucket": "Missing",
+      "lo": NaN,
+      "hi": NaN,
+      "n": 110677,
+      "bad": 5375.0,
+      "bad_rate": 0.048564742448747256,
+      "bad_rate_monotone": 0.048564742448747256,
+      "log_odds": -2.9750738382981585,
+      "points": 0.0,
+      "factor": "clean_track",
+      "pillar": "Repayment History",
+      "factor_label": "# loans completed with no overdue",
+      "pillar_weight": 0.4
+    },
+    {
+      "bucket": "[0, 0.1)",
+      "lo": 0.0,
+      "hi": 0.1,
+      "n": 660503,
+      "bad": 12960.0,
+      "bad_rate": 0.019621409743786174,
+      "bad_rate_monotone": 0.019621409743786174,
+      "log_odds": -3.911317509710976,
+      "points": 100.0,
+      "factor": "dti",
+      "pillar": "Debt Burden (DTI)",
+      "factor_label": "Debt-to-income (open instalments / income)",
+      "pillar_weight": 0.15
+    },
+    {
+      "bucket": "[0.1, 0.2)",
+      "lo": 0.1,
+      "hi": 0.2,
+      "n": 781910,
+      "bad": 15650.0,
+      "bad_rate": 0.02001509125091123,
+      "bad_rate_monotone": 0.02001509125091123,
+      "log_odds": -3.8910506207500632,
+      "points": 98.5,
+      "factor": "dti",
+      "pillar": "Debt Burden (DTI)",
+      "factor_label": "Debt-to-income (open instalments / income)",
+      "pillar_weight": 0.15
+    },
+    {
+      "bucket": "[0.2, 0.25)",
+      "lo": 0.2,
+      "hi": 0.25,
+      "n": 142261,
+      "bad": 3156.0,
+      "bad_rate": 0.02218457623663548,
+      "bad_rate_monotone": 0.02218457623663548,
+      "log_odds": -3.7859236406627983,
+      "points": 90.5,
+      "factor": "dti",
+      "pillar": "Debt Burden (DTI)",
+      "factor_label": "Debt-to-income (open instalments / income)",
+      "pillar_weight": 0.15
+    },
+    {
+      "bucket": "[0.25, 0.3)",
+      "lo": 0.25,
+      "hi": 0.3,
+      "n": 73289,
+      "bad": 1879.0,
+      "bad_rate": 0.025638226746169276,
+      "bad_rate_monotone": 0.025638226746169276,
+      "log_odds": -3.6376981951296905,
+      "points": 79.2,
+      "factor": "dti",
+      "pillar": "Debt Burden (DTI)",
+      "factor_label": "Debt-to-income (open instalments / income)",
+      "pillar_weight": 0.15
+    },
+    {
+      "bucket": "[0.3, 0.35)",
+      "lo": 0.3,
+      "hi": 0.35,
+      "n": 37328,
+      "bad": 1165.0,
+      "bad_rate": 0.031209815687955424,
+      "bad_rate_monotone": 0.031209815687955424,
+      "log_odds": -3.4353154096667096,
+      "points": 63.9,
+      "factor": "dti",
+      "pillar": "Debt Burden (DTI)",
+      "factor_label": "Debt-to-income (open instalments / income)",
+      "pillar_weight": 0.15
+    },
+    {
+      "bucket": "[0.35, 0.4)",
+      "lo": 0.35,
+      "hi": 0.4,
+      "n": 20490,
+      "bad": 786.0,
+      "bad_rate": 0.0383601756954612,
+      "bad_rate_monotone": 0.0383601756954612,
+      "log_odds": -3.2216201473711674,
+      "points": 47.7,
+      "factor": "dti",
+      "pillar": "Debt Burden (DTI)",
+      "factor_label": "Debt-to-income (open instalments / income)",
+      "pillar_weight": 0.15
+    },
+    {
+      "bucket": "[0.4, 0.5)",
+      "lo": 0.4,
+      "hi": 0.5,
+      "n": 18031,
+      "bad": 772.0,
+      "bad_rate": 0.042815151683212246,
+      "bad_rate_monotone": 0.042815151683212246,
+      "log_odds": -3.107104475506627,
+      "points": 39.0,
+      "factor": "dti",
+      "pillar": "Debt Burden (DTI)",
+      "factor_label": "Debt-to-income (open instalments / income)",
+      "pillar_weight": 0.15
+    },
+    {
+      "bucket": "[0.5, 0.6)",
+      "lo": 0.5,
+      "hi": 0.6,
+      "n": 6392,
+      "bad": 356.0,
+      "bad_rate": 0.05569461827284105,
+      "bad_rate_monotone": 0.05569461827284105,
+      "log_odds": -2.830566089035709,
+      "points": 18.0,
+      "factor": "dti",
+      "pillar": "Debt Burden (DTI)",
+      "factor_label": "Debt-to-income (open instalments / income)",
+      "pillar_weight": 0.15
+    },
+    {
+      "bucket": "[0.6, 1000)",
+      "lo": 0.6,
+      "hi": 1000.0,
+      "n": 3392,
+      "bad": 236.0,
+      "bad_rate": 0.0695754716981132,
+      "bad_rate_monotone": 0.0695754716981132,
+      "log_odds": -2.593228876940155,
+      "points": 0.0,
+      "factor": "dti",
+      "pillar": "Debt Burden (DTI)",
+      "factor_label": "Debt-to-income (open instalments / income)",
+      "pillar_weight": 0.15
+    },
+    {
+      "bucket": "[0, 0.1)",
+      "lo": 0.0,
+      "hi": 0.1,
+      "n": 5498,
+      "bad": 240.0,
+      "bad_rate": 0.04365223717715533,
+      "bad_rate_monotone": 0.048175439157329414,
+      "log_odds": -2.983531402844757,
+      "points": 0.0,
+      "factor": "dp_ratio",
+      "pillar": "Down-payment Buffer",
+      "factor_label": "Down-payment ratio (CD/TW)",
+      "pillar_weight": 0.15
+    },
+    {
+      "bucket": "[0.1, 0.3)",
+      "lo": 0.1,
+      "hi": 0.3,
+      "n": 57065,
+      "bad": 2774.0,
+      "bad_rate": 0.0486112328046964,
+      "bad_rate_monotone": 0.048175439157329414,
+      "log_odds": -2.983531402844757,
+      "points": 0.0,
+      "factor": "dp_ratio",
+      "pillar": "Down-payment Buffer",
+      "factor_label": "Down-payment ratio (CD/TW)",
+      "pillar_weight": 0.15
+    },
+    {
+      "bucket": "[0.3, 0.5)",
+      "lo": 0.3,
+      "hi": 0.5,
+      "n": 160022,
+      "bad": 4359.0,
+      "bad_rate": 0.027240004499381337,
+      "bad_rate_monotone": 0.027240004499381337,
+      "log_odds": -3.5754507408632636,
+      "points": 62.7,
+      "factor": "dp_ratio",
+      "pillar": "Down-payment Buffer",
+      "factor_label": "Down-payment ratio (CD/TW)",
+      "pillar_weight": 0.15
+    },
+    {
+      "bucket": "[0.5, 0.8)",
+      "lo": 0.5,
+      "hi": 0.8,
+      "n": 63765,
+      "bad": 1582.0,
+      "bad_rate": 0.024809848663059672,
+      "bad_rate_monotone": 0.02589865345353612,
+      "log_odds": -3.627324372982272,
+      "points": 68.2,
+      "factor": "dp_ratio",
+      "pillar": "Down-payment Buffer",
+      "factor_label": "Down-payment ratio (CD/TW)",
+      "pillar_weight": 0.15
+    },
+    {
+      "bucket": "[0.8, 1.2)",
+      "lo": 0.8,
+      "hi": 1.2,
+      "n": 23421,
+      "bad": 676.0,
+      "bad_rate": 0.02886298620895777,
+      "bad_rate_monotone": 0.02589865345353612,
+      "log_odds": -3.627324372982272,
+      "points": 68.2,
+      "factor": "dp_ratio",
+      "pillar": "Down-payment Buffer",
+      "factor_label": "Down-payment ratio (CD/TW)",
+      "pillar_weight": 0.15
+    },
+    {
+      "bucket": "[1.2, 1000)",
+      "lo": 1.2,
+      "hi": 1000.0,
+      "n": 7925,
+      "bad": 153.0,
+      "bad_rate": 0.019305993690851734,
+      "bad_rate_monotone": 0.019305993690851734,
+      "log_odds": -3.9278448891048954,
+      "points": 100.0,
+      "factor": "dp_ratio",
+      "pillar": "Down-payment Buffer",
+      "factor_label": "Down-payment ratio (CD/TW)",
+      "pillar_weight": 0.15
+    },
+    {
+      "bucket": "Missing",
+      "lo": NaN,
+      "hi": NaN,
+      "n": 16017,
+      "bad": 554.0,
+      "bad_rate": 0.034588249984391584,
+      "bad_rate_monotone": 0.034588249984391584,
+      "log_odds": -3.329040665728147,
+      "points": 36.6,
+      "factor": "dp_ratio",
+      "pillar": "Down-payment Buffer",
+      "factor_label": "Down-payment ratio (CD/TW)",
+      "pillar_weight": 0.15
+    },
+    {
+      "bucket": "[0, 0.0001)",
+      "lo": 0.0,
+      "hi": 0.0001,
+      "n": 163721,
+      "bad": 3200.0,
+      "bad_rate": 0.01954544621642917,
+      "bad_rate_monotone": 0.019231937273957098,
+      "log_odds": -3.9317637053763446,
+      "points": 100.0,
+      "factor": "reject_rate",
+      "pillar": "Credit Standing & Buffer",
+      "factor_label": "Share of applications rejected",
+      "pillar_weight": 0.3
+    },
+    {
+      "bucket": "[0.0001, 0.2)",
+      "lo": 0.0001,
+      "hi": 0.2,
+      "n": 17384,
+      "bad": 283.0,
+      "bad_rate": 0.016279337321675105,
+      "bad_rate_monotone": 0.019231937273957098,
+      "log_odds": -3.9317637053763446,
+      "points": 100.0,
+      "factor": "reject_rate",
+      "pillar": "Credit Standing & Buffer",
+      "factor_label": "Share of applications rejected",
+      "pillar_weight": 0.3
+    },
+    {
+      "bucket": "[0.2, 0.4)",
+      "lo": 0.2,
+      "hi": 0.4,
+      "n": 25308,
+      "bad": 681.0,
+      "bad_rate": 0.026908487434803223,
+      "bad_rate_monotone": 0.026908487434803223,
+      "log_odds": -3.5880363748668636,
+      "points": 72.7,
+      "factor": "reject_rate",
+      "pillar": "Credit Standing & Buffer",
+      "factor_label": "Share of applications rejected",
+      "pillar_weight": 0.3
+    },
+    {
+      "bucket": "[0.4, 0.6)",
+      "lo": 0.4,
+      "hi": 0.6,
+      "n": 14473,
+      "bad": 602.0,
+      "bad_rate": 0.04159469356733227,
+      "bad_rate_monotone": 0.04159469356733227,
+      "log_odds": -3.137298163454469,
+      "points": 37.0,
+      "factor": "reject_rate",
+      "pillar": "Credit Standing & Buffer",
+      "factor_label": "Share of applications rejected",
+      "pillar_weight": 0.3
+    },
+    {
+      "bucket": "[0.6, 1.01)",
+      "lo": 0.6,
+      "hi": 1.01,
+      "n": 18932,
+      "bad": 1225.0,
+      "bad_rate": 0.06470526093386858,
+      "bad_rate_monotone": 0.06470526093386858,
+      "log_odds": -2.6710191976273894,
+      "points": 0.0,
+      "factor": "reject_rate",
+      "pillar": "Credit Standing & Buffer",
+      "factor_label": "Share of applications rejected",
+      "pillar_weight": 0.3
+    },
+    {
+      "bucket": "Missing",
+      "lo": NaN,
+      "hi": NaN,
+      "n": 93895,
+      "bad": 4347.0,
+      "bad_rate": 0.046296394909207096,
+      "bad_rate_monotone": 0.046296394909207096,
+      "log_odds": -3.02528884235898,
+      "points": 28.1,
+      "factor": "reject_rate",
+      "pillar": "Credit Standing & Buffer",
+      "factor_label": "Share of applications rejected",
+      "pillar_weight": 0.3
+    },
+    {
+      "bucket": "[0, 6)",
+      "lo": 0.0,
+      "hi": 6.0,
+      "n": 10556,
+      "bad": 375.0,
+      "bad_rate": 0.03552482000757863,
+      "bad_rate_monotone": 0.03552482000757863,
+      "log_odds": -3.3013524911367846,
+      "points": 33.3,
+      "factor": "history_months",
+      "pillar": "Credit Standing & Buffer",
+      "factor_label": "Months since first signed loan",
+      "pillar_weight": 0.3
+    },
+    {
+      "bucket": "[6, 12)",
+      "lo": 6.0,
+      "hi": 12.0,
+      "n": 13485,
+      "bad": 358.0,
+      "bad_rate": 0.026548016314423432,
+      "bad_rate_monotone": 0.026548016314423432,
+      "log_odds": -3.601893470402707,
+      "points": 64.0,
+      "factor": "history_months",
+      "pillar": "Credit Standing & Buffer",
+      "factor_label": "Months since first signed loan",
+      "pillar_weight": 0.3
+    },
+    {
+      "bucket": "[12, 24)",
+      "lo": 12.0,
+      "hi": 24.0,
+      "n": 20211,
+      "bad": 511.0,
+      "bad_rate": 0.025283261590223146,
+      "bad_rate_monotone": 0.026380272952853598,
+      "log_odds": -3.6084043092335265,
+      "points": 64.6,
+      "factor": "history_months",
+      "pillar": "Credit Standing & Buffer",
+      "factor_label": "Months since first signed loan",
+      "pillar_weight": 0.3
+    },
+    {
+      "bucket": "[24, 48)",
+      "lo": 24.0,
+      "hi": 48.0,
+      "n": 44269,
+      "bad": 1190.0,
+      "bad_rate": 0.026881113194334637,
+      "bad_rate_monotone": 0.026380272952853598,
+      "log_odds": -3.6084043092335265,
+      "points": 64.6,
+      "factor": "history_months",
+      "pillar": "Credit Standing & Buffer",
+      "factor_label": "Months since first signed loan",
+      "pillar_weight": 0.3
+    },
+    {
+      "bucket": "[48, 96)",
+      "lo": 48.0,
+      "hi": 96.0,
+      "n": 92696,
+      "bad": 1700.0,
+      "bad_rate": 0.018339518425822043,
+      "bad_rate_monotone": 0.018800877225588226,
+      "log_odds": -3.9548718886676584,
+      "points": 100.0,
+      "factor": "history_months",
+      "pillar": "Credit Standing & Buffer",
+      "factor_label": "Months since first signed loan",
+      "pillar_weight": 0.3
+    },
+    {
+      "bucket": "[96, 10000)",
+      "lo": 96.0,
+      "hi": 10000.0,
+      "n": 41819,
+      "bad": 829.0,
+      "bad_rate": 0.01982352519189842,
+      "bad_rate_monotone": 0.018800877225588226,
+      "log_odds": -3.9548718886676584,
+      "points": 100.0,
+      "factor": "history_months",
+      "pillar": "Credit Standing & Buffer",
+      "factor_label": "Months since first signed loan",
+      "pillar_weight": 0.3
+    },
+    {
+      "bucket": "Missing",
+      "lo": NaN,
+      "hi": NaN,
+      "n": 110677,
+      "bad": 5375.0,
+      "bad_rate": 0.048564742448747256,
+      "bad_rate_monotone": 0.048564742448747256,
+      "log_odds": -2.9750738382981585,
+      "points": 0.0,
+      "factor": "history_months",
+      "pillar": "Credit Standing & Buffer",
+      "factor_label": "Months since first signed loan",
+      "pillar_weight": 0.3
+    }
+  ],
+  "calibration": {
+    "b0": -1.9461583718924662,
+    "b1": -2.514355255242302,
+    "p_bar": 0.03085411013328136,
+    "pd_at_80": 0.0187498333218096,
+    "pd_at_50": 0.03904037605101557,
+    "points_to_double_odds": 27.567591298595094
+  },
+  "validation": {
+    "n_dev": 667010,
+    "n_holdout": 333297,
+    "bad_rate_dev": 0.03085411013328136,
+    "gini_holdout": 0.30170974548534457,
+    "gini_holdout_without_policy_caps": 0.29996434703810815,
+    "policy_capped_share_holdout": 0.002022220422026001,
+    "policy_capped_bad_rate_holdout": 0.14688427299703263,
+    "auc_holdout": 0.6508548727426723,
+    "ks_holdout": 0.23532465851671613,
+    "tier_table": [
+      {
+        "tier": "High",
+        "n": 102917,
+        "bad_rate": 0.01353517883342888,
+        "share": 0.30878465752767054
+      },
+      {
+        "tier": "Medium",
+        "n": 117102,
+        "bad_rate": 0.028325733121552153,
+        "share": 0.3513442965283216
+      },
+      {
+        "tier": "Low",
+        "n": 113278,
+        "bad_rate": 0.048835607973304614,
+        "share": 0.3398710459440079
+      }
+    ],
+    "decile_table": [
+      {
+        "decile": 1,
+        "fhs_min": 14.2,
+        "fhs_max": 33.4,
+        "n": 33330,
+        "bad_rate": 0.06009600960096009,
+        "pd_predicted": 0.06077958292033695
+      },
+      {
+        "decile": 2,
+        "fhs_min": 33.4,
+        "fhs_max": 42.2,
+        "n": 33330,
+        "bad_rate": 0.04815481548154815,
+        "pd_predicted": 0.05187347231096575
+      },
+      {
+        "decile": 3,
+        "fhs_min": 42.2,
+        "fhs_max": 43.6,
+        "n": 33329,
+        "bad_rate": 0.04296558552611839,
+        "pd_predicted": 0.04630847852181219
+      },
+      {
+        "decile": 4,
+        "fhs_min": 43.6,
+        "fhs_max": 63.6,
+        "n": 33330,
+        "bad_rate": 0.03993399339933994,
+        "pd_predicted": 0.03630088863877577
+      },
+      {
+        "decile": 5,
+        "fhs_min": 63.6,
+        "fhs_max": 71.7,
+        "n": 33330,
+        "bad_rate": 0.031143114311431144,
+        "pd_predicted": 0.025191840657239332
+      },
+      {
+        "decile": 6,
+        "fhs_min": 71.7,
+        "fhs_max": 77.2,
+        "n": 33329,
+        "bad_rate": 0.025233280326442436,
+        "pd_predicted": 0.021422111786128996
+      },
+      {
+        "decile": 7,
+        "fhs_min": 77.2,
+        "fhs_max": 80.0,
+        "n": 33330,
+        "bad_rate": 0.019321932193219322,
+        "pd_predicted": 0.01950144808700256
+      },
+      {
+        "decile": 8,
+        "fhs_min": 80.0,
+        "fhs_max": 83.7,
+        "n": 33329,
+        "bad_rate": 0.016922199885985176,
+        "pd_predicted": 0.017847623320891137
+      },
+      {
+        "decile": 9,
+        "fhs_min": 83.7,
+        "fhs_max": 87.8,
+        "n": 33330,
+        "bad_rate": 0.013831383138313832,
+        "pd_predicted": 0.016245417382091204
+      },
+      {
+        "decile": 10,
+        "fhs_min": 87.8,
+        "fhs_max": 100.0,
+        "n": 33330,
+        "bad_rate": 0.009690969096909691,
+        "pd_predicted": 0.014490864003274656
+      }
+    ],
+    "factor_gini": {
+      "delinq_sev": 0.227856978726374,
+      "clean_track": 0.2396826499536162,
+      "dti": 0.0207559387806191,
+      "dp_ratio": 0.11372087945145326,
+      "reject_rate": 0.2396215077503574,
+      "history_months": 0.22064977204194447
+    },
+    "pillar_gini": {
+      "Repayment History": 0.2553155869979584,
+      "Debt Burden (DTI)": 0.0207559387806191,
+      "Down-payment Buffer": 0.11372087945145326,
+      "Credit Standing & Buffer": 0.25821734326160395
+    },
+    "ablation_gini_without_pillar": {
+      "Repayment History": 0.2836653461385754,
+      "Debt Burden (DTI)": 0.2858646771560771,
+      "Down-payment Buffer": 0.2982662413686541,
+      "Credit Standing & Buffer": 0.2875193607179669
+    },
+    "equal_weight_gini": 0.2894614887671183,
+    "dti_gini_within_track_strata": {
+      "0 clean loans": {
+        "n": 16761,
+        "gini_dti": -0.05865604056058338
+      },
+      "1-2": {
+        "n": 109451,
+        "gini_dti": 0.06718583368059639
+      },
+      "3-5": {
+        "n": 68965,
+        "gini_dti": 0.13289646837652747
+      },
+      "6+": {
+        "n": 27369,
+        "gini_dti": 0.126708564557231
+      }
+    },
+    "dti_gini_raw_customer_level": 0.024078618567923815
+  },
+  "pillar_weights": {
+    "Repayment History": 0.4,
+    "Debt Burden (DTI)": 0.15,
+    "Down-payment Buffer": 0.15,
+    "Credit Standing & Buffer": 0.3
+  },
+  "tier_counts": {
+    "High": 309703,
+    "Medium": 465488,
+    "Low": 225337
+  },
+  "tier_share": {
+    "High": 0.30953956311067754,
+    "Medium": 0.46524235203812386,
+    "Low": 0.22521808485119857
+  },
+  "score_mean": 67.66568571794095,
+  "score_median": 71.7,
+  "thin_file_customers": 182420,
+  "low_tier_thin_file_share": 0.8095430399801187,
+  "policy_caps_population": {
+    "none": 974483,
+    "Overdue on a loan still open": 14265,
+    "Past write-off / debt sold": 10017,
+    "2+ loans with overdue history": 1763
+  },
+  "thin_file_tier_mix": {
+    "Low": 1.0
+  },
+  "collection_validation": {
+    "n_called_after_snapshot": 351792,
+    "collection_rate_by_tier": [
+      {
+        "fh_short": "High",
+        "mean": 0.09380842099388934,
+        "size": 143356
+      },
+      {
+        "fh_short": "Medium",
+        "mean": 0.10314182792466364,
+        "size": 189603
+      },
+      {
+        "fh_short": "Low",
+        "mean": 0.14469282642170658,
+        "size": 18833
+      }
+    ],
+    "auc": 0.5243892317926728,
+    "n_open_called": 284860,
+    "collection_rate_by_tier_open_debt": [
+      {
+        "fh_short": "High",
+        "mean": 0.10079609766151679,
+        "size": 116443
+      },
+      {
+        "fh_short": "Medium",
+        "mean": 0.10591999203281484,
+        "size": 160659
+      },
+      {
+        "fh_short": "Low",
+        "mean": 0.15326114978087135,
+        "size": 7758
+      }
+    ],
+    "auc_open_debt": 0.5096420740777151
+  },
+  "fairness": {
+    "by_gender": [
+      {
+        "NAME_GENDER": "Female",
+        "mean_fhs": 68.28354893364168,
+        "low_share": 0.19848678293826685,
+        "n": 498144
+      },
+      {
+        "NAME_GENDER": "Male",
+        "mean_fhs": 67.05591766450675,
+        "low_share": 0.2516527815103467,
+        "n": 502335
+      }
+    ],
+    "by_age": [
+      {
+        "age_band": "<25",
+        "mean_fhs": 55.261152048272045,
+        "low_share": 0.4259375368589644,
+        "n": 161087
+      },
+      {
+        "age_band": "25-34",
+        "mean_fhs": 69.61722158624738,
+        "low_share": 0.189176392757886,
+        "n": 308363
+      },
+      {
+        "age_band": "35-44",
+        "mean_fhs": 71.08070029563932,
+        "low_share": 0.17315926294059178,
+        "n": 313896
+      },
+      {
+        "age_band": "45-54",
+        "mean_fhs": 69.71238245710896,
+        "low_share": 0.19467041002719418,
+        "n": 170257
+      },
+      {
+        "age_band": "55+",
+        "mean_fhs": 67.16714425824058,
+        "low_share": 0.2318024817705002,
+        "n": 46902
+      }
+    ],
+    "by_gender_excl_thin_file": [
+      {
+        "NAME_GENDER": "Female",
+        "mean_fhs": 74.1511678200692,
+        "low_share": 0.045888374849452296,
+        "n": 418472
+      },
+      {
+        "NAME_GENDER": "Male",
+        "mean_fhs": 74.83747144269145,
+        "low_share": 0.05933914697161159,
+        "n": 399635
+      }
+    ],
+    "by_age_excl_thin_file": [
+      {
+        "age_band": "<25",
+        "mean_fhs": 66.51832813138817,
+        "low_share": 0.0778696289500713,
+        "n": 100283
+      },
+      {
+        "age_band": "25-34",
+        "mean_fhs": 75.40073903390615,
+        "low_share": 0.04457513192939819,
+        "n": 261693
+      },
+      {
+        "age_band": "35-44",
+        "mean_fhs": 76.21033259732543,
+        "low_share": 0.048048356452784234,
+        "n": 272642
+      },
+      {
+        "age_band": "45-54",
+        "mean_fhs": 75.32451377158813,
+        "low_share": 0.054686476610707024,
+        "n": 145045
+      },
+      {
+        "age_band": "55+",
+        "mean_fhs": 73.66098074921956,
+        "low_share": 0.06269510926118627,
+        "n": 38440
+      }
+    ],
+    "thin_file_share_by_age": {
+      "<25": 0.37746062686622756,
+      "25-34": 0.15134760006875014,
+      "35-44": 0.1314256951346943,
+      "45-54": 0.14808201718578384,
+      "55+": 0.18041874546927636
+    },
+    "thin_file_share_by_gender": {
+      "Female": 0.1599376887004561,
+      "Male": 0.20444524072581047
+    }
+  }
+}
