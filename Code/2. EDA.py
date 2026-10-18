@@ -164,8 +164,10 @@ def plot_product_outcomes(outcomes: pd.DataFrame) -> None:
                 f"{row.observed_bad_rate:.1%} · n={row.mature_signed_contracts:,}", va="center", fontsize=9)
     ax.set_xlabel("Observed overdue / write-off / sold (%)")
     ax.set_ylabel("Product")
+    max_rate = ordered.observed_bad_rate.max() * 100
+    ax.set_xlim(0, max_rate * 1.6)
     ax.grid(axis="y", visible=False)
-    save_fig(fig, EDA_FIGURES / "02_product_outcomes.png", None)
+    save_fig(fig, EDA_FIGURES / "02_product_outcomes.png", None, left=0.17, right=0.92)
 
 
 # %% [markdown]
@@ -276,7 +278,7 @@ def plot_source_coverage(coverage: pd.DataFrame) -> None:
     ax.set_xlim(0, min(110, max(100, ordered.customer_coverage_pct.max() * 1.12)))
     ax.set_xlabel("Customers represented (% of customer file)")
     ax.grid(axis="y", visible=False)
-    save_fig(fig, EDA_FIGURES / "01_source_coverage.png", None)
+    save_fig(fig, EDA_FIGURES / "01_source_coverage.png", None, left=0.18)
 
 
 # %% [markdown]
@@ -295,7 +297,7 @@ def plot_observation_windows(coverage: pd.DataFrame) -> None:
     ax.set_xlabel("Observed date range")
     ax.grid(axis="y", visible=False)
     fig.autofmt_xdate()
-    save_fig(fig, EDA_FIGURES / "04_observation_windows.png", None)
+    save_fig(fig, EDA_FIGURES / "04_observation_windows.png", None, left=0.18)
 
 
 # %% [markdown]
@@ -313,7 +315,7 @@ def plot_raw_missingness(raw_missing: pd.DataFrame) -> None:
     ax.set_xlabel("Raw values missing (%)")
     ax.set_ylabel("Dataset · field")
     ax.grid(axis="y", visible=False)
-    save_fig(fig, EDA_FIGURES / "05_raw_missingness.png", None)
+    save_fig(fig, EDA_FIGURES / "05_raw_missingness.png", None, left=0.35)
 
 
 # %% [markdown]
@@ -329,7 +331,7 @@ def plot_behavior_channels(channels: pd.DataFrame) -> None:
     ax.set_xlabel("Recorded behavior events")
     ax.set_ylabel("Channel")
     ax.grid(axis="y", visible=False)
-    save_fig(fig, EDA_FIGURES / "06_behavior_channels.png", None)
+    save_fig(fig, EDA_FIGURES / "06_behavior_channels.png", None, left=0.18)
 
 
 # %% [markdown]
@@ -339,10 +341,13 @@ def plot_behavior_channels(channels: pd.DataFrame) -> None:
 
 # %%
 def plot_monthly_activity(monthly: pd.DataFrame) -> None:
-    palette = {"Contracts": PAL["navy"], "Digital behavior": PAL["orange"], "Leads": PAL["amber"], "Calls": PAL["grey"]}
+    palette = {"Contracts": PAL["navy"], "Digital behavior": PAL["red"], "Leads": PAL["grey"], "Calls": "#9B6B00"}
+    styles = {"Contracts": "-", "Digital behavior": "--", "Leads": "-.", "Calls": ":"}
+    markers = {"Contracts": "o", "Digital behavior": "s", "Leads": "^", "Calls": "D"}
     fig, ax = plt.subplots(figsize=(11, 5.5))
     for source, group in monthly.groupby("source", sort=False):
-        ax.plot(group.month, group.events, color=palette[source], label=source, linewidth=1.8)
+        ax.plot(group.month, group.events, color=palette[source], linestyle=styles[source], marker=markers[source],
+                markevery=max(1, len(group) // 18), label=source, linewidth=1.8)
     ax.set_xlabel("Month")
     ax.set_ylabel("Records")
     ax.legend(ncol=2)

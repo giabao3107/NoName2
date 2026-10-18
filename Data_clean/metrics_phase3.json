@@ -16,14 +16,14 @@
     "Medium": 0.18695029024674972,
     "Low": 0.7627202836902116
   },
-  "score_mean": 38.11553599699358,
+  "score_mean": 38.11553599699357,
   "score_median": 30.6,
   "component_means": {
-    "E1_digital": 22.63912753183825,
+    "E1_digital": 22.639127531838263,
     "E2_recency": 51.57338207397176,
-    "E3_frequency": 31.71158961401714,
-    "E4_responsiveness": 29.037230517109645,
-    "E5_breadth": 61.64132004968043
+    "E3_frequency": 31.711589614017143,
+    "E4_responsiveness": 29.037230517109666,
+    "E5_breadth": 61.641320049680424
   },
   "e4_coverage": 0.6865345097788368,
   "never_active": 0.0,
@@ -70,70 +70,70 @@
         "decile": 1,
         "score_min": 23.2,
         "score_max": 28.8,
-        "apply_rate": 0.0977082146462375,
-        "sign_rate": 0.07365096498855607
+        "apply_rate": 0.09767823053781496,
+        "sign_rate": 0.07362098088013352
       },
       {
         "decile": 2,
         "score_min": 28.8,
         "score_max": 31.4,
-        "apply_rate": 0.09847780676241592,
-        "sign_rate": 0.0617872527560393
+        "apply_rate": 0.09844782265399338,
+        "sign_rate": 0.06173727924200174
       },
       {
         "decile": 3,
         "score_min": 31.4,
         "score_max": 33.1,
-        "apply_rate": 0.10164612755239723,
-        "sign_rate": 0.06940321629536346
+        "apply_rate": 0.1017060957692423,
+        "sign_rate": 0.06947317921501604
       },
       {
         "decile": 4,
         "score_min": 33.1,
         "score_max": 34.9,
-        "apply_rate": 0.09745932115300043,
-        "sign_rate": 0.05924919042098109
+        "apply_rate": 0.09739935233678487,
+        "sign_rate": 0.059129252788549955
       },
       {
         "decile": 5,
         "score_min": 34.9,
         "score_max": 36.7,
-        "apply_rate": 0.10971185271805943,
-        "sign_rate": 0.06978301500204892
+        "apply_rate": 0.10973184212367446,
+        "sign_rate": 0.0698529779217015
       },
       {
         "decile": 6,
         "score_min": 36.7,
         "score_max": 41.0,
-        "apply_rate": 0.15097998061027657,
-        "sign_rate": 0.1047744695311485
+        "apply_rate": 0.15096998590746905,
+        "sign_rate": 0.10481444834237853
       },
       {
         "decile": 7,
         "score_min": 41.0,
         "score_max": 46.4,
-        "apply_rate": 0.17214048694678766,
-        "sign_rate": 0.121806660536521
+        "apply_rate": 0.17217047135489547,
+        "sign_rate": 0.1218166553392236
       },
       {
         "decile": 8,
         "score_min": 46.4,
         "score_max": 54.2,
-        "apply_rate": 0.21005866890548008,
-        "sign_rate": 0.14755179754729994
+        "apply_rate": 0.21007865831109512,
+        "sign_rate": 0.14756179225010743
       },
       {
         "decile": 9,
         "score_min": 54.2,
         "score_max": 71.0,
-        "apply_rate": 0.2533957002788522,
+        "apply_rate": 0.2534056949816597,
         "sign_rate": 0.16954014372382636
       },
       {
         "decile": 10,
         "score_min": 71.0,
         "score_max": 100.0,
-        "apply_rate": 0.3324138206750422,
+        "apply_rate": 0.3324038259722347,
         "sign_rate": 0.21858415040028784
       }
     ],
@@ -268,7 +268,7 @@
     "auc_avg_duration": 0.9224785650390114,
     "auc_first_call_duration_excl_first_call_conversions": 0.7204716814955825,
     "n_robustness": 179105,
-    "spearman_attempts": 0.031060253872382298,
+    "spearman_attempts": 0.03106025387238236,
     "spearman_duration": 0.18004276070746777,
     "by_attempts": [
       {
@@ -389,57 +389,6 @@
   },
   "q3": [
     {
-      "LEAD_SOURCE": "SOB",
-      "n_leads_deal": 38282,
-      "deal_rate_all": 0.40432816706306685,
-      "n_leads": 35535,
-      "n_customers": 29797,
-      "deal_rate": 0.41130938977707726,
-      "not_interest_rate": 0.15708736770997522,
-      "expired_rate": 0.15393492456653907,
-      "handled_rate": 1.0,
-      "median_max_offer": 32000000.0,
-      "signed_within_90d": 0.6729703109610243,
-      "avg_events_180d_after": 6.0213951021129875,
-      "active_180d_after": 0.5964105737777385,
-      "mean_engagement_score": 52.411618180128265,
-      "still_active_6m": 0.9816897481178548
-    },
-    {
-      "LEAD_SOURCE": "RTDM",
-      "n_leads_deal": 41,
-      "deal_rate_all": 0.43902439024390244,
-      "n_leads": 3,
-      "n_customers": 3,
-      "deal_rate": 0.3333333333333333,
-      "not_interest_rate": 0.3333333333333333,
-      "expired_rate": 0.0,
-      "handled_rate": 1.0,
-      "median_max_offer": 115000000.0,
-      "signed_within_90d": 0.6666666666666666,
-      "avg_events_180d_after": NaN,
-      "active_180d_after": NaN,
-      "mean_engagement_score": 56.1521897810219,
-      "still_active_6m": 0.9744525547445255
-    },
-    {
-      "LEAD_SOURCE": "LANDING PAGE",
-      "n_leads_deal": 445,
-      "deal_rate_all": 0.23129251700680273,
-      "n_leads": 418,
-      "n_customers": 349,
-      "deal_rate": 0.24401913875598086,
-      "not_interest_rate": 0.22488038277511962,
-      "expired_rate": 0.12679425837320574,
-      "handled_rate": 1.0,
-      "median_max_offer": 19000000.0,
-      "signed_within_90d": 0.06937799043062201,
-      "avg_events_180d_after": 4.971291866028708,
-      "active_180d_after": 0.7535885167464115,
-      "mean_engagement_score": 64.39267669599772,
-      "still_active_6m": 0.9824013624751632
-    },
-    {
       "LEAD_SOURCE": "TLS",
       "n_leads_deal": 31571,
       "deal_rate_all": 0.32360591258009264,
@@ -472,6 +421,57 @@
       "active_180d_after": 0.24843524646162127,
       "mean_engagement_score": 35.58058006910946,
       "still_active_6m": 0.9707150837021192
+    },
+    {
+      "LEAD_SOURCE": "SOB",
+      "n_leads_deal": 38282,
+      "deal_rate_all": 0.40432816706306685,
+      "n_leads": 35535,
+      "n_customers": 29797,
+      "deal_rate": 0.41130938977707726,
+      "not_interest_rate": 0.15708736770997522,
+      "expired_rate": 0.15393492456653907,
+      "handled_rate": 1.0,
+      "median_max_offer": 32000000.0,
+      "signed_within_90d": 0.6729703109610243,
+      "avg_events_180d_after": 6.0213951021129875,
+      "active_180d_after": 0.5964105737777385,
+      "mean_engagement_score": 52.411618180128265,
+      "still_active_6m": 0.9816897481178548
+    },
+    {
+      "LEAD_SOURCE": "LANDING PAGE",
+      "n_leads_deal": 445,
+      "deal_rate_all": 0.23129251700680273,
+      "n_leads": 418,
+      "n_customers": 349,
+      "deal_rate": 0.24401913875598086,
+      "not_interest_rate": 0.22488038277511962,
+      "expired_rate": 0.12679425837320574,
+      "handled_rate": 1.0,
+      "median_max_offer": 19000000.0,
+      "signed_within_90d": 0.06937799043062201,
+      "avg_events_180d_after": 4.971291866028708,
+      "active_180d_after": 0.7535885167464115,
+      "mean_engagement_score": 64.39267669599772,
+      "still_active_6m": 0.9824013624751632
+    },
+    {
+      "LEAD_SOURCE": "RTDM",
+      "n_leads_deal": 41,
+      "deal_rate_all": 0.43902439024390244,
+      "n_leads": 3,
+      "n_customers": 3,
+      "deal_rate": 0.3333333333333333,
+      "not_interest_rate": 0.3333333333333333,
+      "expired_rate": 0.0,
+      "handled_rate": 1.0,
+      "median_max_offer": 115000000.0,
+      "signed_within_90d": 0.6666666666666666,
+      "avg_events_180d_after": NaN,
+      "active_180d_after": NaN,
+      "mean_engagement_score": 56.1521897810219,
+      "still_active_6m": 0.9744525547445255
     },
     {
       "LEAD_SOURCE": "SA",
@@ -564,56 +564,56 @@
       "factor": "Ignored 5+ calls",
       "n_with": 32349,
       "answer_with": 0.0333214684952775,
-      "answer_without": 0.23157827094120584,
-      "diff_pp": -19.82568024459283,
+      "answer_without": 0.23157827094120587,
+      "diff_pp": -19.825680244592835,
       "n_population": 346109
     },
     {
       "factor": "Collection calls",
       "n_with": 20193,
       "answer_with": 0.1948646547854201,
-      "answer_without": 0.21417485640712486,
-      "diff_pp": -1.931020162170477,
+      "answer_without": 0.21417485640712494,
+      "diff_pp": -1.9310201621704852,
       "n_population": 346109
     },
     {
       "factor": "Opted out",
       "n_with": 104,
       "answer_with": 0.17386737194429502,
-      "answer_without": 0.21306002013896988,
-      "diff_pp": -3.9192648194674855,
+      "answer_without": 0.21306002013896996,
+      "diff_pp": -3.919264819467494,
       "n_population": 346109
     },
     {
       "factor": "No app",
       "n_with": 313810,
-      "answer_with": 0.2131422882259157,
+      "answer_with": 0.21314228822591566,
       "answer_without": 0.21213452449586342,
-      "diff_pp": 0.10077637300522635,
+      "diff_pp": 0.10077637300522357,
       "n_population": 346109
     },
     {
       "factor": "Dormant 180d+",
       "n_with": 12502,
       "answer_with": 0.21855014801396633,
-      "answer_without": 0.21284205824336996,
-      "diff_pp": 0.5708089770596364,
+      "answer_without": 0.21284205824336988,
+      "diff_pp": 0.5708089770596447,
       "n_population": 346109
     },
     {
       "factor": "All leads lost",
       "n_with": 145148,
-      "answer_with": 0.22097121855579005,
-      "answer_without": 0.2073257201344076,
-      "diff_pp": 1.3645498421382463,
+      "answer_with": 0.22097121855579002,
+      "answer_without": 0.20732572013440762,
+      "diff_pp": 1.3645498421382407,
       "n_population": 346109
     },
     {
       "factor": "Refused offer",
       "n_with": 37538,
       "answer_with": 0.26246565358986984,
-      "answer_without": 0.20703656134377496,
-      "diff_pp": 5.542909224609488,
+      "answer_without": 0.20703656134377488,
+      "diff_pp": 5.542909224609496,
       "n_population": 346109
     }
   ],
@@ -621,19 +621,19 @@
     "recency": [
       {
         "band": "≤30",
-        "share": 0.1117220108
+        "share": 0.11172201077830905
       },
       {
         "band": "31–90",
-        "share": 0.1215168391
+        "share": 0.12151683910895048
       },
       {
         "band": "91–180",
-        "share": 0.7239287656
+        "share": 0.723928765611757
       },
       {
         "band": "181–365",
-        "share": 0.0428323845
+        "share": 0.04283238450098348
       },
       {
         "band": ">365",
@@ -647,27 +647,27 @@
       },
       {
         "band": "1",
-        "share": 0.5680520685
+        "share": 0.5680520685078279
       },
       {
         "band": "2",
-        "share": 0.2098651912
+        "share": 0.20986519117905747
       },
       {
         "band": "3",
-        "share": 0.0957654358
+        "share": 0.09576543584987127
       },
       {
         "band": "4",
-        "share": 0.050513329
+        "share": 0.0505133289623079
       },
       {
         "band": "5",
-        "share": 0.0292605504
+        "share": 0.02926055042937329
       },
       {
         "band": "6+",
-        "share": 0.0465434251
+        "share": 0.046543425071562214
       }
     ],
     "breadth": [
@@ -677,19 +677,19 @@
       },
       {
         "band": "1",
-        "share": 0.4975163114
+        "share": 0.49751631138758734
       },
       {
         "band": "2",
-        "share": 0.1557277757
+        "share": 0.15572777573441224
       },
       {
         "band": "3",
-        "share": 0.1470003838
+        "share": 0.147000383797355
       },
       {
         "band": "4+",
-        "share": 0.1997555291
+        "share": 0.19975552908064542
       }
     ]
   },
@@ -698,74 +698,74 @@
       {
         "direction": "Outbound",
         "n": 990312,
-        "answered": 0.1295413371,
-        "refused": 0.0441537616,
-        "positive": 0.0072532697
+        "answered": 0.12954133708610344,
+        "refused": 0.0441537616427954,
+        "positive": 0.007253269676627164
       },
       {
         "direction": "Inbound",
         "n": 31899,
-        "answered": 0.2231396357,
-        "refused": 0.0458008088,
-        "positive": 0.0230728236
+        "answered": 0.22313963573287077,
+        "refused": 0.04580080880278379,
+        "positive": 0.023072823599485877
       }
     ],
     "leads": [
       {
         "LEAD_SOURCE": "RA",
         "n": 849638,
-        "deal": 0.0007980401,
-        "not_interested": 0.5697062026,
-        "expired": 0.2548981379,
-        "other": 0.1745976194
+        "deal": 0.0007980401393603327,
+        "not_interested": 0.5697062025520331,
+        "expired": 0.25489813786597526,
+        "other": 0.1745976194426313
       },
       {
         "LEAD_SOURCE": "SA",
         "n": 669274,
-        "deal": 0.0149888845,
-        "not_interested": 0.6304120845,
-        "expired": 0.1836505837,
-        "other": 0.1709484474
+        "deal": 0.01498888449421039,
+        "not_interested": 0.6304120844566283,
+        "expired": 0.18365058365876685,
+        "other": 0.1709484473903944
       },
       {
         "LEAD_SOURCE": "GMA",
         "n": 25456,
-        "deal": 0.1106682097,
-        "not_interested": 0.6156187047,
-        "expired": 0.2172645836,
-        "other": 0.056448502
+        "deal": 0.11066820967811067,
+        "not_interested": 0.6156187047276156,
+        "expired": 0.21726458360121725,
+        "other": 0.05644850199305651
       },
       {
         "LEAD_SOURCE": "LANDING PAGE",
         "n": 445,
-        "deal": 0.231292517,
-        "not_interested": 0.5124716553,
-        "expired": 0.1360544218,
-        "other": 0.1201814059
+        "deal": 0.23129251700680273,
+        "not_interested": 0.5124716553287982,
+        "expired": 0.1360544217687075,
+        "other": 0.12018140589569148
       },
       {
         "LEAD_SOURCE": "TLS",
         "n": 31571,
-        "deal": 0.3236059126,
-        "not_interested": 0.3012116983,
-        "expired": 0.2247351393,
-        "other": 0.1504472499
+        "deal": 0.32360591258009264,
+        "not_interested": 0.3012116982807841,
+        "expired": 0.22473513925014274,
+        "other": 0.1504472498889805
       },
       {
         "LEAD_SOURCE": "SOB",
         "n": 38282,
-        "deal": 0.4043281671,
-        "not_interested": 0.3487363111,
-        "expired": 0.1486369933,
-        "other": 0.0982985285
+        "deal": 0.40432816706306685,
+        "not_interested": 0.34873631112621206,
+        "expired": 0.14863699328297744,
+        "other": 0.09829852852774368
       },
       {
         "LEAD_SOURCE": "RTDM",
         "n": 41,
-        "deal": 0.4390243902,
-        "not_interested": 0.2682926829,
-        "expired": 0.1707317073,
-        "other": 0.1219512195
+        "deal": 0.43902439024390244,
+        "not_interested": 0.2682926829268293,
+        "expired": 0.17073170731707318,
+        "other": 0.12195121951219512
       }
     ]
   }

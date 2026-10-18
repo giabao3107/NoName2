@@ -366,10 +366,10 @@
     "coef": [
       0.019242526254038463,
       0.019347758353014832,
-      0.06845296322122744
+      0.06845296322122747
     ],
     "slope_before_per_10pp": 0.0019347758353014833,
-    "slope_after_per_10pp": 0.008780072157424228,
+    "slope_after_per_10pp": 0.008780072157424232,
     "bad_below": 0.021467423803896993,
     "n_below": 2090330,
     "bad_above": 0.030675887818744963,
@@ -1662,8 +1662,8 @@
     "Pre-approved Capacity": 0.13
   },
   "scale": {
-    "b0": -1.0483726938430125,
-    "b1": -4.019917514617688,
+    "b0": -1.0483726938430022,
+    "b1": -4.019917514617705,
     "p_bar": 0.03147117788008905,
     "l50": -3.004860668830534,
     "l80": -4.1359696129018735,
@@ -1699,7 +1699,7 @@
     "gini_report_history": 0.3074485502209914,
     "gini_report_thin": 0.15825009910784926,
     "auc_report": 0.6610892383655912,
-    "ks_report": 0.23790851186416362,
+    "ks_report": 0.23824591820430252,
     "benchmarks": {
       "v1 design (6 factors)": {
         "gini_all": 0.30064674257450075,
@@ -1714,12 +1714,12 @@
         "gini_history": 0.29150408221665436
       },
       "Logistic regression, same buckets": {
-        "gini_all": 0.32292934896245673,
-        "gini_history": 0.29548386187468667
+        "gini_all": 0.3229281544823901,
+        "gini_history": 0.295483890073412
       },
       "Gradient boosting, same raw inputs": {
-        "gini_all": 0.3169699195930602,
-        "gini_history": 0.3172764840094411
+        "gini_all": 0.3157686387247496,
+        "gini_history": 0.3163809617116786
       },
       "Final scorecard": {
         "gini_all": 0.3221784767311824,
@@ -2021,7 +2021,7 @@
         },
         "55+": {
           "n": 9929,
-          "mean_fhs": 64.83225903917817,
+          "mean_fhs": 64.83225903917815,
           "bad_rate": 0.04018531574176654,
           "gini_within": 0.3163186034340837
         }
@@ -2066,7 +2066,7 @@
     ],
     "07_validation": [
       "**The score ranks a period it never saw.** On 270,277 Tet-wave customers (report half), the lowest decile is stressed at 6.80% and the highest at 0.77% (8.9x); Gini 0.322, KS 0.238 — although the average stress rate jumped from 1.27% in training to 3.22%.",
-      "**Better than v1, as good as complex models.** Gini 0.322 vs 0.301 for the v1 design (customers with history: 0.307 vs 0.261). A logistic regression that re-estimates every weight on the same buckets reaches 0.323 and gradient boosting on the same raw inputs 0.317: complexity buys little or nothing.",
+      "**Better than v1, as good as complex models.** Gini 0.322 vs 0.301 for the v1 design (customers with history: 0.307 vs 0.261). A logistic regression that re-estimates every weight on the same buckets reaches 0.323 and gradient boosting on the same raw inputs 0.316: complexity buys little or nothing.",
       "**The weights are not fragile.** Dropping any pillar changes Gini to 0.301-0.310; equal weights give 0.310; 200 random ±25% weight changes keep Gini within 0.313-0.323 and the customer ranking correlation ≥ 0.987.",
       "**Expected vs observed** stress per decile (orange line) tracks the bars, so the 0-100 scale doubles as an expected stress rate."
     ],

@@ -26,6 +26,7 @@ import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+from matplotlib.patches import Patch
 import numpy as np
 import pandas as pd
 from scipy import stats
@@ -816,7 +817,11 @@ def chart_behaviour(beh: dict) -> None:
     axes[2].bar(of.offer_band, of["mean"] * 100, color=[PAL["amber"]] + [PAL["navy"]] * 4)
     for i, r in enumerate(of.itertuples()):
         axes[2].text(i, r.mean * 100 + 0.05, f"{r.mean:.2%}", ha="center", fontsize=8.5)
-    axes[2].axhline(beh["history_bad_rate"] * 100, color=PAL["red"], linestyle="--", lw=1.2)
+    axes[2].axhline(
+        beh["history_bad_rate"] * 100, color=PAL["red"], linestyle="--", lw=1.2,
+        label="Historical average for loan-history customers",
+    )
+    axes[2].legend(fontsize=8, loc="upper right")
     axes[2].set_xlabel("Largest pre-approved offer before the window (VND)")
     axes[2].set_ylabel("Early stress on the new loan (%)")
     axes[2].grid(axis="x", visible=False)
@@ -863,7 +868,15 @@ def chart_factors(cards: dict) -> None:
     ax.tick_params(axis="y", labelsize=8)
     ax.grid(axis="y", visible=False)
     fig.subplots_adjust(hspace=0.75, wspace=0.32)
-    save_fig(fig, TASK_FIGURES / "06_key_factor_impacts.png", None, top=0.95, bottom=0.07, left=0.06)
+    fig.legend(
+        handles=[
+            Patch(facecolor=PAL["green"], label="High score (80–100)"),
+            Patch(facecolor=PAL["amber"], label="Moderate score (50–79)"),
+            Patch(facecolor=PAL["red"], label="Low score (0–49)"),
+        ],
+        loc="lower center", ncol=3, frameon=False, fontsize=9,
+    )
+    save_fig(fig, TASK_FIGURES / "06_key_factor_impacts.png", None, top=0.95, bottom=0.13, left=0.06)
 
 
 def chart_validation(val: dict) -> None:
@@ -925,10 +938,14 @@ def chart_distribution(pop: pd.DataFrame, val: dict) -> None:
     axes[1].bar(range(len(bt)), bt.bad_rate * 100, color=colors, width=0.65)
     for i, r in enumerate(bt.itertuples()):
         axes[1].text(i, r.bad_rate * 100 + 0.15, f"{r.bad_rate:.1%}\n{r.x_average:.1f}x avg", ha="center", fontsize=8.5)
-    axes[1].axhline(val["bad_rate_report"] * 100, color=PAL["grey"], linestyle="--", lw=1.2)
+    axes[1].axhline(
+        val["bad_rate_report"] * 100, color=PAL["grey"], linestyle="--", lw=1.2,
+        label="Report-half average",
+    )
     axes[1].set_xticks(range(len(bt)), [b.replace(" ", "\n", 1) for b in bt.index], fontsize=8.5)
     axes[1].set_ylabel("Out-of-time early stress rate (%)")
     axes[1].set_ylim(0, bt.bad_rate.max() * 125)
+    axes[1].legend(fontsize=8, frameon=False)
     axes[1].grid(axis="x", visible=False)
     save_fig(fig, TASK_FIGURES / "08_financial_health_score_distribution.png", None, wspace=0.25)
 

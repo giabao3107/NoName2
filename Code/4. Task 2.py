@@ -30,6 +30,7 @@ import numpy as np
 import pandas as pd
 import sys
 from pathlib import Path
+from matplotlib.patches import Patch
 
 
 def find_project_root():
@@ -549,7 +550,14 @@ def chart_lead_source(q3: pd.DataFrame):
         ax.set_ylabel("Lead source")
         ax.set_xlim(0, max(data[column].max() * 100 * 1.25, 5))
         ax.grid(axis="y", visible=False)
-        save_fig(fig, TASK_FIGURES / LEAD_SOURCE_FIGURES[column], None, left=0.25)
+        ax.legend(
+            handles=[
+                Patch(facecolor=PAL["orange"], label="Highlighted sources for this measure"),
+                Patch(facecolor=PAL["grey"], label="Other sources"),
+            ],
+            loc="lower center", bbox_to_anchor=(0.5, 0.01), ncol=2, fontsize=8, frameon=False,
+        )
+        save_fig(fig, TASK_FIGURES / LEAD_SOURCE_FIGURES[column], None, left=0.25, bottom=0.20)
 
 
 # %% [markdown]
@@ -628,7 +636,7 @@ def chart_call_lead_outcomes(q7: dict):
 
     leads = q7["leads"]
     parts = [("deal", "Deal", PAL["orange"]), ("not_interested", "Not interested / rejected", negative),
-             ("expired", "Expired", PAL["amber"]), ("other", "Other / system", PAL["light"])]
+             ("expired", "Expired", PAL["amber"]), ("other", "Other / system", "#9AA3AD")]
     left = np.zeros(len(leads))
     for col, label, color in parts:
         values = leads[col].values * 100
@@ -636,7 +644,7 @@ def chart_call_lead_outcomes(q7: dict):
         for i, v in enumerate(values):
             if v >= 8:
                 axes[1].text(left[i] + v / 2, i, f"{v:.0f}%", ha="center", va="center", fontsize=9,
-                             color="white" if col == "deal" else PAL["ink"])
+                             color="white" if col == "deal" else "#222222")
         left += values
     n_label = lambda n: f"{n / 1e3:,.0f}K" if n >= 1000 else f"{n:,}"
     axes[1].set_yticks(range(len(leads)), [f"{s} · {n_label(n)}" for s, n in zip(leads.LEAD_SOURCE, leads.n)])

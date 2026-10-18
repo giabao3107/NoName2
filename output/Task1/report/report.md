@@ -3,7 +3,7 @@
 ## Executive summary
 
 - **The score ranks a period it never saw.** On 270,277 Tet-wave customers (report half), the lowest decile is stressed at 6.80% and the highest at 0.77% (8.9x); Gini 0.322, KS 0.238 — although the average stress rate jumped from 1.27% in training to 3.22%.
-- **Better than v1, as good as complex models.** Gini 0.322 vs 0.301 for the v1 design (customers with history: 0.307 vs 0.261). A logistic regression that re-estimates every weight on the same buckets reaches 0.323 and gradient boosting on the same raw inputs 0.317: complexity buys little or nothing.
+- **Better than v1, as good as complex models.** Gini 0.322 vs 0.301 for the v1 design (customers with history: 0.307 vs 0.261). A logistic regression that re-estimates every weight on the same buckets reaches 0.323 and gradient boosting on the same raw inputs 0.316: complexity buys little or nothing.
 - **Three tiers with an economic meaning.** High (≥80): 268,670 customers (26.9%), out-of-time stress 1.13% (0.4x average). Moderate (50-79): 519,814 (52.0%), 3.10%. Low (<50): 212,044 (21.2%), 6.25% (1.9x).
 - **First loans in the Tet wave are 2.1x as risky as repeat loans** (4.51% vs 2.19%); a first-time two-wheeler loan reaches 7.7%. Across all mature loans TW is the riskiest product (4.91%) and CD the safest (2.12%; z = 55).
 - **'No history' hides two opposite profiles.** When they do get credit, customers previously *rejected* are stressed at 6.79%, while customers who only *cancelled* an application run at 3.16%, close to customers with history (2.40%); z = 6.0, p = 2e-09.
@@ -95,7 +95,7 @@
 *Figure: Out-of-time validation and benchmarks. Source: BI10 Round 2 data (CONTRACT, CUSTOMER, LEADS, CALL); team analysis.*
 
 - **The score ranks a period it never saw.** On 270,277 Tet-wave customers (report half), the lowest decile is stressed at 6.80% and the highest at 0.77% (8.9x); Gini 0.322, KS 0.238 — although the average stress rate jumped from 1.27% in training to 3.22%.
-- **Better than v1, as good as complex models.** Gini 0.322 vs 0.301 for the v1 design (customers with history: 0.307 vs 0.261). A logistic regression that re-estimates every weight on the same buckets reaches 0.323 and gradient boosting on the same raw inputs 0.317: complexity buys little or nothing.
+- **Better than v1, as good as complex models.** Gini 0.322 vs 0.301 for the v1 design (customers with history: 0.307 vs 0.261). A logistic regression that re-estimates every weight on the same buckets reaches 0.323 and gradient boosting on the same raw inputs 0.316: complexity buys little or nothing.
 - **The weights are not fragile.** Dropping any pillar changes Gini to 0.301-0.310; equal weights give 0.310; 200 random ±25% weight changes keep Gini within 0.313-0.323 and the customer ranking correlation ≥ 0.987.
 - **Expected vs observed** stress per decile (orange line) tracks the bars, so the 0-100 scale doubles as an expected stress rate.
 
@@ -105,7 +105,7 @@
 | Repayment history only | 0.273 | 0.208 |
 | Equal pillar weights | 0.31 | 0.292 |
 | Logistic regression, same buckets | 0.323 | 0.295 |
-| Gradient boosting, same raw inputs | 0.317 | 0.317 |
+| Gradient boosting, same raw inputs | 0.316 | 0.316 |
 | Final scorecard | 0.322 | 0.307 |
 
 ### Score distribution, tiers and bands

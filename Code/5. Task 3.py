@@ -742,7 +742,6 @@ def low_health_profile_counts(output: pd.DataFrame) -> pd.DataFrame:
 
 def plot_score_relationship(output: pd.DataFrame) -> None:
     fig, ax = plt.subplots(figsize=(9, 6.5))
-    ax.set_title(f"Customer score density (n={len(output):,})", loc="left", pad=12)
     image = ax.hexbin(
         output["Financial_Health_Score"], output["Engagement_Score"],
         gridsize=35, mincnt=1, bins="log", cmap=navy_cmap(), linewidths=0.15, extent=(0, 100, 0, 100),
@@ -752,14 +751,12 @@ def plot_score_relationship(output: pd.DataFrame) -> None:
         ax.axhline(threshold, color=PAL["grey"], linestyle="--", linewidth=0.9, alpha=0.8)
     ax.set(xlim=(0, 100), ylim=(0, 100), xlabel="Financial-health score", ylabel="Engagement score")
     fig.colorbar(image, ax=ax, label="Customers per hexagon (log scale)")
-    ax.text(0.01, -0.18, "Dashed lines mark score-tier cutoffs at 50 and 80.", transform=ax.transAxes, color=PAL["grey"], fontsize=9)
-    save_fig(fig, TASK3_FIGURES / "03_score_relationship.png", None, bottom=0.18)
+    save_fig(fig, TASK3_FIGURES / "03_score_relationship.png", None)
 
 
 def plot_low_health_profile(output: pd.DataFrame) -> None:
     counts = low_health_profile_counts(output)
     fig, ax = plt.subplots(figsize=(10, 5.8))
-    ax.set_title("Low-health customers by profile and engagement", loc="left", pad=12)
     ax.set_yscale("symlog", linthresh=1000)
     ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda value, _: f"{int(value):,}"))
     x = np.arange(len(counts.columns))
