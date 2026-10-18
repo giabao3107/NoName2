@@ -200,7 +200,20 @@ def data_foundations(con, label_cut: str) -> dict:
                     FROM {pq('contract_clean')} GROUP BY 1)
         SELECT avg((coalesce(due, 0) = 0 AND coalesce(dflt, 0) = 0)::INT) FROM cu
         WHERE SKP_CLIENT IN (SELECT SKP_CLIENT FROM {pq('call_clean')} WHERE disposition_group = 'COLLECTION')""").fetchone()[0]
+    # the same test for sales calls: a 'sign successful' call should sit next to an actual signing
+    sales_near_signing = con.execute(f"""
+        WITH sc AS (SELECT SKP_CLIENT, call_start FROM {pq('call_clean')} WHERE disposition_group = 'SALES_CONVERSION'),
+             sg AS (SELECT SKP_CLIENT, cdate FROM {pq('contract_clean')} WHERE is_signed AND cdate >= TIMESTAMP '2024-12-01'),
+             j AS (SELECT sc.SKP_CLIENT, sc.call_start, min(abs(date_diff('day', sc.call_start, sg.cdate))) gap
+                   FROM sc LEFT JOIN sg USING (SKP_CLIENT) GROUP BY 1, 2)
+        SELECT avg((gap <= 14)::INT) FROM j""").fetchone()[0]
+    same_day_redial = con.execute(f"""
+        WITH c AS (SELECT date_diff('hour', lag(call_start) OVER (PARTITION BY SKP_CLIENT ORDER BY call_start), call_start) gap_h
+                   FROM {pq('call_clean')})
+        SELECT avg((gap_h < 24)::INT) FROM c WHERE gap_h IS NOT NULL""").fetchone()[0]
     return {"monthly": monthly, "customers": cohort[0], "tet_applicant_share": cohort[1] / cohort[0],
+            "sales_conversion_calls_within_14d_of_signing": float(sales_near_signing),
+            "same_customer_calls_within_24h": float(same_day_redial),
             "first_time_share": cohort[2] / cohort[0], "peak_multiple": peak / base, "label_cut": label_cut,
             "calls_before_first_loan": calls, "never_signed_collection_customers": never[0],
             "never_signed_collection_calls": never[1],
@@ -1068,6 +1081,11 @@ if __name__ == "__main__":
         f"{found['collection_share_range'][0]:.1%}-{found['collection_share_range'][1]:.1%} in every one of 20 months; and "
         f"{found['collection_called_never_late_share']:.0%} of collection-called customers were never late. "
         "Collection calls are therefore neither a score input nor a 'future' validation.",
+        f"**This holds for every call type, not only collection.** Only {found['sales_conversion_calls_within_14d_of_signing']:.1%} of "
+        f"'sign successful' calls fall within 14 days of an actual signing, and only {found['same_customer_calls_within_24h']:.1%} of "
+        "consecutive calls to the same customer are less than a day apart, where a real dialler retries within hours. **Team-wide rule:** "
+        "call dates are not used for any before/after test in Tasks 1-3; call counts and outcomes per customer, whose meaning does not "
+        "depend on dates, remain usable (Task 2 responsiveness, Task 3 contact guards).",
     ])
 
 # %% [markdown]
@@ -1445,7 +1463,7 @@ def financial_health_report(m: dict) -> str:
     lines = ["# Task 1 — Customer Financial Health Score", "", "## Executive summary", ""]
     lines += [f"- {STORIES['07_validation'][0]}", f"- {STORIES['07_validation'][1]}", f"- {STORIES['08_tiers'][0]}",
               f"- {STORIES['02_product_risk'][0]}", f"- {STORIES['09_thin_file'][0]}", f"- {STORIES['05_behaviour'][0]}",
-              f"- {STORIES['01_data_foundations'][2]}", ""]
+              f"- {STORIES['01_data_foundations'][2]}", f"- {STORIES['01_data_foundations'][3]}", ""]
     lines += ["## Method", "",
               f"- **Features** frozen as of each window start (late flags only after {C.DUE_FLAG_MATURITY_DAYS} days, write-offs after "
               f"{C.STATUS_MATURITY_DAYS} days, no future contract status). **Label**: late on instalment 1-4 or written off on loans "

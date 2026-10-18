@@ -3,12 +3,13 @@
 ## Executive summary
 
 - **The score ranks a period it never saw.** On 270,277 Tet-wave customers (report half), the lowest decile is stressed at 6.80% and the highest at 0.77% (8.9x); Gini 0.322, KS 0.238 — although the average stress rate jumped from 1.27% in training to 3.22%.
-- **Better than v1, as good as complex models.** Gini 0.322 vs 0.301 for the v1 design (customers with history: 0.307 vs 0.261). A logistic regression that re-estimates every weight on the same buckets reaches 0.323 and gradient boosting on the same raw inputs 0.320: complexity buys little or nothing.
+- **Better than v1, as good as complex models.** Gini 0.322 vs 0.301 for the v1 design (customers with history: 0.307 vs 0.261). A logistic regression that re-estimates every weight on the same buckets reaches 0.323 and gradient boosting on the same raw inputs 0.317: complexity buys little or nothing.
 - **Three tiers with an economic meaning.** High (≥80): 268,670 customers (26.9%), out-of-time stress 1.13% (0.4x average). Moderate (50-79): 519,814 (52.0%), 3.10%. Low (<50): 212,044 (21.2%), 6.25% (1.9x).
 - **First loans in the Tet wave are 2.1x as risky as repeat loans** (4.51% vs 2.19%); a first-time two-wheeler loan reaches 7.7%. Across all mature loans TW is the riskiest product (4.91%) and CD the safest (2.12%; z = 55).
 - **'No history' hides two opposite profiles.** When they do get credit, customers previously *rejected* are stressed at 6.79%, while customers who only *cancelled* an application run at 3.16%, close to customers with history (2.40%); z = 6.0, p = 2e-09.
 - **Loan stacking is a stress signal.** A Tet-wave loan signed after 2 other applications in the previous 30 days runs at 5.14%, and after 3+ at 6.36%, vs 2.76% with none (2.3x).
 - **CALL dates cannot be used for before/after tests.** For customers whose first-ever loan came in May-2025, 20.7% of their collection calls are dated before that loan existed, against 19.7% expected if dates were random; 1,608 customers who never signed a loan received 5,922 collection calls; the collection share is 4.4%-4.5% in every one of 20 months; and 95% of collection-called customers were never late. Collection calls are therefore neither a score input nor a 'future' validation.
+- **This holds for every call type, not only collection.** Only 4.1% of 'sign successful' calls fall within 14 days of an actual signing, and only 2.2% of consecutive calls to the same customer are less than a day apart, where a real dialler retries within hours. **Team-wide rule:** call dates are not used for any before/after test in Tasks 1-3; call counts and outcomes per customer, whose meaning does not depend on dates, remain usable (Task 2 responsiveness, Task 3 contact guards).
 
 ## Method
 
@@ -35,6 +36,7 @@
 - **The file is a cohort, not the whole book.** 99.98% of the 1,000,528 customers applied in Dec-2024/Jan-2025, when monthly applications ran at 12x a normal month; 32% applied for the first time. Older vintages belong to customers who came back, so their stress rates are a survivor view; the score is therefore validated on the Tet wave itself.
 - **Outcome flags are complete only for loans signed before 2025-01-20.** The 4th/3rd-instalment late-rate ratio is 1.21 in normal weeks and collapses for loans signed from 2025-01-20: those loans cannot have missed instalment 4 yet. Every label and contract comparison stops at this date (v1 used 2025-02-01).
 - **CALL dates cannot be used for before/after tests.** For customers whose first-ever loan came in May-2025, 20.7% of their collection calls are dated before that loan existed, against 19.7% expected if dates were random; 1,608 customers who never signed a loan received 5,922 collection calls; the collection share is 4.4%-4.5% in every one of 20 months; and 95% of collection-called customers were never late. Collection calls are therefore neither a score input nor a 'future' validation.
+- **This holds for every call type, not only collection.** Only 4.1% of 'sign successful' calls fall within 14 days of an actual signing, and only 2.2% of consecutive calls to the same customer are less than a day apart, where a real dialler retries within hours. **Team-wide rule:** call dates are not used for any before/after test in Tasks 1-3; call counts and outcomes per customer, whose meaning does not depend on dates, remain usable (Task 2 responsiveness, Task 3 contact guards).
 
 ### Product risk and roll rates
 
@@ -93,7 +95,7 @@
 *Figure: Out-of-time validation and benchmarks. Source: BI10 Round 2 data (CONTRACT, CUSTOMER, LEADS, CALL); team analysis.*
 
 - **The score ranks a period it never saw.** On 270,277 Tet-wave customers (report half), the lowest decile is stressed at 6.80% and the highest at 0.77% (8.9x); Gini 0.322, KS 0.238 — although the average stress rate jumped from 1.27% in training to 3.22%.
-- **Better than v1, as good as complex models.** Gini 0.322 vs 0.301 for the v1 design (customers with history: 0.307 vs 0.261). A logistic regression that re-estimates every weight on the same buckets reaches 0.323 and gradient boosting on the same raw inputs 0.320: complexity buys little or nothing.
+- **Better than v1, as good as complex models.** Gini 0.322 vs 0.301 for the v1 design (customers with history: 0.307 vs 0.261). A logistic regression that re-estimates every weight on the same buckets reaches 0.323 and gradient boosting on the same raw inputs 0.317: complexity buys little or nothing.
 - **The weights are not fragile.** Dropping any pillar changes Gini to 0.301-0.310; equal weights give 0.310; 200 random ±25% weight changes keep Gini within 0.313-0.323 and the customer ranking correlation ≥ 0.987.
 - **Expected vs observed** stress per decile (orange line) tracks the bars, so the 0-100 scale doubles as an expected stress rate.
 
@@ -103,7 +105,7 @@
 | Repayment history only | 0.273 | 0.208 |
 | Equal pillar weights | 0.31 | 0.292 |
 | Logistic regression, same buckets | 0.323 | 0.295 |
-| Gradient boosting, same raw inputs | 0.32 | 0.318 |
+| Gradient boosting, same raw inputs | 0.317 | 0.317 |
 | Final scorecard | 0.322 | 0.307 |
 
 ### Score distribution, tiers and bands

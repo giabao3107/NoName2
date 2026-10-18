@@ -12,9 +12,10 @@ This document is the end-to-end analysis narrative: data audit → exploratory a
 The company can act on **1,000,528 customers** through two transparent 0–100 scores and a 3 × 3 routing matrix.
 
 - **Financial health (Task 1).** A five-pillar, points-based scorecard ranks a period it never saw: out-of-time Gini **0.322**, KS **0.238** (Tet-2025 report half, 270,277 customers). It ties a re-estimated logistic regression (**0.323**) and beats gradient boosting on the same inputs (**0.320**), so complexity buys nothing. Tiers carry economic meaning (High ≥ 80, Moderate 50–79, Low < 50).
-- **Engagement (Task 2).** A five-component score predicts later applications (**AUC 0.649**) and later sales-call positive response (**AUC 0.689**, High 32.4% vs Low 7.0%).
-- **Segmentation and action (Task 3).** A rule-based 3 × 3 matrix over both scores routes every customer to one of ten service actions. An unsupervised K-means challenger separates better geometrically (**silhouette 0.413 vs 0.355** at equal segment counts) but has no post-action outcome label to validate actions, so the **explainable matrix stays operational** and K-means is retained as exploratory profiling only.
-- **The largest lever is re-engagement:** **582,524 customers (58.2%)** have High/Moderate health and Low engagement.
+- **Engagement (Task 2).** A five-component score predicts later applications (**AUC 0.649**, the forward test). On sales calls it lines up with positive response (High 32.4% vs Low 7.0%; call-free score AUC **0.645**), read as a cross-sectional check because call dates are unreliable.
+- **Call data, one team rule.** CALL timestamps fail a timing test for every call type (collection calls predate customers' first loan at the random-date rate; only 4.1% of "sign successful" calls sit within 14 days of a signing). Call dates support no before/after claim; per-customer call counts and outcomes remain usable.
+- **Segmentation and action (Task 3).** A rule-based 3 × 3 matrix over both scores routes every customer to one of eleven service actions. An unsupervised K-means challenger separates better geometrically (**silhouette 0.413 vs 0.355** at equal segment counts) but has no post-action outcome label to validate actions, so the **explainable matrix stays operational** and K-means is retained as exploratory profiling only.
+- **Low engagement is mostly seasonal, not churn:** **582,524 customers (58.2%)** have High/Moderate health and Low engagement, but **87.6%** were last active in Dec-2024/Jan-2025 and **71.7%** in only one month of the year. **392,164 one-time pre-Tết borrowers** get one opt-in reminder in early December, ahead of the next Tết season.
 - **Repayment support is a narrow, reachable queue:** **60,597** Low-health customers have established loan history, of whom **15,544** are reachable through Medium/High engagement.
 - **Thin-file is not stress:** 71.4% of the Low-health tier has no signed loan history and is routed to education, not collections.
 
@@ -155,17 +156,17 @@ Features freeze at `ENG_ASOF` **2025-02-01**; the outcome window runs to `ENG_TA
 ### 6.2 Results and validation
 
 - **Later applications:** AUC **0.649**; apply rate High **36.3%** (n=50,841) vs Low **12.4%** (n=752,918), 2.9×; sign rate 23.4% vs 8.5%.
-- **Later sales calls:** positive-response rate High **32.4%** vs Low **7.0%** (4.6×), AUC **0.689** (n=115,044).
+- **Sales calls (cross-sectional, call dates unreliable):** positive-response rate High **32.4%** vs Low **7.0%** (4.6×); conversion AUC **0.645** for the call-free score (0.705 with E4, which shares the call log with the outcome) (n=115,044).
 - **Component ranking power (apply AUC):** E3 frequency 0.661, E5 breadth 0.627, E1 digital 0.575, E2 recency 0.503, E4 responsiveness 0.500.
-- **Conversation depth beats dial count:** duration AUC 0.922, first-call robustness 0.720, attempts 0.591 — but duration partly _is_ the conversion process, so it is not a causal lever.
+- **Conversation depth beats dial count:** duration AUC 0.922, single non-converting call robustness 0.720 (call order is unreliable, so not a true first call), attempts 0.591 — but duration partly _is_ the conversion process, so it is not a causal lever.
 - **App activity is modest:** 3.39% vs 2.58% conversion for ≥0.5 sessions/week vs non-users (n=131,368).
-- **Engagement reducers:** customers who ignored 5+ calls answer later at **−19.8 pp** (n=32,349); opted-out −3.9 pp; collection calls −1.9 pp.
+- **Engagement reducers:** customers who ignored 5+ calls answer **−19.8 pp** less on their other calls (n=32,349); opted-out −3.9 pp; collection calls −1.9 pp. Non-response is a stable trait (cross-sectional, not a time effect).
 - **Lead sources:** SOB has the highest offered-product signing rate (67.3%, n=35,535) among sources with ≥1,000 leads.
 - Score distribution: mean 38.1, median 30.6; E4 present for 68.7% of customers.
 
 ### 6.3 Business insight
 
-Prioritise **opt-in, low-cost re-engagement** for low-activity customers when Task 1 shows adequate health; route established repayment concerns to **support rather than sales**. Rising pre-loan activity is a monitoring cue (delinquency 2.54% Rising vs 2.12% Declining) but does not establish cause.
+Prioritise **opt-in, low-cost re-engagement** for low-activity customers when Task 1 shows adequate health, timed before the next Tết season for one-time Tết borrowers; route established repayment concerns to **support rather than sales**. Rising pre-loan activity is a monitoring cue (delinquency 2.54% Rising vs 2.12% Declining) but does not establish cause.
 
 ---
 
@@ -175,16 +176,20 @@ Prioritise **opt-in, low-cost re-engagement** for low-activity customers when Ta
 
 Both score files are joined **one-to-one** on `SKP_CLIENT` after explicit checks for unique keys and identical populations. Each customer is placed in the 3 × 3 health × engagement matrix and routed by rule to an action, a channel, an opportunity type, and a row-level rationale.
 
-Thin-file customers in the Low-health row are separated from established borrowers with observed repayment stress, so missing history is never read as a missed payment.
+Thin-file customers in the Low-health row are separated from established borrowers with observed repayment stress, so missing history is never read as a missed payment. Thin-file customers above the Low row keep the matrix action, labelled as thin file, with an affordability check before any credit offer.
+
+**Contact guards (per-customer call counts, no call dates):** customers on a sales-type route with 5+ unanswered outbound calls are switched to SMS/app only. Customers with collection-coded calls are not blocked, because the code is not a distress marker (95% of them were never late; it appears for 5.3% of High-health vs 1.7% of Low-health customers), but their rationale asks staff to confirm there are no current arrears first.
 
 ### 7.2 Findings
 
-- **Re-engagement is the largest service opportunity:** **582,524 customers (58.2%)** have High/Moderate health and Low engagement.
+- **One-time pre-Tết borrowers, not lost customers:** **582,524 customers (58.2%)** have High/Moderate health and Low engagement; 87.6% were last active in Dec-2024/Jan-2025 and 71.7% in only one month. **392,164** are routed to one early-December reminder instead of an immediate campaign.
 - **Low-health is mostly thin-file:** **151,447 of 212,044 (71.4%)** have no signed loan history.
-- **Observed repayment stress is a distinct queue:** **60,597** Low-health customers have established history; **15,544** of these are reachable (Medium/High engagement).
+- **Observed repayment stress is a distinct queue:** **60,597** Low-health customers have established history; **15,544** of these are reachable (Medium/High engagement). The other **45,053** (Low engagement; only 9.5% have ever answered an outbound call) get proactive SMS/app repayment reminders, not a passive self-service note.
+- **Contact guards:** **33,506** customers on sales-type routes are switched to SMS/app (5+ unanswered calls); **21,725** with collection-coded calls carry an arrears check in their rationale.
+- **Thin files above Low:** **30,973** customers without a signed loan score Moderate or High (mostly cancelled approved applications) and are labelled as thin file.
 - **Protect engaged relationships:** **44,909 (4.5%)** combine High/Moderate health with High engagement.
 
-**Matrix distribution (top cells):** Medium×Low 392,016 · High×Low 190,508 · Low×Low 180,599 · Medium×Medium 99,464 · High×Medium 61,587 · Medium×High 28,334 · Low×Medium 25,998 · High×High 16,575 · Low×High 5,447.
+**Matrix distribution (top cells):** Moderate×Low 392,016 · High×Low 190,508 · Low×Low 180,599 · Moderate×Medium 99,464 · High×Medium 61,587 · Moderate×High 28,334 · Low×Medium 25,998 · High×High 16,575 · Low×High 5,447.
 
 ### 7.3 Matrix vs machine learning
 
@@ -204,19 +209,20 @@ An unsupervised K-means challenger was fit on the two standardized score axes (t
 
 ## 8. Action framework
 
-### 8.1 The ten routes
+### 8.1 The routes
 
 | Health × Engagement              | Next best action                                                      | Channel              | Opportunity              |
 | -------------------------------- | --------------------------------------------------------------------- | -------------------- | ------------------------ |
 | High × High                      | Needs-based product review after standard eligibility checks          | Relationship service | Retention                |
 | High × Medium                    | Relevant product review with suitability and affordability checks     | Customer service     | Relationship growth      |
 | High × Low                       | Opt-in digital check-in; do not infer dissatisfaction                 | Digital              | Re-engagement            |
-| Medium × High                    | Tailored service review; check affordability before any credit offer  | Customer service     | Retention                |
-| Medium × Medium                  | Concise account/product guidance; contact only on a clear need        | Digital              | Relationship growth      |
-| Medium × Low                     | Low-frequency opt-in reminder focused on account utility              | Digital              | Re-engagement            |
+| Moderate × High                  | Tailored service review; check affordability before any credit offer  | Customer service     | Retention                |
+| Moderate × Medium                | Concise account/product guidance; contact only on a clear need        | Digital              | Relationship growth      |
+| Moderate × Low                   | Low-frequency opt-in reminder focused on account utility              | Digital              | Re-engagement            |
+| High/Moderate × Low, one-time pre-Tết borrower | One opt-in reminder in early December, before the next Tết season | Digital | Seasonal re-engagement |
 | Low (established) × High         | Repayment-support review; suppress new-credit promotion               | Customer support     | Support                  |
 | Low (established) × Medium       | Repayment-support options + service contact; suppress promotion       | Customer support     | Support                  |
-| Low (established) × Low          | Self-service repayment resources; avoid sales outreach                | Self-service         | Support                  |
+| Low (established) × Low          | Proactive SMS/app repayment reminders; no phone calls, no sales       | Digital (SMS/app)    | Support                  |
 | Low (thin-file)                  | Neutral financial education; affordability checks precede credit talk | Digital              | Credit-history education |
 | Low (thin-file, rejected-before) | Education + documented affordability check before any offer           | Digital              | Credit-history education |
 
@@ -224,12 +230,13 @@ An unsupervised K-means challenger was fit on the two standardized score axes (t
 
 | Action                                                           | Customers |
 | ---------------------------------------------------------------- | --------: |
-| Send a low-frequency, opt-in reminder focused on account utility |   392,016 |
-| Opt-in digital check-in                                          |   190,508 |
+| One early-December reminder (one-time pre-Tết borrowers)         |   392,164 |
 | Neutral financial education (thin-file)                          |   151,447 |
+| Send a low-frequency, opt-in reminder focused on account utility |   120,674 |
 | Concise account/product guidance                                 |    99,464 |
+| Opt-in digital check-in                                          |    69,686 |
 | Relevant product review with affordability checks                |    61,587 |
-| Keep self-service repayment resources; avoid sales outreach      |    45,053 |
+| Proactive SMS/app repayment reminders                            |    45,053 |
 | Tailored service review; check affordability                     |    28,334 |
 | Needs-based product review after eligibility checks              |    16,575 |
 | Repayment-support options + service contact                      |    12,602 |

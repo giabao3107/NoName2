@@ -17,9 +17,10 @@ import pandas as pd
 def find_project_root() -> Path:
     start = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
     for directory in (start, *start.parents):
-        if ((directory / "Data").is_dir() or (directory / "Data_raw").is_dir()) and (directory / "Code").is_dir():
+        has_data = any((directory / name).is_dir() for name in ("Data", "Data_raw", "Data_clean"))
+        if has_data and (directory / "Code").is_dir():
             return directory
-    raise RuntimeError(f"Could not find project root from {start}; expected Data/ or Data_raw/ and Code/.")
+    raise RuntimeError(f"Could not find project root from {start}; expected Data_clean/ (or Data_raw/) and Code/.")
 
 
 ROOT = find_project_root()
@@ -34,7 +35,8 @@ TASK3_FIGURES = ROOT / "output" / "Task3" / "figures"
 TASK3_REPORT = ROOT / "output" / "Task3" / "report" / "report.md"
 OUTPUT_CSV = TASK3_SCORES / "final_customer_intelligence_output.csv"
 
-from Code.config.utils import PAL, ensure_dirs, navy_cmap, save_fig, save_json, set_style
+from Code.config import config as C
+from Code.config.utils import PAL, ensure_dirs, load_json, navy_cmap, save_fig, save_json, set_style
 
 # %% [markdown]
 # ## Build the customer-level file
@@ -42,8 +44,12 @@ from Code.config.utils import PAL, ensure_dirs, navy_cmap, save_fig, save_json, 
 # Require a one-to-one match between the two score populations. Keep the component scores and available drivers in the final file so each recommendation can be checked without joining extra CSVs.
 
 # %%
-def build_customer_intelligence(financial: pd.DataFrame, engagement: pd.DataFrame) -> pd.DataFrame:
+def build_customer_intelligence(financial: pd.DataFrame, engagement: pd.DataFrame,
+                                snapshot_date: str = "2025-06-05") -> pd.DataFrame:
     """Join the two score populations and assign an explainable matrix action."""
+    health_label = {"High": "High", "Medium": "Moderate", "Low": "Low"}      # same wording as Task 1's tiers
+    sales_cells = {("High", "High"), ("High", "Medium"), ("Medium", "High"), ("Medium", "Medium")}
+    tet_window = ("2024-12-01", "2025-02-01")      # the Tết application wave that defines the customer file
     required_financial = {"SKP_CLIENT", "Financial_Health_Score", "fh_thin_file"}
     required_engagement = {"SKP_CLIENT", "Engagement_Score"}
     missing_financial = required_financial - set(financial.columns)
@@ -113,11 +119,22 @@ def build_customer_intelligence(financial: pd.DataFrame, engagement: pd.DataFram
     opportunities = []
     rationales = []
 
-    for row in result.itertuples(index=False):
+    # Call evidence is used only as per-customer counts: call dates are unreliable (Task 1, chart 1).
+    def column(name: str, default=0) -> pd.Series:
+        return result[name] if name in result.columns else pd.Series(default, index=result.index, dtype=float)
+
+    ignored_calls = ((column("out_attempts") >= 5) & (column("out_connected") == 0)).to_numpy()
+    collection_on_record = (column("collection_calls") > 0).to_numpy()
+    last_active = pd.Timestamp(snapshot_date) - pd.to_timedelta(column("days_since_last_activity", np.nan), unit="D")
+    one_time_tet = ((last_active >= tet_window[0]) & (last_active < tet_window[1])
+                    & (column("active_months_12m", np.nan) <= 1)).to_numpy()
+
+    for i, row in enumerate(result.itertuples(index=False)):
         health = row.fh_short
         engagement_level = row.eng_short
         thin_file = bool(getattr(row, "fh_thin_file"))
-        matrix_segments.append(f"{health} health × {engagement_level} engagement")
+        matrix_segments.append(f"{health_label[health]} health × {engagement_level} engagement")
+        contact_note = ""
 
         if health == "Low" and thin_file:
             profile = "Thin file — no signed loan history"
@@ -125,14 +142,41 @@ def build_customer_intelligence(financial: pd.DataFrame, engagement: pd.DataFram
             channel = "Digital"
             opportunity = "Credit-history education"
             evidence_note = "The low health score is a thin-file signal, not evidence of missed payments."
+        elif health == "Low" and engagement_level == "Low":
+            profile = "Financial-stress signal — review repayment evidence"
+            action = ("Send proactive repayment reminders and a self-service repayment-plan link by SMS/app; "
+                      "no phone calls and no sales outreach.")
+            channel = "Digital (SMS/app)"
+            opportunity = "Support"
+            evidence_note = ("Review the repayment indicators before contacting the customer; the score is not a diagnosis. "
+                             "Few customers in this group answer the phone, so reminders go through SMS/app.")
         elif health == "Low":
             profile = "Financial-stress signal — review repayment evidence"
             action, channel, opportunity = actions[(health, engagement_level)]
             evidence_note = "Review the repayment indicators before contacting the customer; the score is not a diagnosis."
+        elif thin_file:
+            profile = "Thin file above Low — no signed loan yet"
+            action, channel, opportunity = actions[(health, engagement_level)]
+            evidence_note = ("No repayment history yet: the score rests on application and pre-approval evidence, "
+                             "so confirm affordability before any credit offer.")
+        elif engagement_level == "Low" and one_time_tet[i]:
+            profile = "One-time pre-Tết borrower"
+            action = ("Schedule one opt-in reminder for early December, ahead of the next Tết borrowing season; "
+                      "no earlier contact unless the customer reaches out.")
+            channel = "Digital"
+            opportunity = "Seasonal re-engagement"
+            evidence_note = "Last active only in the Dec-2024/Jan-2025 Tết window: a seasonal borrower, not a lost customer."
         else:
             profile = "Established credit history"
             action, channel, opportunity = actions[(health, engagement_level)]
             evidence_note = "Use the score as a prioritization cue, not as proof of a customer's needs or response."
+
+        if (health, engagement_level) in sales_cells:
+            if ignored_calls[i]:
+                channel = "Digital (SMS/app) — phone suppressed"
+                contact_note += " 5+ outbound calls went unanswered: contact by SMS/app only, no phone calls."
+            if collection_on_record[i]:
+                contact_note += " Collection-coded calls are on record: confirm there are no current arrears before any sales contact."
 
         profiles.append(profile)
         next_actions.append(action)
@@ -143,7 +187,7 @@ def build_customer_intelligence(financial: pd.DataFrame, engagement: pd.DataFram
         rationales.append(
             f"Financial health: {row.Financial_Health_Score:.0f}/100 ({row.Financial_Health_Tier}); "
             f"engagement: {row.Engagement_Score:.0f}/100 ({row.Engagement_Tier}). "
-            f"Profile: {profile}. Financial-health note: {driver_text}. {evidence_note} "
+            f"Profile: {profile}. Financial-health note: {driver_text}. {evidence_note}{contact_note} "
             f"Recommended action: {action}"
         )
 
@@ -402,7 +446,11 @@ def write_report(
     output: pd.DataFrame,
     checks: list[dict],
     segmentation_comparison: dict | None = None,
+    metrics: dict | None = None,
+    snapshot_date: str = "2025-06-05",
 ) -> str:
+    metrics = metrics or {}
+    tet_window = ("2024-12-01", "2025-02-01")
     total = len(output)
     segments = output.groupby("Matrix_Segment", observed=True).size().sort_values(ascending=False)
     actions = output.groupby("Next_Best_Action", observed=True).size().sort_values(ascending=False)
@@ -425,6 +473,34 @@ def write_report(
         ~low_health.fh_thin_file.fillna(False)
         & (low_health.Engagement_Tier != "Low / Dormant Engagement")
     ]
+
+    def column(name: str, default=np.nan) -> pd.Series:
+        return output[name] if name in output.columns else pd.Series(default, index=output.index, dtype=float)
+
+    last_active = pd.Timestamp(snapshot_date) - pd.to_timedelta(column("days_since_last_activity"), unit="D")
+    in_tet = (last_active >= tet_window[0]) & (last_active < tet_window[1])
+    dormant = output.index.isin(healthy_low_engagement.index)
+    tet_share = float(in_tet[dormant].mean()) if dormant.any() else float("nan")
+    one_month_share = float((column("active_months_12m")[dormant] <= 1).mean()) if dormant.any() else float("nan")
+    text = lambda name: output[name].astype(str) if name in output.columns else pd.Series("", index=output.index)
+    one_time = int(text("Customer_Profile").eq("One-time pre-Tết borrower").sum())
+    low_low = low_health[~low_health.fh_thin_file.fillna(False) & (low_health.Engagement_Tier == "Low / Dormant Engagement")]
+    low_low_answered = float((column("out_connected", 0).loc[low_low.index] > 0).mean()) if len(low_low) else float("nan")
+    phone_suppressed = int(text("NBA_Channel").str.contains("phone suppressed", regex=False).sum())
+    collection_note = int(text("Action_Rationale").str.contains("Collection-coded calls are on record", regex=False).sum())
+    collection_any = column("collection_calls", 0) > 0
+    collection_by_tier = {tier: float(collection_any[output.Financial_Health_Tier == tier].mean())
+                          for tier in ("High Financial Health", "Financial Stress / Low Health")}
+    thin_above_low = int(text("Customer_Profile").eq("Thin file above Low — no signed loan yet").sum())
+
+    def read_metric(name: str) -> float:
+        value = metrics.get(name)
+        return float(value) if value is not None else float("nan")
+
+    fh_gini = read_metric("fh_gini")
+    never_late = read_metric("collection_called_never_late_share")
+    eng_auc = read_metric("eng_auc_apply")
+    fmt = lambda value, spec: format(value, spec) if np.isfinite(value) else "n/a"
     comparison_section = ""
     if segmentation_comparison is not None:
         if segmentation_comparison.get("status") != "ok":
@@ -500,7 +576,7 @@ def write_report(
                     "",
                     cluster_table,
                     "",
-                    "Silhouette measures geometric separation, not repayment, applications, customer response, or action success. Task 3 has no observed post-action outcome label for supervised model selection. Task 1's holdout Gini (0.302) and Task 2's application AUC (0.649) validate score ordering, not the success of Task 3 actions. Keep the 3 × 3 matrix as the operational segmentation: it maps those score tiers to actions and preserves the thin-file safeguard. Use K-means only for exploratory profiles; it does not replace the action rules.",
+                    f"Silhouette measures geometric separation, not repayment, applications, customer response, or action success. Task 3 has no observed post-action outcome label for supervised model selection. Task 1's out-of-time Gini ({fmt(fh_gini, '.3f')}) and Task 2's application AUC ({fmt(eng_auc, '.3f')}) validate score ordering, not the success of Task 3 actions. Keep the 3 × 3 matrix as the operational segmentation: it maps those score tiers to actions and preserves the thin-file safeguard. Use K-means only for exploratory profiles; it does not replace the action rules.",
                     "",
                 ]
             )
@@ -514,14 +590,20 @@ def write_report(
             "",
             "## Integrated analysis",
             "",
-            f"Task 1 ranks observed repayment evidence; Task 2 estimates recent engagement and validates it against later applications and call responses. This stage joins both scores one-to-one, assigns the 3 × 3 matrix, distinguishes thin-file customers from established borrowers with stress signals, and attaches an action and row-level rationale. The output contains {total:,} customers and {output.Matrix_Segment.nunique()} populated matrix cells.",
+            f"Task 1 ranks observed repayment evidence; Task 2 estimates recent engagement and validates it against later applications (forward) and, cross-sectionally, against call responses. This stage joins both scores one-to-one, assigns the 3 × 3 matrix, distinguishes thin-file customers from established borrowers with stress signals, and attaches an action and row-level rationale. The output contains {total:,} customers and {output.Matrix_Segment.nunique()} populated matrix cells. Health tiers use Task 1's wording (High / Moderate / Low).",
+            "",
+            "**Call data (team-wide rule, Task 1 chart 1).** CALL timestamps are unreliable for every call type, so call evidence enters this stage only as per-customer counts whose meaning does not depend on dates: unanswered outbound calls and collection-coded calls.",
             "",
             "## Findings and business insight",
             "",
-            f"- **Re-engagement is the largest service opportunity:** {len(healthy_low_engagement):,} customers ({len(healthy_low_engagement) / max(total, 1):.1%}) have High/Moderate health and Low engagement. Favor low-cost, opt-in service prompts; do not infer dissatisfaction from inactivity.\n"
+            f"- **Most low-engagement healthy customers are one-time pre-Tết borrowers, not lost customers:** {len(healthy_low_engagement):,} customers ({len(healthy_low_engagement) / max(total, 1):.1%}) have High/Moderate health and Low engagement, but {fmt(tet_share, '.1%')} were last active in Dec-2024/Jan-2025 and {fmt(one_month_share, '.1%')} were active in only one month of the year: the low score reflects the Tết-cohort sampling, not churn. {one_time:,} of them get one opt-in reminder in early December, ahead of the next Tết season, instead of an immediate campaign; do not infer dissatisfaction from inactivity.\n"
             f"- **The Low-health tier is mostly thin-file:** {thin_file_low:,} of {len(low_health):,} Low-health customers ({thin_file_low / max(len(low_health), 1):.1%}) have no signed loan history. Offer neutral education and assess affordability before any credit discussion.\n"
             f"- **Observed repayment stress is a distinct queue:** {established_low:,} Low-health customers have established loan history; "
-            f"{len(support_reachable):,} of these {established_low:,} show Medium/High engagement and are reachable for a repayment-support review without mixing in thin-file cases.\n"
+            f"{len(support_reachable):,} of these {established_low:,} show Medium/High engagement and are reachable for a repayment-support review without mixing in thin-file cases. "
+            f"The other {len(low_low):,} have Low engagement and are the riskiest, hardest-to-reach group (only {fmt(low_low_answered, '.1%')} have ever answered an outbound call), so they receive proactive SMS/app repayment reminders rather than a passive self-service note.\n"
+            f"- **Contact guards from call counts:** {phone_suppressed:,} customers routed to a sales-type action have 5+ unanswered outbound calls, so their channel is switched to SMS/app. "
+            f"{collection_note:,} have collection-coded calls on record; they are not blocked because the code is not a distress marker ({fmt(never_late, '.0%')} of collection-called customers were never late, and the code appears for {fmt(collection_by_tier['High Financial Health'], '.1%')} of High-health vs {fmt(collection_by_tier['Financial Stress / Low Health'], '.1%')} of Low-health customers), but their rationale asks staff to confirm there are no current arrears before any sales contact.\n"
+            f"- **Thin files above the Low tier:** {thin_above_low:,} customers with no signed loan score Moderate or High (mostly approved applications the customer cancelled; Task 1 shows their later stress is close to customers with history). They keep the matrix action, labelled as thin file, with an affordability check before any credit offer.\n"
             f"- **Protect engaged relationships:** {len(healthy_high_engagement):,} customers ({len(healthy_high_engagement) / max(total, 1):.1%}) combine High/Moderate health with High engagement; prioritize retention and service quality rather than assuming they need a new credit offer.",
             "",
             "## Matrix distribution",
@@ -552,6 +634,22 @@ def write_report(
 # Run Stages 1–4 first. This stage reads their Parquet outputs, writes one comprehensive customer CSV, and records aggregate counts and QA results as JSON/Markdown rather than several sidecar CSVs.
 
 # %%
+def upstream_metrics() -> dict:
+    """Validation figures quoted in the report, read from the Task 1 and Task 2 metric files (never typed in)."""
+    def read(file_name: str, *keys):
+        try:
+            value = load_json(DATA_CLEAN / file_name)
+            for key in keys:
+                value = value[key]
+            return value
+        except (OSError, KeyError, TypeError, ValueError):
+            return None
+
+    return {"fh_gini": read("metrics_phase2.json", "validation", "gini_report"),
+            "collection_called_never_late_share": read("metrics_phase2.json", "data_foundations", "collection_called_never_late_share"),
+            "eng_auc_apply": read("metrics_phase3.json", "validation", "auc_apply")}
+
+
 def run() -> dict:
     ensure_dirs(TASK3_SCORES, TASK3_FIGURES, TASK3_REPORT.parent, DATA_CLEAN)
     financial_path = TASK1_SCORES / "fh_scores.parquet"
@@ -562,7 +660,7 @@ def run() -> dict:
 
     financial = pd.read_parquet(financial_path)
     engagement = pd.read_parquet(engagement_path)
-    customer_intelligence = build_customer_intelligence(financial, engagement)
+    customer_intelligence = build_customer_intelligence(financial, engagement, C.SNAPSHOT_DATE)
     customer_intelligence = customer_intelligence.sort_values("SKP_CLIENT").reset_index(drop=True)
     checks = qa_checks(customer_intelligence, len(financial))
     failed = [check for check in checks if check["status"] != "PASS"]
@@ -588,7 +686,7 @@ def run() -> dict:
             "reason": f"K-means comparison failed ({type(error).__name__}); the rule-based output was preserved.",
         }
     TASK3_REPORT.write_text(
-        write_report(customer_intelligence, checks, segmentation_comparison),
+        write_report(customer_intelligence, checks, segmentation_comparison, upstream_metrics(), C.SNAPSHOT_DATE),
         encoding="utf-8",
     )
     globals()["CUSTOMER_INTELLIGENCE"] = customer_intelligence
@@ -621,7 +719,7 @@ def plot_segment_matrix(output: pd.DataFrame) -> None:
             text_color = "white" if value > maximum * 0.45 else PAL["navy"]
             ax.text(column, row, f"{value:,}\n{value / max(len(output), 1):.1%}", ha="center", va="center", color=text_color)
     ax.set_xticks(range(len(engagement_order)), engagement_order)
-    ax.set_yticks(range(len(health_order)), health_order)
+    ax.set_yticks(range(len(health_order)), ["High", "Moderate", "Low"])
     ax.set_xlabel("Engagement tier")
     ax.set_ylabel("Financial-health tier")
     fig.colorbar(image, ax=ax, label="Customers")
@@ -684,13 +782,14 @@ def plot_action_volume(output: pd.DataFrame) -> None:
 
     # chart-only short names (keyword + health x engagement cell); the CSV keeps the full action text
     short = {
-        "Send a low-frequency, opt-in reminder": "Opt-in reminder\nMedium health · Low engagement",
+        "Send a low-frequency, opt-in reminder": "Opt-in reminder\nModerate health · Low engagement",
         "Use an opt-in digital check-in": "Digital check-in\nHigh health · Low engagement",
         "Offer neutral financial education": "Financial education\nLow health · thin file",
-        "Share concise account and product guidance": "Light product guidance\nMedium health · Medium engagement",
+        "Share concise account and product guidance": "Light product guidance\nModerate health · Medium engagement",
         "Offer a relevant product review": "Product review\nHigh health · Medium engagement",
-        "Keep self-service repayment resources": "Self-service repayment\nLow health · Low engagement",
-        "Provide a tailored service review": "Tailored service review\nMedium health · High engagement",
+        "Send proactive repayment reminders": "Proactive SMS/app repayment reminder\nLow health · Low engagement",
+        "Schedule one opt-in reminder for early December": "Early-December seasonal reminder\nOne-time pre-Tết borrowers",
+        "Provide a tailored service review": "Tailored service review\nModerate health · High engagement",
         "Recognize the relationship": "Relationship review\nHigh health · High engagement",
         "Share repayment-support options": "Repayment options\nLow health · Medium engagement",
         "Offer a repayment-support review": "Repayment-support review\nLow health · High engagement",
@@ -737,7 +836,7 @@ if __name__ == "__main__":
     display_saved_figure(TASK3_FIGURES / "01_customer_matrix.png")
 
 # %% [markdown]
-# **Interpretation.** Start with the Low-health row for repayment support. Within High/Medium health, low engagement suggests a lower-cost re-engagement path. Thin-file customers in the Low row receive education rather than a stress label.
+# **Interpretation.** Start with the Low-health row for repayment support. Within High/Moderate health, low engagement mostly marks one-time pre-Tết borrowers, so the re-engagement prompt is timed for early December rather than sent now. Thin-file customers in the Low row receive education rather than a stress label.
 
 # %% [markdown]
 # ## Next-best-action workload

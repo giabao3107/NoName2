@@ -38,9 +38,10 @@ def find_project_root():
     except NameError:
         start = Path.cwd()
     for directory in (start, *start.parents):
-        if ((directory / "Data").is_dir() or (directory / "Data_raw").is_dir()) and (directory / "Code").is_dir():
+        has_data = any((directory / name).is_dir() for name in ("Data", "Data_raw", "Data_clean"))
+        if has_data and (directory / "Code").is_dir():
             return directory
-    raise RuntimeError(f"Could not find project root from {start}; expected Data/ or Data_raw/ and Code/.")
+    raise RuntimeError(f"Could not find project root from {start}; expected Data_clean/ (or Data_raw/) and Code/.")
 
 
 ROOT = find_project_root()
@@ -67,7 +68,8 @@ from Code.config.utils import (PAL, TIER_COLORS, assign_tier, auc, ensure_dirs, 
 
 # %%
 # Weights chosen among simple candidate sets as the best balance of two independent validations
-# (re-application AUC and forward sales-call conversion AUC) - see Executive Summary, Challenge 2.
+# (re-application AUC, a forward test, and sales-call conversion AUC, a cross-sectional check because call dates
+# are unreliable) - see Executive Summary, Challenge 2.
 ENG_WEIGHTS = {"E1_digital": 0.20, "E2_recency": 0.20, "E3_frequency": 0.25, "E4_responsiveness": 0.20,
                "E5_breadth": 0.15}
 CUSTOMER_LEAD_SOURCES = ("GMA", "LANDING PAGE")
@@ -217,7 +219,10 @@ def validate(con) -> dict:
 
 
 def forward_call_validation(con) -> dict:
-    """Score built only from data before the snapshot -> conversion on sales calls AFTER the snapshot."""
+    """Score vs. sales-call outcomes on calls dated after the snapshot.
+    CALL timestamps are unreliable for every call type (Task 1, chart 1), so the date split is effectively a random
+    split of each customer's calls: read this as a cross-sectional consistency check, not a forward test. The
+    call-free score (E4 removed) is the fair comparison because E4 and the outcome come from the same call log."""
     feat = build_features(con, C.SNAPSHOT_DATE, "2025-01-01", C.SNAPSHOT_DATE, use_app=True)
     sc = score(feat)
     post = con.execute(f"""
@@ -397,8 +402,9 @@ def q7_call_lead_outcomes(con) -> dict:
 
 
 def q5_engagement_reducers(con, pop) -> pd.DataFrame:
-    """Factors observed before the snapshot -> share of outbound calls the customer answers AFTER the snapshot.
-    Later pickup is not a score input, so the comparison is not circular. Associations only."""
+    """Factors from calls dated before the snapshot -> share of the customer's other outbound calls (dated after it)
+    that are answered. CALL timestamps are unreliable, so this is a cross-sectional comparison between two parts of
+    the same call history, not a before/after effect. Associations only."""
     snap = f"TIMESTAMP '{C.SNAPSHOT_DATE}'"
     pre = con.execute(f"""
       SELECT SKP_CLIENT,
@@ -472,7 +478,7 @@ def chart_active_passive(q1, q3: pd.DataFrame):
 # %% [markdown]
 # ## Call frequency and conversation depth
 #
-# Both series show conversion rate: bars use average connected-call duration; the line shows later conversion by the first connected-call duration among customers not converted on that call.
+# Both series show conversion rate: bars use average connected-call duration; the line groups customers by the duration of one connected call on which they did not convert. Call order is unreliable (Task 1, chart 1), so "first" means the earliest-dated call, effectively a random one.
 
 # %%
 def chart_call_dynamics(q2):
@@ -492,7 +498,7 @@ def chart_call_dynamics(q2):
     robust = q2["by_first_duration_rob"]
     position = {band: i for i, band in enumerate(durations.dur_band.astype(str))}
     axes[1].plot(robust.b.astype(str).map(position), robust.conv * 100, "o--", color=PAL["orange"], lw=2,
-                 label="Later conversion, grouped by first connected-call duration")
+                 label="Conversion, grouped by one non-converting call's duration")
     for i, row in durations.iterrows():
         axes[1].text(i, row.conv * 100 + 1.2, f"{row.conv:.0%}", ha="center", fontsize=9)
     axes[1].set_xlabel("Connected-call duration band")
@@ -645,7 +651,7 @@ def chart_call_lead_outcomes(q7: dict):
 # %% [markdown]
 # ## What reduces engagement
 #
-# Compare later call pickup for customers with and without each pre-snapshot factor.
+# Compare call pickup for customers with and without each factor. Call dates are unreliable, so the factor and the pickup come from two parts of the same call history: a cross-sectional pattern, not a before/after effect.
 
 # %%
 def chart_engagement_reducers(q5: pd.DataFrame):
@@ -659,7 +665,7 @@ def chart_engagement_reducers(q5: pd.DataFrame):
         ax.text(row.diff_pp + (0.4 if row.diff_pp >= 0 else -0.4), i, f"{row.diff_pp:+.1f} pp", va="center",
                 ha="left" if row.diff_pp >= 0 else "right", fontsize=10)
     ax.set_xlim(data.diff_pp.min() * 1.25, max(data.diff_pp.max(), 0) + 4)
-    ax.set_xlabel("Change in later call-answer rate (pp)")
+    ax.set_xlabel("Difference in call-answer rate on the customer's other calls (pp)")
     ax.grid(axis="y", visible=False)
     save_fig(fig, TASK_FIGURES / "06_engagement_reducers.png", None, left=0.18)
 
@@ -667,7 +673,7 @@ def chart_engagement_reducers(q5: pd.DataFrame):
 # %% [markdown]
 # ## Engagement score and validation
 #
-# The score is built from five components. The adjacent panels check whether earlier engagement ranks later applications and later sales-call responses.
+# The score is built from five components. The middle panel is the forward test (later applications); the right panel is a cross-sectional check against sales-call responses, because call dates are unreliable.
 
 # %%
 def chart_score(pop, val, fwd):
@@ -750,14 +756,16 @@ def engagement_report(metrics: dict) -> str:
             "",
             "The score combines digital adoption, recency, frequency, responsiveness, and product breadth. Features are frozen before the application outcome window; call data use their separate observation period. Responsiveness is omitted and its weight redistributed when the customer has no contact evidence.",
             "",
+            "**Team-wide rule for call data (shared with Task 1, chart 1).** CALL timestamps are unreliable for every call type, not only collection calls: collection calls predate customers' first loan at the rate random dates would produce, and only about 4% of 'sign successful' calls fall within 14 days of an actual signing. Call evidence is therefore used only as customer-level counts and rates whose meaning does not depend on dates (E4 responsiveness, answer and conversion rates, unanswered-call counts). Comparisons labelled before/after the snapshot are read as cross-sectional, and the forward test of this score is the later-application check.",
+            "",
             weights.to_markdown(),
             "",
             "## Findings and business insight",
             "",
-            f"- **The score separates later behavior:** application AUC is {validation['auc_apply']:.3f}; High-tier customers apply at {tier_by_name['High']['apply_rate']:.1%} versus {tier_by_name['Low']['apply_rate']:.1%} in Low ({application_lift:.1f}×). On calls after the snapshot, positive-response rates are {forward_tiers['High']['pos']:.1%} versus {forward_tiers['Low']['pos']:.1%} ({response_lift:.1f}×, AUC {forward['auc_positive']:.3f}).\n"
+            f"- **The score separates later behavior:** application AUC is {validation['auc_apply']:.3f}; High-tier customers apply at {tier_by_name['High']['apply_rate']:.1%} versus {tier_by_name['Low']['apply_rate']:.1%} in Low ({application_lift:.1f}×). As a cross-sectional check on sales calls, positive-response rates are {forward_tiers['High']['pos']:.1%} in High versus {forward_tiers['Low']['pos']:.1%} in Low ({response_lift:.1f}×); the fair figure is the score without the call component (conversion AUC {forward['auc_conversion_without_call_component']:.3f}), because E4 and the outcome share one call log ({forward['auc_conversion']:.3f} with E4).\n"
             f"- Application and signing rates by tier:\n\n{tier_table[['tier', 'n', 'apply_rate', 'sign_rate']].to_markdown(index=False)}\n"
             f"- **Frequency and breadth add more ranking signal than recency alone:** component AUCs are:\n\n{component_auc.to_markdown()}\n"
-            f"- **Conversation depth is more informative than dial count in this sample:** duration AUC {q2['auc_avg_duration']:.3f}, first-call robustness AUC {q2['auc_first_call_duration_excl_first_call_conversions']:.3f}, versus attempts AUC {q2['auc_attempts']:.3f}. Duration partly occurs during the conversion process, so it is not a causal lever.\n"
+            f"- **Conversation depth is more informative than dial count in this sample:** duration AUC {q2['auc_avg_duration']:.3f}, single non-converting call robustness AUC {q2['auc_first_call_duration_excl_first_call_conversions']:.3f} (call order is unreliable, so this is one call's duration rather than a true first call), versus attempts AUC {q2['auc_attempts']:.3f}. Duration partly occurs during the conversion process, so it is not a causal lever.\n"
             f"- **App activity is a modest signal:** customers with ≥0.5 sessions/week convert on sales calls at {app_active:.2%}, versus {app_none:.2%} for non-users ({q1['n_called']:,} called customers). This supports a channel test, not a blanket app campaign.\n"
             f"- **Customer-initiated leads may deserve a distinct path:** {source_line}\n"
             f"- **Rising pre-loan event activity is a monitoring cue:** delinquency is {rising['bad_rate']:.2%} in Rising versus {declining['bad_rate']:.2%} in Declining activity ({q4['n_temporal']:,} contracts). The association does not establish cause.",
@@ -768,7 +776,7 @@ def engagement_report(metrics: dict) -> str:
             "",
             "## Limits",
             "",
-            f"Application validation uses a later window beginning {validation['asof']}. Call responsiveness is validated on {forward['n']:,} customers with later calls. All reported differences are associations; contact exposure and customer selection may explain part of them.",
+            f"Application validation uses a later window beginning {validation['asof']} and is the forward test. The call-response check covers {forward['n']:,} customers and is cross-sectional because call dates are unreliable. All reported differences are associations; contact exposure and customer selection may explain part of them.",
             "",
         ]
     )
@@ -784,7 +792,7 @@ def display_saved_figure(path: Path) -> None:
 # %% [markdown]
 # ## Build the engagement score
 #
-# Score features frozen at the current snapshot, then validate against later applications and later call responses before analyzing contact patterns.
+# Score features frozen at the current snapshot, then validate against later applications (forward test) and against sales-call responses (cross-sectional, because call dates are unreliable) before analyzing contact patterns.
 
 # %%
 if __name__ == "__main__":
@@ -810,7 +818,7 @@ if __name__ == "__main__":
     display_saved_figure(TASK_FIGURES / "05_engagement_score_distribution_validation.png")
 
 # %% [markdown]
-# **Interpretation.** Compare each tier with later application and call-response rates. The score is useful only if it adds a different signal from Task 1's repayment-health score.
+# **Interpretation.** Compare each tier with later application rates (forward) and call-response rates (cross-sectional). The score is useful only if it adds a different signal from Task 1's repayment-health score.
 
 # %% [markdown]
 # ## 1. Compare app activity with sales-call response
@@ -872,7 +880,7 @@ if __name__ == "__main__":
 # %% [markdown]
 # ## 5. Find what reduces engagement
 #
-# Factors are measured before the snapshot; the outcome is the share of later outbound calls the customer answers.
+# Factors come from calls dated before the snapshot; the outcome is the share of the customer's other outbound calls that are answered. Because call dates are unreliable, read this as "customers who ignore calls keep ignoring calls", not as a time effect.
 
 # %%
 if __name__ == "__main__":
@@ -881,7 +889,7 @@ if __name__ == "__main__":
     display_saved_figure(TASK_FIGURES / "06_engagement_reducers.png")
 
 # %% [markdown]
-# **Interpretation.** Non-response persists: customers who ignored repeated dials keep ignoring later calls. Digital inactivity and lead expiry do not lower phone reachability.
+# **Interpretation.** Non-response is a stable customer trait: customers who ignored repeated dials also ignore their other calls. Digital inactivity and lead expiry do not lower phone reachability.
 
 # %% [markdown]
 # ## 6. Profile recency, frequency and product breadth

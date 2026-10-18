@@ -3,6 +3,8 @@
   "data_foundations": {
     "customers": 1000528,
     "tet_applicant_share": 0.9998260918235172,
+    "sales_conversion_calls_within_14d_of_signing": 0.04139562389118864,
+    "same_customer_calls_within_24h": 0.021771261209796614,
     "first_time_share": 0.31916548062622935,
     "peak_multiple": 12.2524957073833,
     "label_cut": "2025-01-20",
@@ -364,10 +366,10 @@
     "coef": [
       0.019242526254038463,
       0.019347758353014832,
-      0.06845296322122747
+      0.06845296322122744
     ],
     "slope_before_per_10pp": 0.0019347758353014833,
-    "slope_after_per_10pp": 0.008780072157424232,
+    "slope_after_per_10pp": 0.008780072157424228,
     "bad_below": 0.021467423803896993,
     "n_below": 2090330,
     "bad_above": 0.030675887818744963,
@@ -1660,8 +1662,8 @@
     "Pre-approved Capacity": 0.13
   },
   "scale": {
-    "b0": -1.0483726938430022,
-    "b1": -4.019917514617705,
+    "b0": -1.0483726938430125,
+    "b1": -4.019917514617688,
     "p_bar": 0.03147117788008905,
     "l50": -3.004860668830534,
     "l80": -4.1359696129018735,
@@ -1697,7 +1699,7 @@
     "gini_report_history": 0.3074485502209914,
     "gini_report_thin": 0.15825009910784926,
     "auc_report": 0.6610892383655912,
-    "ks_report": 0.23824591820430252,
+    "ks_report": 0.23790851186416362,
     "benchmarks": {
       "v1 design (6 factors)": {
         "gini_all": 0.30064674257450075,
@@ -1712,12 +1714,12 @@
         "gini_history": 0.29150408221665436
       },
       "Logistic regression, same buckets": {
-        "gini_all": 0.3229287345830847,
-        "gini_history": 0.29548380419547615
+        "gini_all": 0.32292934896245673,
+        "gini_history": 0.29548386187468667
       },
       "Gradient boosting, same raw inputs": {
-        "gini_all": 0.31960377538708173,
-        "gini_history": 0.31776317862552217
+        "gini_all": 0.3169699195930602,
+        "gini_history": 0.3172764840094411
       },
       "Final scorecard": {
         "gini_all": 0.3221784767311824,
@@ -2019,7 +2021,7 @@
         },
         "55+": {
           "n": 9929,
-          "mean_fhs": 64.83225903917815,
+          "mean_fhs": 64.83225903917817,
           "bad_rate": 0.04018531574176654,
           "gini_within": 0.3163186034340837
         }
@@ -2034,7 +2036,8 @@
     "01_data_foundations": [
       "**The file is a cohort, not the whole book.** 99.98% of the 1,000,528 customers applied in Dec-2024/Jan-2025, when monthly applications ran at 12x a normal month; 32% applied for the first time. Older vintages belong to customers who came back, so their stress rates are a survivor view; the score is therefore validated on the Tet wave itself.",
       "**Outcome flags are complete only for loans signed before 2025-01-20.** The 4th/3rd-instalment late-rate ratio is 1.21 in normal weeks and collapses for loans signed from 2025-01-20: those loans cannot have missed instalment 4 yet. Every label and contract comparison stops at this date (v1 used 2025-02-01).",
-      "**CALL dates cannot be used for before/after tests.** For customers whose first-ever loan came in May-2025, 20.7% of their collection calls are dated before that loan existed, against 19.7% expected if dates were random; 1,608 customers who never signed a loan received 5,922 collection calls; the collection share is 4.4%-4.5% in every one of 20 months; and 95% of collection-called customers were never late. Collection calls are therefore neither a score input nor a 'future' validation."
+      "**CALL dates cannot be used for before/after tests.** For customers whose first-ever loan came in May-2025, 20.7% of their collection calls are dated before that loan existed, against 19.7% expected if dates were random; 1,608 customers who never signed a loan received 5,922 collection calls; the collection share is 4.4%-4.5% in every one of 20 months; and 95% of collection-called customers were never late. Collection calls are therefore neither a score input nor a 'future' validation.",
+      "**This holds for every call type, not only collection.** Only 4.1% of 'sign successful' calls fall within 14 days of an actual signing, and only 2.2% of consecutive calls to the same customer are less than a day apart, where a real dialler retries within hours. **Team-wide rule:** call dates are not used for any before/after test in Tasks 1-3; call counts and outcomes per customer, whose meaning does not depend on dates, remain usable (Task 2 responsiveness, Task 3 contact guards)."
     ],
     "02_product_risk": [
       "**First loans in the Tet wave are 2.1x as risky as repeat loans** (4.51% vs 2.19%); a first-time two-wheeler loan reaches 7.7%. Across all mature loans TW is the riskiest product (4.91%) and CD the safest (2.12%; z = 55).",
@@ -2063,7 +2066,7 @@
     ],
     "07_validation": [
       "**The score ranks a period it never saw.** On 270,277 Tet-wave customers (report half), the lowest decile is stressed at 6.80% and the highest at 0.77% (8.9x); Gini 0.322, KS 0.238 — although the average stress rate jumped from 1.27% in training to 3.22%.",
-      "**Better than v1, as good as complex models.** Gini 0.322 vs 0.301 for the v1 design (customers with history: 0.307 vs 0.261). A logistic regression that re-estimates every weight on the same buckets reaches 0.323 and gradient boosting on the same raw inputs 0.320: complexity buys little or nothing.",
+      "**Better than v1, as good as complex models.** Gini 0.322 vs 0.301 for the v1 design (customers with history: 0.307 vs 0.261). A logistic regression that re-estimates every weight on the same buckets reaches 0.323 and gradient boosting on the same raw inputs 0.317: complexity buys little or nothing.",
       "**The weights are not fragile.** Dropping any pillar changes Gini to 0.301-0.310; equal weights give 0.310; 200 random ±25% weight changes keep Gini within 0.313-0.323 and the customer ranking correlation ≥ 0.987.",
       "**Expected vs observed** stress per decile (orange line) tracks the bars, so the 0-100 scale doubles as an expected stress rate."
     ],
