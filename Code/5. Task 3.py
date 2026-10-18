@@ -682,13 +682,30 @@ def plot_low_health_profile(output: pd.DataFrame) -> None:
 def plot_action_volume(output: pd.DataFrame) -> None:
     from textwrap import fill
 
+    # chart-only short names (keyword + health x engagement cell); the CSV keeps the full action text
+    short = {
+        "Send a low-frequency, opt-in reminder": "Opt-in reminder\nMedium health · Low engagement",
+        "Use an opt-in digital check-in": "Digital check-in\nHigh health · Low engagement",
+        "Offer neutral financial education": "Financial education\nLow health · thin file",
+        "Share concise account and product guidance": "Light product guidance\nMedium health · Medium engagement",
+        "Offer a relevant product review": "Product review\nHigh health · Medium engagement",
+        "Keep self-service repayment resources": "Self-service repayment\nLow health · Low engagement",
+        "Provide a tailored service review": "Tailored service review\nMedium health · High engagement",
+        "Recognize the relationship": "Relationship review\nHigh health · High engagement",
+        "Share repayment-support options": "Repayment options\nLow health · Medium engagement",
+        "Offer a repayment-support review": "Repayment-support review\nLow health · High engagement",
+    }
     counts = output.Next_Best_Action.value_counts().sort_values()
-    labels = [fill(str(action), width=42, break_long_words=False, break_on_hyphens=False) for action in counts.index]
+    labels = [next((v for k, v in short.items() if str(action).startswith(k)),
+                   fill(str(action), width=42, break_long_words=False, break_on_hyphens=False)) for action in counts.index]
     fig, ax = plt.subplots(figsize=(11.5, max(7, 0.7 * len(counts))))
-    ax.barh(labels, counts.values, color=PAL["navy"])
+    bars = ax.barh(labels, counts.values, color=PAL["navy"])
+    ax.bar_label(bars, labels=[f"{v / 1e3:,.0f}K" if v >= 1000 else f"{v:,}" for v in counts.values], padding=4, fontsize=9)
+    ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{x / 1e3:,.0f}K"))
+    ax.set_xlim(0, counts.max() * 1.1)
     ax.set_xlabel("Customers")
     ax.grid(axis="y", visible=False)
-    save_fig(fig, TASK3_FIGURES / "02_action_volume.png", None, left=0.36, right=0.98)
+    save_fig(fig, TASK3_FIGURES / "02_action_volume.png", None, left=0.27, right=0.97)
 
 
 def display_saved_figure(path: Path) -> None:
