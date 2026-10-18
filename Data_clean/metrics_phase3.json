@@ -16,14 +16,14 @@
     "Medium": 0.18695029024674972,
     "Low": 0.7627202836902116
   },
-  "score_mean": 38.1155359969936,
+  "score_mean": 38.11553599699358,
   "score_median": 30.6,
   "component_means": {
-    "E1_digital": 22.63912753183827,
+    "E1_digital": 22.63912753183825,
     "E2_recency": 51.57338207397176,
-    "E3_frequency": 31.711589614017125,
-    "E4_responsiveness": 29.03723051710963,
-    "E5_breadth": 61.641320049680424
+    "E3_frequency": 31.71158961401714,
+    "E4_responsiveness": 29.037230517109645,
+    "E5_breadth": 61.64132004968043
   },
   "e4_coverage": 0.6865345097788368,
   "never_active": 0.0,
@@ -70,50 +70,50 @@
         "decile": 1,
         "score_min": 23.2,
         "score_max": 28.8,
-        "apply_rate": 0.09762825702377739,
-        "sign_rate": 0.07358100206890349
+        "apply_rate": 0.0977082146462375,
+        "sign_rate": 0.07365096498855607
       },
       {
         "decile": 2,
         "score_min": 28.8,
         "score_max": 31.4,
-        "apply_rate": 0.09833788092311076,
-        "sign_rate": 0.061577363997081545
+        "apply_rate": 0.09847780676241592,
+        "sign_rate": 0.0617872527560393
       },
       {
         "decile": 3,
         "score_min": 31.4,
         "score_max": 33.1,
-        "apply_rate": 0.10190598982539255,
-        "sign_rate": 0.06966307856835877
+        "apply_rate": 0.10164612755239723,
+        "sign_rate": 0.06940321629536346
       },
       {
         "decile": 4,
         "score_min": 33.1,
         "score_max": 34.9,
-        "apply_rate": 0.09730939911246152,
-        "sign_rate": 0.05890936712909287
+        "apply_rate": 0.09745932115300043,
+        "sign_rate": 0.05924919042098109
       },
       {
         "decile": 5,
         "score_min": 34.9,
         "score_max": 36.7,
-        "apply_rate": 0.10989175736859465,
-        "sign_rate": 0.07021278722277192
+        "apply_rate": 0.10971185271805943,
+        "sign_rate": 0.06978301500204892
       },
       {
         "decile": 6,
         "score_min": 36.7,
         "score_max": 41.0,
-        "apply_rate": 0.1508600441765864,
-        "sign_rate": 0.10468451720588089
+        "apply_rate": 0.15097998061027657,
+        "sign_rate": 0.1047744695311485
       },
       {
         "decile": 7,
         "score_min": 41.0,
         "score_max": 46.4,
-        "apply_rate": 0.17221045056570583,
-        "sign_rate": 0.12184663974733138
+        "apply_rate": 0.17214048694678766,
+        "sign_rate": 0.121806660536521
       },
       {
         "decile": 8,
@@ -126,14 +126,14 @@
         "decile": 9,
         "score_min": 54.2,
         "score_max": 71.0,
-        "apply_rate": 0.2533657161704297,
-        "sign_rate": 0.16952015431821135
+        "apply_rate": 0.2533957002788522,
+        "sign_rate": 0.16954014372382636
       },
       {
         "decile": 10,
         "score_min": 71.0,
         "score_max": 100.0,
-        "apply_rate": 0.33242381537784976,
+        "apply_rate": 0.3324138206750422,
         "sign_rate": 0.21858415040028784
       }
     ],
@@ -268,7 +268,7 @@
     "auc_avg_duration": 0.9224785650390114,
     "auc_first_call_duration_excl_first_call_conversions": 0.7204716814955825,
     "n_robustness": 179105,
-    "spearman_attempts": 0.03106025387238229,
+    "spearman_attempts": 0.031060253872382298,
     "spearman_duration": 0.18004276070746777,
     "by_attempts": [
       {
@@ -391,121 +391,121 @@
     {
       "LEAD_SOURCE": "SOB",
       "n_leads_deal": 38282,
-      "deal_rate_all": 0.4043281671,
+      "deal_rate_all": 0.40432816706306685,
       "n_leads": 35535,
       "n_customers": 29797,
-      "deal_rate": 0.4113093898,
-      "not_interest_rate": 0.1570873677,
-      "expired_rate": 0.1539349246,
+      "deal_rate": 0.41130938977707726,
+      "not_interest_rate": 0.15708736770997522,
+      "expired_rate": 0.15393492456653907,
       "handled_rate": 1.0,
       "median_max_offer": 32000000.0,
-      "signed_within_90d": 0.672970311,
-      "avg_events_180d_after": 6.0213951021,
-      "active_180d_after": 0.5964105738,
-      "mean_engagement_score": 52.4116181801,
-      "still_active_6m": 0.9816897481
-    },
-    {
-      "LEAD_SOURCE": "LANDING PAGE",
-      "n_leads_deal": 445,
-      "deal_rate_all": 0.231292517,
-      "n_leads": 418,
-      "n_customers": 349,
-      "deal_rate": 0.2440191388,
-      "not_interest_rate": 0.2248803828,
-      "expired_rate": 0.1267942584,
-      "handled_rate": 1.0,
-      "median_max_offer": 19000000.0,
-      "signed_within_90d": 0.0693779904,
-      "avg_events_180d_after": 4.971291866,
-      "active_180d_after": 0.7535885167,
-      "mean_engagement_score": 64.392676696,
-      "still_active_6m": 0.9824013625
+      "signed_within_90d": 0.6729703109610243,
+      "avg_events_180d_after": 6.0213951021129875,
+      "active_180d_after": 0.5964105737777385,
+      "mean_engagement_score": 52.411618180128265,
+      "still_active_6m": 0.9816897481178548
     },
     {
       "LEAD_SOURCE": "RTDM",
       "n_leads_deal": 41,
-      "deal_rate_all": 0.4390243902,
+      "deal_rate_all": 0.43902439024390244,
       "n_leads": 3,
       "n_customers": 3,
-      "deal_rate": 0.3333333333,
-      "not_interest_rate": 0.3333333333,
+      "deal_rate": 0.3333333333333333,
+      "not_interest_rate": 0.3333333333333333,
       "expired_rate": 0.0,
       "handled_rate": 1.0,
       "median_max_offer": 115000000.0,
-      "signed_within_90d": 0.6666666667,
-      "avg_events_180d_after": null,
-      "active_180d_after": null,
-      "mean_engagement_score": 56.152189781,
-      "still_active_6m": 0.9744525547
+      "signed_within_90d": 0.6666666666666666,
+      "avg_events_180d_after": NaN,
+      "active_180d_after": NaN,
+      "mean_engagement_score": 56.1521897810219,
+      "still_active_6m": 0.9744525547445255
     },
     {
-      "LEAD_SOURCE": "SA",
-      "n_leads_deal": 669274,
-      "deal_rate_all": 0.0149888845,
-      "n_leads": 633535,
-      "n_customers": 367463,
-      "deal_rate": 0.0148284412,
-      "not_interest_rate": 0.6243317604,
-      "expired_rate": 0.1867327841,
+      "LEAD_SOURCE": "LANDING PAGE",
+      "n_leads_deal": 445,
+      "deal_rate_all": 0.23129251700680273,
+      "n_leads": 418,
+      "n_customers": 349,
+      "deal_rate": 0.24401913875598086,
+      "not_interest_rate": 0.22488038277511962,
+      "expired_rate": 0.12679425837320574,
       "handled_rate": 1.0,
-      "median_max_offer": 30000000.0,
-      "signed_within_90d": 0.1672062317,
-      "avg_events_180d_after": 2.4407554999,
-      "active_180d_after": 0.3367938721,
-      "mean_engagement_score": 39.8010361118,
-      "still_active_6m": 0.9756660327
+      "median_max_offer": 19000000.0,
+      "signed_within_90d": 0.06937799043062201,
+      "avg_events_180d_after": 4.971291866028708,
+      "active_180d_after": 0.7535885167464115,
+      "mean_engagement_score": 64.39267669599772,
+      "still_active_6m": 0.9824013624751632
     },
     {
       "LEAD_SOURCE": "TLS",
       "n_leads_deal": 31571,
-      "deal_rate_all": 0.3236059126,
+      "deal_rate_all": 0.32360591258009264,
       "n_leads": 29029,
       "n_customers": 22140,
-      "deal_rate": 0.3313340228,
-      "not_interest_rate": 0.2427783523,
-      "expired_rate": 0.2295070665,
+      "deal_rate": 0.3313340227507756,
+      "not_interest_rate": 0.24277835229231298,
+      "expired_rate": 0.22950706652878317,
       "handled_rate": 1.0,
       "median_max_offer": 30000000.0,
-      "signed_within_90d": 0.637879362,
-      "avg_events_180d_after": 2.4293778302,
-      "active_180d_after": 0.5412195273,
-      "mean_engagement_score": 59.5765623402,
-      "still_active_6m": 0.985424977
-    },
-    {
-      "LEAD_SOURCE": "GMA",
-      "n_leads_deal": 25456,
-      "deal_rate_all": 0.1106682097,
-      "n_leads": 23451,
-      "n_customers": 18488,
-      "deal_rate": 0.11138637,
-      "not_interest_rate": 0.4948116294,
-      "expired_rate": 0.2090773114,
-      "handled_rate": 1.0,
-      "median_max_offer": 35404000.0,
-      "signed_within_90d": 0.105795062,
-      "avg_events_180d_after": 9.6911138162,
-      "active_180d_after": 0.8307212416,
-      "mean_engagement_score": 64.0468583322,
-      "still_active_6m": 0.984714453
+      "signed_within_90d": 0.637879362017293,
+      "avg_events_180d_after": 2.4293778301594195,
+      "active_180d_after": 0.5412195273246077,
+      "mean_engagement_score": 59.57656234018616,
+      "still_active_6m": 0.9854249769868058
     },
     {
       "LEAD_SOURCE": "RA",
       "n_leads_deal": 849638,
-      "deal_rate_all": 0.0007980401,
+      "deal_rate_all": 0.0007980401393603327,
       "n_leads": 794053,
       "n_customers": 410680,
-      "deal_rate": 0.0008238363,
-      "not_interest_rate": 0.5770947593,
-      "expired_rate": 0.2632701121,
+      "deal_rate": 0.0008238363311822051,
+      "not_interest_rate": 0.5770947593128479,
+      "expired_rate": 0.263270112098736,
       "handled_rate": 1.0,
       "median_max_offer": 6000000.0,
-      "signed_within_90d": 0.1494610561,
-      "avg_events_180d_after": 1.5670480502,
-      "active_180d_after": 0.2484352465,
-      "mean_engagement_score": 35.5805800691,
-      "still_active_6m": 0.9707150837
+      "signed_within_90d": 0.1494610561259765,
+      "avg_events_180d_after": 1.567048050182526,
+      "active_180d_after": 0.24843524646162127,
+      "mean_engagement_score": 35.58058006910946,
+      "still_active_6m": 0.9707150837021192
+    },
+    {
+      "LEAD_SOURCE": "SA",
+      "n_leads_deal": 669274,
+      "deal_rate_all": 0.01498888449421039,
+      "n_leads": 633535,
+      "n_customers": 367463,
+      "deal_rate": 0.014828441174118212,
+      "not_interest_rate": 0.6243317603775094,
+      "expired_rate": 0.18673278413180835,
+      "handled_rate": 1.0,
+      "median_max_offer": 30000000.0,
+      "signed_within_90d": 0.1672062316999061,
+      "avg_events_180d_after": 2.4407554999215253,
+      "active_180d_after": 0.336793872090219,
+      "mean_engagement_score": 39.80103611182663,
+      "still_active_6m": 0.9756660327412433
+    },
+    {
+      "LEAD_SOURCE": "GMA",
+      "n_leads_deal": 25456,
+      "deal_rate_all": 0.11066820967811067,
+      "n_leads": 23451,
+      "n_customers": 18488,
+      "deal_rate": 0.11138637001028326,
+      "not_interest_rate": 0.4948116294288118,
+      "expired_rate": 0.20907731139571842,
+      "handled_rate": 1.0,
+      "median_max_offer": 35404000.0,
+      "signed_within_90d": 0.1057950620442625,
+      "avg_events_180d_after": 9.691113816189896,
+      "active_180d_after": 0.8307212416311625,
+      "mean_engagement_score": 64.04685833224926,
+      "still_active_6m": 0.9847144529725511
     }
   ],
   "q4": {
@@ -563,57 +563,57 @@
     {
       "factor": "Ignored 5+ calls",
       "n_with": 32349,
-      "answer_with": 0.0333214685,
-      "answer_without": 0.2315782709,
-      "diff_pp": -19.8256802446,
+      "answer_with": 0.0333214684952775,
+      "answer_without": 0.23157827094120584,
+      "diff_pp": -19.82568024459283,
       "n_population": 346109
     },
     {
       "factor": "Collection calls",
       "n_with": 20193,
-      "answer_with": 0.1948646548,
-      "answer_without": 0.2141748564,
-      "diff_pp": -1.9310201622,
+      "answer_with": 0.1948646547854201,
+      "answer_without": 0.21417485640712486,
+      "diff_pp": -1.931020162170477,
       "n_population": 346109
     },
     {
       "factor": "Opted out",
       "n_with": 104,
-      "answer_with": 0.1738673719,
-      "answer_without": 0.2130600201,
-      "diff_pp": -3.9192648195,
+      "answer_with": 0.17386737194429502,
+      "answer_without": 0.21306002013896988,
+      "diff_pp": -3.9192648194674855,
       "n_population": 346109
     },
     {
       "factor": "No app",
       "n_with": 313810,
-      "answer_with": 0.2131422882,
-      "answer_without": 0.2121345245,
-      "diff_pp": 0.100776373,
+      "answer_with": 0.2131422882259157,
+      "answer_without": 0.21213452449586342,
+      "diff_pp": 0.10077637300522635,
       "n_population": 346109
     },
     {
       "factor": "Dormant 180d+",
       "n_with": 12502,
-      "answer_with": 0.218550148,
-      "answer_without": 0.2128420582,
-      "diff_pp": 0.5708089771,
+      "answer_with": 0.21855014801396633,
+      "answer_without": 0.21284205824336996,
+      "diff_pp": 0.5708089770596364,
       "n_population": 346109
     },
     {
       "factor": "All leads lost",
       "n_with": 145148,
-      "answer_with": 0.2209712186,
-      "answer_without": 0.2073257201,
-      "diff_pp": 1.3645498421,
+      "answer_with": 0.22097121855579005,
+      "answer_without": 0.2073257201344076,
+      "diff_pp": 1.3645498421382463,
       "n_population": 346109
     },
     {
       "factor": "Refused offer",
       "n_with": 37538,
-      "answer_with": 0.2624656536,
-      "answer_without": 0.2070365613,
-      "diff_pp": 5.5429092246,
+      "answer_with": 0.26246565358986984,
+      "answer_without": 0.20703656134377496,
+      "diff_pp": 5.542909224609488,
       "n_population": 346109
     }
   ]

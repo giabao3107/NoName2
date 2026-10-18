@@ -241,7 +241,7 @@ def chart_foundations(found: dict, weekly: pd.DataFrame) -> None:
     axes[2].set_ylabel("Collection calls dated BEFORE that loan (%)")
     axes[2].legend(fontsize=8.5, loc="upper left")
     axes[2].grid(axis="x", visible=False)
-    save_fig(fig, TASK_FIGURES / "01_data_foundations.png", SOURCE, left=0.05, wspace=0.3, bottom=0.17)
+    save_fig(fig, TASK_FIGURES / "01_data_foundations.png", None, left=0.05, wspace=0.3, bottom=0.17)
 
 
 # %% [markdown]
@@ -322,7 +322,7 @@ def chart_product(pr: dict) -> None:
     axes[1].set_xlabel("Later written off / debt sold (%)\n(contracts signed 12+ months before the snapshot)")
     axes[1].legend(loc="lower right", fontsize=9)
     axes[1].grid(axis="y", visible=False)
-    save_fig(fig, TASK_FIGURES / "02_product_risk_and_roll_rates.png", SOURCE, left=0.17, wspace=0.08, bottom=0.14)
+    save_fig(fig, TASK_FIGURES / "02_product_risk_and_roll_rates.png", None, left=0.17, wspace=0.08, bottom=0.14)
 
 
 # %% [markdown]
@@ -403,7 +403,7 @@ def chart_dti(dti: dict, inc: dict) -> None:
     axes[1].set_ylim(0.44, 0.58)
     axes[1].set_ylabel("AUC on mature contracts · 0.5 = no signal")
     axes[1].grid(axis="x", visible=False)
-    save_fig(fig, TASK_FIGURES / "03_dti_vs_delinquency_tipping_point.png", SOURCE, wspace=0.3)
+    save_fig(fig, TASK_FIGURES / "03_dti_vs_delinquency_tipping_point.png", None, wspace=0.3)
 
 
 # %% [markdown]
@@ -466,7 +466,7 @@ def chart_mitigation(mit: dict) -> None:
     axes[1].set_xlabel("Down payment / credit amount")
     axes[1].set_ylabel("Early stress rate (%)")
     axes[1].legend()
-    save_fig(fig, TASK_FIGURES / "04_insurance_and_downpayment_impact.png", SOURCE)
+    save_fig(fig, TASK_FIGURES / "04_insurance_and_downpayment_impact.png", None)
 
 
 # %% [markdown]
@@ -807,7 +807,7 @@ def chart_behaviour(beh: dict) -> None:
     axes[2].set_xlabel("Largest pre-approved offer before the window (VND)")
     axes[2].set_ylabel("Early stress on the new loan (%)")
     axes[2].grid(axis="x", visible=False)
-    save_fig(fig, TASK_FIGURES / "05_behaviour_signals.png", SOURCE, wspace=0.3, bottom=0.17)
+    save_fig(fig, TASK_FIGURES / "05_behaviour_signals.png", None, wspace=0.3, bottom=0.17)
 
 
 BUCKET_LABELS = {
@@ -850,8 +850,7 @@ def chart_factors(cards: dict) -> None:
     ax.tick_params(axis="y", labelsize=8)
     ax.grid(axis="y", visible=False)
     fig.subplots_adjust(hspace=0.75, wspace=0.32)
-    save_fig(fig, TASK_FIGURES / "06_key_factor_impacts.png", SOURCE + ". Numbers above bars = score points (0-100)",
-             top=0.95, bottom=0.07, left=0.06)
+    save_fig(fig, TASK_FIGURES / "06_key_factor_impacts.png", None, top=0.95, bottom=0.07, left=0.06)
 
 
 def chart_validation(val: dict) -> None:
@@ -882,7 +881,7 @@ def chart_validation(val: dict) -> None:
     axes[1].set_xlabel("Out-of-time Gini (higher = better ranking)")
     axes[1].legend(loc="lower center", bbox_to_anchor=(0.4, 1.0), ncol=2, fontsize=8.5)
     axes[1].grid(axis="y", visible=False)
-    save_fig(fig, TASK_FIGURES / "07_out_of_time_validation.png", SOURCE, left=0.06, wspace=0.55, bottom=0.14)
+    save_fig(fig, TASK_FIGURES / "07_out_of_time_validation.png", None, left=0.06, wspace=0.55, bottom=0.14)
 
 
 def chart_distribution(pop: pd.DataFrame, val: dict) -> None:
@@ -918,7 +917,7 @@ def chart_distribution(pop: pd.DataFrame, val: dict) -> None:
     axes[1].set_ylabel("Out-of-time early stress rate (%)")
     axes[1].set_ylim(0, bt.bad_rate.max() * 125)
     axes[1].grid(axis="x", visible=False)
-    save_fig(fig, TASK_FIGURES / "08_financial_health_score_distribution.png", SOURCE, wspace=0.25)
+    save_fig(fig, TASK_FIGURES / "08_financial_health_score_distribution.png", None, wspace=0.25)
 
 
 def chart_thin(pop: pd.DataFrame, val: dict) -> None:
@@ -944,7 +943,7 @@ def chart_thin(pop: pd.DataFrame, val: dict) -> None:
     axes[1].set_xlabel("Financial Health Score at the snapshot")
     axes[1].set_ylabel("Thin-file customers")
     axes[1].legend(fontsize=9)
-    save_fig(fig, TASK_FIGURES / "09_thin_file_decomposition.png", SOURCE, wspace=0.25, bottom=0.14)
+    save_fig(fig, TASK_FIGURES / "09_thin_file_decomposition.png", None, wspace=0.25, bottom=0.14)
 
 
 def fairness(con, rep: pd.DataFrame, pop: pd.DataFrame) -> dict:
@@ -979,7 +978,7 @@ def chart_fairness(fair: dict) -> None:
         ax.set_ylabel("Out-of-time early stress rate (%)")
         ax.legend(fontsize=8.5, ncol=2 if len(cols) > 2 else 1)
         ax.grid(axis="x", visible=False)
-    save_fig(fig, TASK_FIGURES / "10_fairness_calibration.png", SOURCE + ". Gender and age are NOT score inputs", wspace=0.2)
+    save_fig(fig, TASK_FIGURES / "10_fairness_calibration.png", None, wspace=0.2)
 
 
 # %% [markdown]

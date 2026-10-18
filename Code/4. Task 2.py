@@ -442,7 +442,7 @@ def chart_active_passive(q1, q3: pd.DataFrame):
 # %% [markdown]
 # ## Call frequency and conversation depth
 #
-# Compare dialing frequency with connected-call duration. Duration can partly reflect the conversion process itself.
+# Both series show conversion rate: bars use average connected-call duration; the line shows later conversion by the first connected-call duration among customers not converted on that call.
 
 # %%
 def chart_call_dynamics(q2):
@@ -458,14 +458,14 @@ def chart_call_dynamics(q2):
 
     durations = q2["by_duration"]
     axes[1].bar(durations.dur_band.astype(str), durations.conv * 100, color=PAL["grey"], width=0.65,
-                label="All connected calls (avg duration)")
+                label="All connected calls, grouped by average duration")
     robust = q2["by_first_duration_rob"]
     position = {band: i for i, band in enumerate(durations.dur_band.astype(str))}
     axes[1].plot(robust.b.astype(str).map(position), robust.conv * 100, "o--", color=PAL["orange"], lw=2,
-                 label="First-call duration; later conversion")
+                 label="Later conversion, grouped by first connected-call duration")
     for i, row in durations.iterrows():
         axes[1].text(i, row.conv * 100 + 1.2, f"{row.conv:.0%}", ha="center", fontsize=9)
-    axes[1].set_xlabel("Connected-call duration")
+    axes[1].set_xlabel("Connected-call duration band")
     axes[1].set_ylabel("Customers converted (%)")
     axes[1].legend(loc="upper left", fontsize=9)
     axes[1].grid(axis="x", visible=False)
@@ -584,8 +584,9 @@ def chart_score(pop, val, fwd):
     shares = pop.eng_short.value_counts(normalize=True)
     counts = pop.eng_short.value_counts()
     for tier, position in [("Low", 33), ("Medium", 65), ("High", 90)]:
+        header_color = PAL["grey"] if tier == "Medium" else TIER_COLORS[tier]
         axes[0].text(position, 0.97, f"{tier} · {shares.get(tier, 0):.1%}\nn={counts.get(tier, 0) / 1e3:,.0f}K",
-                     ha="center", fontsize=10, fontweight="bold", color=TIER_COLORS[tier], va="top",
+                     ha="center", fontsize=10, fontweight="bold", color=header_color, va="top",
                      transform=axes[0].get_xaxis_transform())
     axes[0].set_xlabel("Engagement score (0–100)")
     axes[0].set_ylabel("Customers · log scale")

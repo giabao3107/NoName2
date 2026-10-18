@@ -233,5 +233,32 @@ class CustomerIntelligenceTests(unittest.TestCase):
         self.assertIn("valid clusters", comparison["reason"])
 
 
+    def test_low_health_profile_counts_separate_thin_file_from_established_customers(self):
+        profile_counts = load_task3_function("low_health_profile_counts")
+        output = pd.DataFrame(
+            {
+                "Financial_Health_Tier": [
+                    "Financial Stress / Low Health",
+                    "Financial Stress / Low Health",
+                    "Financial Stress / Low Health",
+                    "Moderate Health",
+                ],
+                "Engagement_Tier": [
+                    "High Engagement",
+                    "Medium Engagement",
+                    "Medium Engagement",
+                    "Low / Dormant Engagement",
+                ],
+                "fh_thin_file": [True, False, False, True],
+            }
+        )
+
+        counts = profile_counts(output)
+
+        self.assertEqual(counts.loc["Thin file", "High Engagement"], 1)
+        self.assertEqual(counts.loc["Established history", "Medium Engagement"], 2)
+        self.assertEqual(counts.loc["Thin file", "Low / Dormant Engagement"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()

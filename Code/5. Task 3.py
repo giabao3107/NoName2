@@ -618,7 +618,7 @@ def plot_segment_matrix(output: pd.DataFrame) -> None:
     for row in range(len(health_order)):
         for column in range(len(engagement_order)):
             value = int(counts.iloc[row, column])
-            text_color = "white" if value > maximum * 0.55 else PAL["navy"]
+            text_color = "white" if value > maximum * 0.45 else PAL["navy"]
             ax.text(column, row, f"{value:,}\n{value / max(len(output), 1):.1%}", ha="center", va="center", color=text_color)
     ax.set_xticks(range(len(engagement_order)), engagement_order)
     ax.set_yticks(range(len(health_order)), health_order)
@@ -628,14 +628,67 @@ def plot_segment_matrix(output: pd.DataFrame) -> None:
     save_fig(fig, TASK3_FIGURES / "01_customer_matrix.png", None)
 
 
+
+def low_health_profile_counts(output: pd.DataFrame) -> pd.DataFrame:
+    """Count thin-file and established-history customers across engagement tiers."""
+    low_health = output.loc[output["Financial_Health_Tier"].eq("Financial Stress / Low Health")].copy()
+    low_health["health_profile"] = np.where(
+        low_health["fh_thin_file"].fillna(False), "Thin file", "Established history"
+    )
+    profiles = ["Thin file", "Established history"]
+    engagement_tiers = ["High Engagement", "Medium Engagement", "Low / Dormant Engagement"]
+    return pd.crosstab(low_health["health_profile"], low_health["Engagement_Tier"]).reindex(
+        index=profiles, columns=engagement_tiers, fill_value=0
+    )
+
+
+def plot_score_relationship(output: pd.DataFrame) -> None:
+    fig, ax = plt.subplots(figsize=(9, 6.5))
+    ax.set_title(f"Customer score density (n={len(output):,})", loc="left", pad=12)
+    image = ax.hexbin(
+        output["Financial_Health_Score"], output["Engagement_Score"],
+        gridsize=35, mincnt=1, bins="log", cmap=navy_cmap(), linewidths=0.15, extent=(0, 100, 0, 100),
+    )
+    for threshold in (50, 80):
+        ax.axvline(threshold, color=PAL["grey"], linestyle="--", linewidth=0.9, alpha=0.8)
+        ax.axhline(threshold, color=PAL["grey"], linestyle="--", linewidth=0.9, alpha=0.8)
+    ax.set(xlim=(0, 100), ylim=(0, 100), xlabel="Financial-health score", ylabel="Engagement score")
+    fig.colorbar(image, ax=ax, label="Customers per hexagon (log scale)")
+    ax.text(0.01, -0.18, "Dashed lines mark score-tier cutoffs at 50 and 80.", transform=ax.transAxes, color=PAL["grey"], fontsize=9)
+    save_fig(fig, TASK3_FIGURES / "03_score_relationship.png", None, bottom=0.18)
+
+
+def plot_low_health_profile(output: pd.DataFrame) -> None:
+    counts = low_health_profile_counts(output)
+    fig, ax = plt.subplots(figsize=(10, 5.8))
+    ax.set_title("Low-health customers by profile and engagement", loc="left", pad=12)
+    ax.set_yscale("symlog", linthresh=1000)
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda value, _: f"{int(value):,}"))
+    x = np.arange(len(counts.columns))
+    width = 0.36
+    thin_bars = ax.bar(x - width / 2, counts.loc["Thin file"], width, label="Thin file", color=PAL["navy"])
+    established_bars = ax.bar(x + width / 2, counts.loc["Established history"], width, label="Established history", color=PAL["red"])
+    for bars in (thin_bars, established_bars):
+        ax.bar_label(bars, labels=[f"{int(value):,}" for value in bars.datavalues], padding=3, fontsize=8)
+    ax.set_xticks(x, ["High", "Medium", "Low / dormant"])
+    ax.set_ylabel("Customers (symlog scale)")
+    ax.set_xlabel("Engagement tier among low-health customers")
+    ax.legend()
+    ax.grid(axis="x", visible=False)
+    save_fig(fig, TASK3_FIGURES / "04_low_health_profile.png", None, left=0.13, bottom=0.14)
+
+
 # %%
 def plot_action_volume(output: pd.DataFrame) -> None:
+    from textwrap import fill
+
     counts = output.Next_Best_Action.value_counts().sort_values()
-    fig, ax = plt.subplots(figsize=(10, max(5, 0.48 * len(counts))))
-    ax.barh(counts.index, counts.values, color=PAL["navy"])
+    labels = [fill(str(action), width=42, break_long_words=False, break_on_hyphens=False) for action in counts.index]
+    fig, ax = plt.subplots(figsize=(11.5, max(7, 0.7 * len(counts))))
+    ax.barh(labels, counts.values, color=PAL["navy"])
     ax.set_xlabel("Customers")
     ax.grid(axis="y", visible=False)
-    save_fig(fig, TASK3_FIGURES / "02_action_volume.png", None)
+    save_fig(fig, TASK3_FIGURES / "02_action_volume.png", None, left=0.36, right=0.98)
 
 
 def display_saved_figure(path: Path) -> None:
@@ -678,6 +731,18 @@ if __name__ == "__main__":
 if __name__ == "__main__":
     plot_action_volume(CUSTOMER_INTELLIGENCE)
     display_saved_figure(TASK3_FIGURES / "02_action_volume.png")
+
+# %% [markdown]
+# ## Score relationship and low-health profile
+#
+# The score-density view shows joint positioning; the low-health view separates thin-file customers from established borrowers across engagement tiers.
+
+# %%
+if __name__ == "__main__":
+    plot_score_relationship(CUSTOMER_INTELLIGENCE)
+    display_saved_figure(TASK3_FIGURES / "03_score_relationship.png")
+    plot_low_health_profile(CUSTOMER_INTELLIGENCE)
+    display_saved_figure(TASK3_FIGURES / "04_low_health_profile.png")
 
 # %% [markdown]
 # **Interpretation.** Validate capacity and contact policy before activating these routes. The rationale in the customer file explains each assignment; the rules are not a causal uplift model.
