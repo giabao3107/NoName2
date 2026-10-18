@@ -294,8 +294,8 @@ def q2_call_dynamics(con) -> dict:
                            labels=["<10s", "10-30s", "30-60s", "1-2m", "2-5m", "5-10m", "10m+"])
     res["by_attempts"] = d.groupby("att_band", observed=True).agg(n=("converted", "size"), conv=("converted", "mean")).reset_index()
     res["by_duration"] = d[m].groupby("dur_band", observed=True).agg(n=("converted", "size"), conv=("converted", "mean")).reset_index()
-    res["by_first_duration_rob"] = rob.assign(b=pd.cut(rob.first_dur, [-1, 10, 30, 60, 120, 300, 1e9],
-                                                       labels=["<10s", "10-30s", "30-60s", "1-2m", "2-5m", "5m+"])) \
+    res["by_first_duration_rob"] = rob.assign(b=pd.cut(rob.first_dur, [-1, 10, 30, 60, 120, 300, 600, 1e9],
+                                                       labels=["<10s", "10-30s", "30-60s", "1-2m", "2-5m", "5-10m", "10m+"])) \
         .groupby("b", observed=True).agg(n=("converted", "size"), conv=("converted", "mean")).reset_index()
     return res
 
@@ -374,7 +374,7 @@ def q4_early_warning(con, pop) -> dict:
 def chart_active_passive(q1):
     fig, axes = plt.subplots(1, 2, figsize=(13.33, 7.5), gridspec_kw={"width_ratios": [1.1, 1]})
     bands = q1["by_app_band"]
-    colors = [PAL["grey"], PAL["navy"], PAL["navy"], PAL["orange"]]
+    colors = [PAL["grey"], PAL["grey"], PAL["orange"], PAL["orange"]]
     axes[0].bar(bands.app_band.astype(str), bands.conv * 100, color=colors, width=0.62,
                 yerr=[(bands.conv - bands.ci_lo) * 100, (bands.ci_hi - bands.conv) * 100], capsize=4, ecolor=PAL["grey"])
     for i, row in bands.iterrows():
@@ -384,7 +384,8 @@ def chart_active_passive(q1):
     axes[0].grid(axis="x", visible=False)
 
     leads = q1["lead_source_deal"].sort_values("deal_rate")
-    colors = [PAL["orange"] if source in ("GMA", "LANDING PAGE", "SOB") else PAL["navy"] for source in leads.LEAD_SOURCE]
+    # barh draws bottom-up, so the last three rows are the top three deal rates
+    colors = [PAL["orange"] if i >= len(leads) - 3 else PAL["grey"] for i in range(len(leads))]
     axes[1].barh(leads.LEAD_SOURCE, leads.deal_rate * 100, color=colors, height=0.6)
     for i, (rate, count) in enumerate(zip(leads.deal_rate, leads.n)):
         axes[1].text(rate * 100 + 0.6, i, f"{rate:.1%} · n={count / 1e3:,.0f}K", va="center", fontsize=9)
@@ -403,7 +404,8 @@ def chart_active_passive(q1):
 def chart_call_dynamics(q2):
     fig, axes = plt.subplots(1, 2, figsize=(13.33, 7.5))
     attempts = q2["by_attempts"]
-    axes[0].bar(attempts.att_band.astype(str), attempts.conv * 100, color=PAL["navy"], width=0.65)
+    colors = [PAL["orange"] if band == "21-50" else PAL["grey"] for band in attempts.att_band.astype(str)]
+    axes[0].bar(attempts.att_band.astype(str), attempts.conv * 100, color=colors, width=0.65)
     for i, row in attempts.iterrows():
         axes[0].text(i, row.conv * 100 + attempts.conv.max() * 1.5, f"{row.conv:.1%}", ha="center", fontsize=9)
     axes[0].set_xlabel("Outbound attempts / customer")
@@ -411,9 +413,11 @@ def chart_call_dynamics(q2):
     axes[0].grid(axis="x", visible=False)
 
     durations = q2["by_duration"]
-    axes[1].bar(durations.dur_band.astype(str), durations.conv * 100, color=PAL["navy"], width=0.65, label="Mean connected-call duration")
+    axes[1].bar(durations.dur_band.astype(str), durations.conv * 100, color=PAL["grey"], width=0.65,
+                label="All connected calls (avg duration)")
     robust = q2["by_first_duration_rob"]
-    axes[1].plot(np.arange(len(robust)), robust.conv * 100, "o--", color=PAL["orange"], lw=2,
+    position = {band: i for i, band in enumerate(durations.dur_band.astype(str))}
+    axes[1].plot(robust.b.astype(str).map(position), robust.conv * 100, "o--", color=PAL["orange"], lw=2,
                  label="First-call duration; later conversion")
     for i, row in durations.iterrows():
         axes[1].text(i, row.conv * 100 + 1.2, f"{row.conv:.0%}", ha="center", fontsize=9)
@@ -486,32 +490,35 @@ def chart_early_warning(q4):
 def chart_score(pop, val, fwd):
     fig, axes = plt.subplots(1, 3, figsize=(13.33, 7.5), gridspec_kw={"width_ratios": [1.5, 1, 1]})
     bins = np.arange(0, 101, 2)
+    peak = 0
     for tier, (lower, upper) in {"Low": (0, 50), "Medium": (50, 80), "High": (80, 101)}.items():
         scores = pop.Engagement_Score[(pop.Engagement_Score >= lower) & (pop.Engagement_Score < upper)]
-        axes[0].hist(scores, bins=bins, color=TIER_COLORS[tier])
+        counts, _, _ = axes[0].hist(scores, bins=bins, color=TIER_COLORS[tier])
+        peak = max(peak, counts.max())
     axes[0].set_yscale("log")
+    axes[0].set_ylim(top=peak * 8)   # headroom above the tallest bar for the tier labels
     shares = pop.eng_short.value_counts(normalize=True)
-    for tier, position in [("Low", 25), ("Medium", 65), ("High", 90)]:
-        axes[0].text(position, 0.96, f"{tier} · {shares.get(tier, 0):.1%}", ha="center", fontsize=10,
-                     fontweight="bold", color=TIER_COLORS[tier], va="top", transform=axes[0].get_xaxis_transform())
+    counts = pop.eng_short.value_counts()
+    for tier, position in [("Low", 33), ("Medium", 65), ("High", 90)]:
+        axes[0].text(position, 0.97, f"{tier} · {shares.get(tier, 0):.1%}\nn={counts.get(tier, 0) / 1e3:,.0f}K",
+                     ha="center", fontsize=10, fontweight="bold", color=TIER_COLORS[tier], va="top",
+                     transform=axes[0].get_xaxis_transform())
     axes[0].set_xlabel("Engagement score (0–100)")
     axes[0].set_ylabel("Customers · log scale")
 
-    application_tiers = pd.DataFrame(val["tier_table"]).set_index("tier")
-    axes[1].bar(application_tiers.index, application_tiers.apply_rate * 100,
-                color=[TIER_COLORS[tier] for tier in application_tiers.index], width=0.6)
-    axes[1].set_xlabel("Engagement tier")
-    axes[1].set_ylabel("Later application rate (%)")
-    axes[1].tick_params(axis="x", labelrotation=15)
-    axes[1].grid(axis="x", visible=False)
+    def tier_bars(ax, table, column, ylabel):
+        ax.bar(table.index, table[column] * 100, color=[TIER_COLORS[tier] for tier in table.index], width=0.6)
+        top = table[column].max() * 100
+        for i, (value, n) in enumerate(zip(table[column], table.n)):
+            ax.text(i, value * 100 + top * 0.02, f"{value:.1%}\nn={n / 1e3:,.0f}K", ha="center", va="bottom", fontsize=9)
+        ax.set_ylim(0, top * 1.15)
+        ax.set_xlabel("Engagement tier")
+        ax.set_ylabel(ylabel)
+        ax.tick_params(axis="x", labelrotation=15)
+        ax.grid(axis="x", visible=False)
 
-    call_tiers = pd.DataFrame(fwd["tier_table"]).set_index("tier")
-    axes[2].bar(call_tiers.index, call_tiers.pos * 100,
-                color=[TIER_COLORS[tier] for tier in call_tiers.index], width=0.6)
-    axes[2].set_xlabel("Engagement tier")
-    axes[2].set_ylabel("Positive call response (%)")
-    axes[2].tick_params(axis="x", labelrotation=15)
-    axes[2].grid(axis="x", visible=False)
+    tier_bars(axes[1], pd.DataFrame(val["tier_table"]).set_index("tier"), "apply_rate", "Later application rate (%)")
+    tier_bars(axes[2], pd.DataFrame(fwd["tier_table"]).set_index("tier"), "pos", "Positive call response (%)")
     save_fig(fig, TASK_FIGURES / "05_engagement_score_distribution_validation.png", None, wspace=0.3)
 
 
