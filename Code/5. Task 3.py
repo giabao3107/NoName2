@@ -346,14 +346,6 @@ def plot_segment_matrix(output: pd.DataFrame) -> None:
     save_fig(fig, TASK3_FIGURES / "01_customer_matrix.png", None)
 
 
-# %% [markdown]
-# **Interpretation.** Start with the Low-health row for repayment support. Within High/Medium health, low engagement suggests a lower-cost re-engagement path. Thin-file customers in the Low row receive education rather than a stress label.
-
-# %% [markdown]
-# ## Next-best-action workload
-#
-# Counts show how many customers each rule routes to an action. They do not forecast acceptance, conversion, or financial return.
-
 # %%
 def plot_action_volume(output: pd.DataFrame) -> None:
     counts = output.Next_Best_Action.value_counts().sort_values()

@@ -38,7 +38,7 @@ TABLES = {
 }
 
 from Code.config import config as C
-from Code.config.utils import PAL, ensure_dirs, get_con, save_fig, save_json, set_style
+from Code.config.utils import PAL, ensure_dirs, get_con, load_json, save_fig, save_json, set_style
 
 
 # %% [markdown]
@@ -128,14 +128,10 @@ def read_raw_missingness() -> pd.DataFrame:
     metrics_path = DATA_CLEAN / "metrics_phase1.json"
     if not metrics_path.exists():
         raise FileNotFoundError("Run Stage 1 before EDA; metrics_phase1.json is missing.")
-    raw_metrics = json_load(metrics_path)
+    raw_metrics = load_json(metrics_path)
     return pd.DataFrame(raw_metrics.get("missingness", []))
 
 
-def json_load(path: Path) -> dict:
-    import json
-
-    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def product_outcomes(con) -> pd.DataFrame:
@@ -221,8 +217,8 @@ def monthly_activity(con) -> pd.DataFrame:
     ).df()
 
 
-def write_eda_report(coverage: pd.DataFrame, variable_profile: pd.DataFrame, raw_missing: pd.DataFrame,
-                     outcomes: pd.DataFrame, app_values: pd.Series, channels: pd.DataFrame, monthly: pd.DataFrame) -> str:
+def write_eda_report(coverage: pd.DataFrame, raw_missing: pd.DataFrame, outcomes: pd.DataFrame,
+                     app_values: pd.Series, channels: pd.DataFrame, monthly: pd.DataFrame) -> str:
     missing_top = raw_missing.sort_values("null_pct", ascending=False).head(15) if not raw_missing.empty else raw_missing
     app_p99 = float(app_values.quantile(0.99)) if len(app_values) else np.nan
     above_p99 = int((app_values > app_p99).sum()) if len(app_values) and pd.notna(app_p99) else 0
@@ -485,7 +481,7 @@ if __name__ == "__main__":
     }
     save_json(eda_summary, DATA_CLEAN / "metrics_eda.json")
     EDA_REPORT.write_text(
-        write_eda_report(coverage, variable_profile, raw_missing, outcomes, app_values, channels, monthly),
+        write_eda_report(coverage, raw_missing, outcomes, app_values, channels, monthly),
         encoding="utf-8",
     )
     con.close()

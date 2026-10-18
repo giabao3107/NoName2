@@ -15,7 +15,6 @@ Outputs
 from __future__ import annotations
 
 import zipfile
-from contextlib import nullcontext
 
 import numpy as np
 import pandas as pd
@@ -276,8 +275,7 @@ def build_clean_tables(con) -> dict:
         WHERE AMT_INCOME_MAIN > 0""").fetchone()[0]
     stats_["income_cap_p999"] = inc_cap
 
-    with nullcontext():
-        con.execute(f"""
+    con.execute(f"""
         COPY (
           WITH dedup AS (
             SELECT * FROM {pq('raw_contract')}
@@ -313,11 +311,10 @@ def build_clean_tables(con) -> dict:
             CASE WHEN annuity > 0 AND tenor > 0 AND amt_credit > 0 THEN (annuity * tenor - amt_credit) / amt_credit END AS gross_yield
           FROM base
         ) TO {pq('contract_clean')} (FORMAT PARQUET, COMPRESSION ZSTD)""")
-        stats_["contract_rows_raw"] = con.execute(f"SELECT count(*) FROM {pq('raw_contract')}").fetchone()[0]
-        stats_["contract_rows_clean"] = con.execute(f"SELECT count(*) FROM {pq('contract_clean')}").fetchone()[0]
+    stats_["contract_rows_raw"] = con.execute(f"SELECT count(*) FROM {pq('raw_contract')}").fetchone()[0]
+    stats_["contract_rows_clean"] = con.execute(f"SELECT count(*) FROM {pq('contract_clean')}").fetchone()[0]
 
-    with nullcontext():
-        con.execute(f"""
+    con.execute(f"""
         COPY (
           SELECT SKP_CLIENT,
                  NULLIF(NAME_GENDER, 'XNA') AS NAME_GENDER,
@@ -332,8 +329,7 @@ def build_clean_tables(con) -> dict:
           FROM {pq('raw_customer')}
         ) TO {pq('customer_clean')} (FORMAT PARQUET, COMPRESSION ZSTD)""")
 
-    with nullcontext():
-        con.execute(f"""
+    con.execute(f"""
         COPY (
           SELECT DISTINCT
                  SKP_CLIENT, DTIME_CREATED AS lead_time,
@@ -348,8 +344,7 @@ def build_clean_tables(con) -> dict:
           FROM {pq('raw_leads')}
         ) TO {pq('leads_clean')} (FORMAT PARQUET, COMPRESSION ZSTD)""")
 
-    with nullcontext():
-        con.execute(f"""
+    con.execute(f"""
         COPY (
           SELECT SKP_CLIENT, DTIME_EVENT AS event_time, ACTION, PRODUCT_CODE,
                  CASE WHEN ACTION LIKE '%,%' THEN 'MULTI'
@@ -364,9 +359,8 @@ def build_clean_tables(con) -> dict:
           FROM {pq('raw_past_behavior')}
         ) TO {pq('behavior_clean')} (FORMAT PARQUET, COMPRESSION ZSTD)""")
 
-    with nullcontext():
-        case = disposition_case_sql()
-        con.execute(f"""
+    case = disposition_case_sql()
+    con.execute(f"""
         COPY (
           WITH base AS (
           SELECT SKP_CLIENT, CALL_ID, CALL_TYPE, TIME_OF_CALL_START AS call_start, TIME_OF_CALL_END AS call_end,

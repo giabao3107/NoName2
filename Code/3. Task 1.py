@@ -28,7 +28,6 @@ import numpy as np
 import pandas as pd
 import sys
 from pathlib import Path
-from matplotlib.patches import Patch
 from scipy import stats
 
 
@@ -58,7 +57,7 @@ def pq(name: str) -> str:
 
 from Code.config import config as C
 from Code.config.utils import (PAL, TIER_COLORS, apply_card, assign_tier, auc, calibrate_bins, ensure_dirs, get_con, gini,
-                               pct, save_fig, save_json, set_style, two_prop_ztest)
+                               save_fig, save_json, set_style, two_prop_ztest)
 
 SIGNED_OBS = f"(SELECT * FROM {pq('contract_clean')} WHERE is_signed AND cdate < TIMESTAMP '{C.OBS_COMPLETE_BEFORE}')"
 
@@ -341,13 +340,13 @@ def fit_scorecard(con, dev: pd.DataFrame) -> dict:
              "pd_at_80": float(1 / (1 + np.exp(-(b[0] + b[1] * 0.8)))),
              "pd_at_50": float(1 / (1 + np.exp(-(b[0] + b[1] * 0.5)))),
              "points_to_double_odds": float(-100 * np.log(2) / b[1]) if b[1] != 0 else None}
-    dev["FHS"] = to_fhs(dev["composite"], calib)
+    dev["FHS"] = to_fhs(dev["composite"])
     dev["FHS_no_caps"] = dev["FHS"].copy()
     apply_policy_caps(dev, "FHS")
     return {"cards": cards, "calib": calib}
 
 
-def to_fhs(comp: pd.Series, calib: dict | None = None) -> pd.Series:
+def to_fhs(comp: pd.Series) -> pd.Series:
     """FHS is the weighted points total itself (0-100) - no hidden transformation."""
     return comp.clip(0, 100).round(1)
 
@@ -433,7 +432,7 @@ def score_population(con, cards, calib) -> pd.DataFrame:
     for k in PILLAR_WEIGHTS:
         feat[f"pillar_{k}"] = pil[k].round(1)
     feat["composite"] = composite(feat)
-    feat["Financial_Health_Score"] = to_fhs(feat["composite"], calib)
+    feat["Financial_Health_Score"] = to_fhs(feat["composite"])
     apply_policy_caps(feat, "Financial_Health_Score")
     logodds = calib["b0"] + calib["b1"] * feat["Financial_Health_Score"] / 100
     feat["expected_bad_rate"] = 1 / (1 + np.exp(-logodds))

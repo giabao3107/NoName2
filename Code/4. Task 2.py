@@ -20,8 +20,8 @@ Five explainable components (each 0-100, simple published transforms - no model)
 Self-initiated activity = scoring/application events (PAST_BEHAVIOR), contract applications (CONTRACT) and
 customer-originated leads (GMA app / landing page). Calls are scored over their own window (2025-01..2026-08).
 
-Validation: the same formula is frozen at ENG_ASOF (2024-12-01, without app/call data that did not exist yet)
-and tested against NEW applications / signed contracts in the following 6 months.
+Validation: features freeze at `ENG_ASOF` (2025-02-01); the target window ends at `ENG_TARGET_END` (2025-06-05).
+The validation uses new applications and signings over that four-month window.
 """
 from __future__ import annotations
 
@@ -57,7 +57,7 @@ def pq(name: str) -> str:
 
 
 from Code.config import config as C
-from Code.config.utils import (PAL, TIER_COLORS, assign_tier, auc, ensure_dirs, get_con, gini, pct, save_fig, save_json,
+from Code.config.utils import (PAL, TIER_COLORS, assign_tier, auc, ensure_dirs, get_con, save_fig, save_json,
                                set_style, two_prop_ztest, wilson_ci)
 
 # %% [markdown]
@@ -70,8 +70,6 @@ from Code.config.utils import (PAL, TIER_COLORS, assign_tier, auc, ensure_dirs, 
 # (re-application AUC and forward sales-call conversion AUC) - see Executive Summary, Challenge 2.
 ENG_WEIGHTS = {"E1_digital": 0.20, "E2_recency": 0.20, "E3_frequency": 0.25, "E4_responsiveness": 0.20,
                "E5_breadth": 0.15}
-ENG_LABELS = {"E1_digital": "Digital adoption", "E2_recency": "Recency", "E3_frequency": "Frequency",
-              "E4_responsiveness": "Responsiveness", "E5_breadth": "Product breadth"}
 CUSTOMER_LEAD_SOURCES = ("GMA", "LANDING PAGE")
 
 
@@ -164,7 +162,7 @@ def score(df: pd.DataFrame) -> pd.DataFrame:
     comp = np.vstack([reach, react, leadr])
     has = ~np.isnan(comp)
     base = np.where(has.any(axis=0), np.nansum(comp, axis=0) / np.maximum(has.sum(axis=0), 1), np.nan)
-    bonus = 25 * np.minimum(df.inbound_calls, 2)
+    bonus = 25 * np.minimum(df.inbound_calls, C.INBOUND_BONUS_MAX_CALLS)
     e4 = np.where(np.isnan(base) & (bonus > 0), bonus, base + bonus)
     s["E4_responsiveness"] = np.minimum(e4, 100)
     s["E5_breadth"] = 100 * np.minimum(df.product_families_24m / C.BREADTH_FULL_MARKS, 1)
@@ -217,7 +215,7 @@ def validate(con) -> dict:
     return res
 
 
-def forward_call_validation(con, pop: pd.DataFrame) -> dict:
+def forward_call_validation(con) -> dict:
     """Score built only from data before the snapshot -> conversion on sales calls AFTER the snapshot."""
     feat = build_features(con, C.SNAPSHOT_DATE, "2025-01-01", C.SNAPSHOT_DATE, use_app=True)
     sc = score(feat)
@@ -368,15 +366,9 @@ def q4_early_warning(con, pop) -> dict:
 # Charts
 # =================================================================================================
 # %% [markdown]
-# ## Figure 1 — app activity and sales-call conversion
-#
-# Conversion rates are conditional on customers with a sales-call outcome; they should not be read as the causal effect of app use.
-
-# %%
-# %% [markdown]
 # ## App activity and sales-call conversion
 #
-# Compare conversion among customers with a sales outcome and compare lead deal rates by source. Confidence intervals show uncertainty in the call comparison.
+# Compare conversion among customers with a sales outcome and lead deal rates by source. Call conversion is conditional on sales-call outcome; these comparisons are descriptive and do not establish an effect of app use. Confidence intervals show uncertainty in the call comparison.
 
 # %%
 def chart_active_passive(q1):
@@ -613,7 +605,7 @@ if __name__ == "__main__":
     population["Engagement_Tier"] = assign_tier(population.Engagement_Score, C.ENG_TIERS)
     population["eng_short"] = population.Engagement_Tier.map(C.ENG_SHORT)
     validation = validate(con)
-    forward = forward_call_validation(con, population)
+    forward = forward_call_validation(con)
     keep = [
         "SKP_CLIENT", "Engagement_Score", "Engagement_Tier", "eng_short", *ENG_WEIGHTS.keys(), "e4_available",
         "app_sessions_wk", "days_since_last_activity", "active_months_12m", "events_12m", "digital_events_12m",

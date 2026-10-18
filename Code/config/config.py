@@ -82,7 +82,7 @@ ENG_SHORT = {"High Engagement": "High", "Medium Engagement": "Medium", "Low / Do
 RECENCY_HALF_LIFE_DAYS = 120           # recency score halves every 120 days without activity
 FREQ_FULL_MARKS_MONTHS = 6             # active in >= 6 of last 12 months = full frequency marks
 BREADTH_FULL_MARKS = 3                 # >= 3 distinct product families in 24m = full marks
-INBOUND_FULL_MARKS = 3                 # >= 3 customer-initiated calls = full initiative marks
+INBOUND_BONUS_MAX_CALLS = 2            # +25 points per call, capped at +50.
 
 # --------------------------------------------------------------------------------------
 # ROI assumptions (Challenge 3) - all in VND. Change here, everything re-computes.

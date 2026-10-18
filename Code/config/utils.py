@@ -68,11 +68,11 @@ def save_json(obj, path: Path):
             return o.tolist()
         return str(o)
 
-    path.write_text(json.dumps(obj, indent=2, default=_default, ensure_ascii=False))
+    path.write_text(json.dumps(obj, indent=2, default=_default, ensure_ascii=False), encoding="utf-8")
 
 
-def load_json(path: Path):
-    return json.loads(Path(path).read_text())
+def load_json(path: Path) -> dict:
+    return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
 # --------------------------------------------------------------------------------------
@@ -221,10 +221,6 @@ PAL = {
 TIER_COLORS = {"High": PAL["green"], "Medium": PAL["amber"], "Low": PAL["red"]}
 
 
-def tint(hex_color: str, a: float):
-    """Same brand hex with transparency (keeps every colour on-palette)."""
-    from matplotlib.colors import to_rgba
-    return to_rgba(hex_color, a)
 
 
 def status_cmap():
