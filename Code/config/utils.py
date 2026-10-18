@@ -206,27 +206,25 @@ def assign_tier(score: pd.Series, tiers) -> pd.Series:
 # --------------------------------------------------------------------------------------
 # Plotting (pitch-deck style)
 # --------------------------------------------------------------------------------------
-# BI Season 10 Fintech theme - identical hex codes to the dashboard (Tools/pbi/dashboard.html)
+# BI Season 10 palette — shared across all charts.
 PAL = {
-    "navy": "#0F172A",      # primary brand: titles, primary series
-    "orange": "#F97316",    # accent: key highlights, secondary series
-    "amber": "#F59E0B",     # accent 2 / Medium tier
-    "green": "#10B981",     # High tier / healthy / safe
-    "red": "#EF4444",       # Low tier / financial stress / at-risk
-    "grey": "#64748B",      # neutral / secondary data
-    "bg": "#F8FAFC", "card": "#FFFFFF",
-    "light": (100 / 255, 116 / 255, 139 / 255, 0.18),   # neutral grey at 18% (volume bars, tracks)
-    "ink": "#0F172A",
+    "navy": "#004AAD",      # primary series and titles
+    "orange": "#004AAD",    # secondary accent
+    "amber": "#C8D1D9",     # middle / neutral tier
+    "green": "#004AAD",     # positive / healthy series
+    "red": "#C51E1E",       # risk / negative series
+    "grey": "#585757",      # labels and neutral series
+    "bg": "#C8D1D9", "card": "#FFFFFF",
+    "light": (200 / 255, 209 / 255, 217 / 255, 0.3),
+    "ink": "#585757",
 }
-TIER_COLORS = {"High": PAL["green"], "Medium": PAL["amber"], "Low": PAL["red"]}
-
-
+TIER_COLORS = {"High": PAL["navy"], "Medium": PAL["amber"], "Low": PAL["red"]}
 
 
 def status_cmap():
-    """0 -> #EF4444, 50 -> #F59E0B, 100 -> #10B981 (points / health colour scale)."""
+    """Map low scores to risk red and high scores to brand blue."""
     from matplotlib.colors import LinearSegmentedColormap
-    return LinearSegmentedColormap.from_list("bi10_status", [PAL["red"], PAL["amber"], PAL["green"]])
+    return LinearSegmentedColormap.from_list("bi10_status", [PAL["red"], PAL["amber"], PAL["navy"]])
 
 
 def navy_cmap():
