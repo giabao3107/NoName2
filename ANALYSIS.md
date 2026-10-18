@@ -9,15 +9,15 @@ This document is the end-to-end analysis narrative: data audit → exploratory a
 
 ## 1. Executive summary
 
-The company can act on **1,000,528 customers** through two transparent 0–100 scores and a 3 × 3 routing matrix.
+**Situation.** The company needs a unified view of 1,000,528 customers across five sources: customer profiles, contracts, leads, behaviour, and calls. The brief asks for explainable scores and an action for each customer; machine learning is optional.
 
-- **Financial health (Task 1).** A five-pillar, points-based scorecard ranks a period it never saw: out-of-time Gini **0.322**, KS **0.238** (Tet-2025 report half, 270,277 customers). It ties a re-estimated logistic regression (**0.323**) and beats gradient boosting on the same inputs (**0.320**), so complexity buys nothing. Tiers carry economic meaning (High ≥ 80, Moderate 50–79, Low < 50).
-- **Engagement (Task 2).** A five-component score predicts later applications (**AUC 0.649**, the forward test). On sales calls it lines up with positive response (High 32.4% vs Low 7.0%; call-free score AUC **0.645**), read as a cross-sectional check because call dates are unreliable.
-- **Call data, one team rule.** CALL timestamps fail a timing test for every call type (collection calls predate customers' first loan at the random-date rate; only 4.1% of "sign successful" calls sit within 14 days of a signing). Call dates support no before/after claim; per-customer call counts and outcomes remain usable.
-- **Segmentation and action (Task 3).** A rule-based 3 × 3 matrix over both scores routes every customer to one of eleven service actions. An unsupervised K-means challenger separates better geometrically (**silhouette 0.413 vs 0.355** at equal segment counts) but has no post-action outcome label to validate actions, so the **explainable matrix stays operational** and K-means is retained as exploratory profiling only.
-- **Low engagement is mostly seasonal, not churn:** **582,524 customers (58.2%)** have High/Moderate health and Low engagement, but **87.6%** were last active in Dec-2024/Jan-2025 and **71.7%** in only one month of the year. **392,164 one-time pre-Tết borrowers** get one opt-in reminder in early December, ahead of the next Tết season.
-- **Repayment support is a narrow, reachable queue:** **60,597** Low-health customers have established loan history, of whom **15,544** are reachable through Medium/High engagement.
-- **Thin-file is not stress:** 71.4% of the Low-health tier has no signed loan history and is routed to education, not collections.
+**Complication.** The file is dominated by the Dec-2024/Jan-2025 Tet application wave (99.98% of customers). Low engagement often reflects seasonality: 87.6% of the low-engagement, healthy group was last active in Dec-2024/Jan-2025, and 71.7% was active in only one month. CALL timestamps fail the timing checks, so they cannot support before/after claims. Also, 71.4% of the Low-health tier has no signed-loan history, and Task 3 has no post-action outcome label to validate action success.
+
+**Question.** How should the company rank repayment evidence, read engagement, and choose who to contact without treating seasonality as churn, missing history as delinquency, or association as cause?
+
+**Answer.** Task 1's five-pillar scorecard ranks the untouched Tet report half (270,277 customers) at Gini **0.322** and KS **0.238**. It performs close to logistic regression (**0.323**) and gradient boosting (**0.320**) while keeping score points explainable. Task 2's five-component score ranks later applications at AUC **0.649**. Its call-response pattern (High 32.4% vs Low 7.0%) is cross-sectional because call dates are unreliable; the call-free conversion AUC is **0.645**.
+
+Task 3 uses the explainable 3 × 3 matrix to route all 1,000,528 customers to one of eleven service actions. K-means has a higher silhouette at the matched nine-cluster count (**0.413 vs 0.355**), but that measures geometric separation, not action success, so the matrix remains operational. Priorities include one opt-in early-December reminder for **392,164** one-time pre-Tết borrowers, education rather than a stress label for **151,447** Low-health thin-file customers, and repayment support for **60,597** established-history Low-health customers, including **15,544** reachable through Medium/High engagement. These are service recommendations, not proven uplift.
 
 Project narrative: **protect the base → engage with intent → match the action to the need.**
 
