@@ -8,6 +8,7 @@
 
 # Rebuildable intermediate and score files.
 /Data_clean/*.parquet
+!/Data_clean/*_clean.parquet
 /output/**/scores/*.csv
 /output/**/scores/*.parquet
 /output/**/tables/*.csv
